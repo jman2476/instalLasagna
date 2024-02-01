@@ -1,7 +1,7 @@
 const express = require('express')
 const {engine} = require('express-handlebars');
 
-const PORT = 3333;
+const PORT = 3340;
 const app = express();
 const {view_routes} = require('./routes')
 // Import the sequelize connection
