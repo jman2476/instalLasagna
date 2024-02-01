@@ -5,7 +5,7 @@ const PORT = 3333;
 const app = express();
 const {view_routes} = require('./routes')
 // Import the sequelize connection
-// const db = require('./db/connections.js');
+const db = require('./db/connections.js');
 
 // Opening up the middleware channel to allow json to be sent through from the client
 app.use(express.json());
@@ -26,7 +26,9 @@ app.set('views', './views');
 // app.use('/api', []);
 app.use('/', [view_routes]);
 
-
-app.listen(PORT, () => {
-    console.log('Server started on port')
-});
+db.sync({force: false})
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log('Server started on port', PORT)
+        });
+    });
