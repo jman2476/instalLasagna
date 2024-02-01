@@ -1,9 +1,8 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../db/connections');
 
-class Standard_Recipe extends Model{}
+class ErrorSolution extends Model{}
 
-Standard_Recipe.init()
+ErrorSolution.init()
 
-
-module.exports = Standard_Recipe;
+module.exports = ErrorSolution;
