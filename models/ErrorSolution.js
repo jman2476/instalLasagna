@@ -3,6 +3,24 @@ const sequelize = require('../db/connections');
 
 class ErrorSolution extends Model{}
 
-ErrorSolution.init()
+ErrorSolution.init({
+    content: {
+        type: DataTypes.TEXT,
+        allowNull:true
+    },
+    recipeId:{
+        type:DataTypes.INTEGER,
+        allowNull:true,
+        references: {
+            model: Recipe,
+            key: 'id'
+        }
+    }
+    },{
+        sequelize,
+        modelName: 'ErrorSolution',
+        timestamps:true
+    }
+    )
 
 module.exports = ErrorSolution;
