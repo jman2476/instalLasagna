@@ -30,3 +30,5 @@ async function seedSteps() {
         console.log(err);
     }
 }
+
+module.exports = seedSteps();
