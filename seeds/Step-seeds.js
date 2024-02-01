@@ -31,4 +31,4 @@ async function seedSteps() {
     }
 }
 
-module.exports = seedSteps();
+module.exports = seedSteps;
