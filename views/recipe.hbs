@@ -1,0 +1,21 @@
+
+{{!-- Example template --}}
+
+{{!-- <h1>{{title}}</h1>
+<p>{{description}}</p>
+
+{{#each ErrorReports}}
+    <div class="error-report">
+        <p>Error: {{description}}</p>
+        {{#if ErrorSolution}}
+     
+            <p>Solution: 
+                {{#if ErrorSolution.Recipe}}
+                    <a href="/recipes/{{ErrorSolution.Recipe.id}}">{{ErrorSolution.Recipe.title}}</a>
+                {{else}}
+                    {{ErrorSolution.content}}
+                {{/if}}
+            </p>
+        {{/if}}
+    </div>
+{{/each}} --}}
