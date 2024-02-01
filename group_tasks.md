@@ -6,7 +6,7 @@
     - authentication and authorization
     - API endpoints(routes)
     - Error/validation handling
-    - tests
+
 
 >FRONTEND TASKS
     - create mockups for key pages
