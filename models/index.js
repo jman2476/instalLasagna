@@ -1,7 +1,22 @@
-const Standard_recipe = require('./StandardRecipe');
+const Recipe = require('./Recipe.js');
 const Step = require('./Step.js')
-const ErrorRecipe = require('./ErrorRecipe.js')
-const ErrorStep = require('./ErrorStep.js')
+const ErrorReport = require('./ErrorReport.js')
+const ErrorSolution = require('./ErrorSolution.js')
 const User = require('./User.js')
 
-module.exports = {Standard_recipe, Step, ErrorRecipe, ErrorStep, User}
+
+// Establish associations
+Recipe.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Recipe, { foreignKey: 'userId' });
+
+Step.belongsTo(Recipe, { foreignKey: 'recipeId' });
+Recipe.hasMany(Step, { foreignKey: 'recipeId' });
+
+ErrorReport.belongsTo(User, { foreignKey: 'userId' });
+ErrorReport.belongsTo(Recipe, { foreignKey: 'recipeId' });
+ErrorReport.belongsTo(Step, { foreignKey: 'stepId', allowNull: true });
+
+ErrorReport.belongsTo(ErrorSolution, { foreignKey: 'solutionId', allowNull: true });
+ErrorSolution.hasMany(ErrorReport, { foreignKey: 'solutionId' });
+
+module.exports = {Recipe, Step, ErrorReport, ErrorSolution, User}
