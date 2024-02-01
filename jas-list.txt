@@ -1,0 +1,11 @@
+schema.sql, connections.js in /db
+
+create /seeds folder 
+seed.js file
+
+create Standard_Recipe.js --> then inside file 
+
+Step.js 
+ErrorStep
+User
+ErrorRecipe
