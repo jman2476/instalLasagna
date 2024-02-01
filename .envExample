@@ -1,4 +1,4 @@
-DB_HOST_URL="learning2.c3aue4iwcwie.us-east-2.rds.amazonaws.com"
-DB_USER="cjswayne"
-DB_DATABASE_NAME="install_lasagna_db"
-DB_PASSWORD="password"
+DB_HOST_URL=""
+DB_USER=""
+DB_DATABASE_NAME=""
+DB_PASSWORD=""
