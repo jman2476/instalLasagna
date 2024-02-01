@@ -1,4 +1,4 @@
-const Recipe = require('./Recipe');
+const Recipe = require('./Recipe.js');
 const Step = require('./Step.js')
 const ErrorReport = require('./ErrorReport.js')
 const ErrorSolution = require('./ErrorSolution.js')

@@ -26,7 +26,7 @@ app.set('views', './views');
 // app.use('/api', []);
 app.use('/', [view_routes]);
 
-db.sync({force: false})
+db.sync({force: true})
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started on port', PORT)

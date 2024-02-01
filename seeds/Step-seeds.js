@@ -1,5 +1,6 @@
 const { Step, Recipe } = require('../models');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
+
 
 
 async function generateStepData() {
@@ -13,8 +14,8 @@ async function generateStepData() {
             stepSeeds.push({
                 sequence:i,
                 content:faker.lorem.paragraph(),
-                os: faker.random.arrayElement(['Windows', 'macOS', 'Linux', null]),
-                notes:faker.random.arrayElement([faker.lorem.sentence(), null]),
+                os: faker.helpers.arrayElement(['Windows', 'macOS', 'Linux', null]),
+                notes:faker.helpers.arrayElement([faker.lorem.sentence(), null]),
                 recipeId: recipe.id
             })
         }

@@ -1,5 +1,6 @@
 const { ErrorSolution, Recipe } = require('../models');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
+
 
 async function generateErrorSolutionData() {
     const errorSolutionSeeds = [];
@@ -10,7 +11,7 @@ async function generateErrorSolutionData() {
         return;
     }
 
-    const numberOfSolutions = 20;
+    const numberOfSolutions = 2;
 
     for (let i = 0; i < numberOfSolutions; i++) {
         const linkToRecipe = faker.datatype.boolean();

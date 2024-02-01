@@ -1,5 +1,6 @@
 const { ErrorReport, User, Recipe, Step } = require('../models');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
+
 
 async function generateErrorReportData() {
     const errorReportSeeds = [];
@@ -13,14 +14,14 @@ async function generateErrorReportData() {
 
     for (const user of users){
         for (const recipe of recipes){
-            const steps = await Step.finaAll({ where: { recipeId: recipe.id } });
-            const step = steps.length > 0 ? faker.random.arrayElement(steps) : null;
+            const steps = await Step.findAll({ where: { recipeId: recipe.id } });
+            const step = steps.length > 0 ? faker.helpers.arrayElement(steps) : null;
 
 
             errorReportSeeds.push({
                 description: faker.lorem.sentence(),
                 userId: user.id,
-                recideId: recipe.id,
+                recipeId: recipe.id,
                 stepId: step ? step.id : null
             });
         }

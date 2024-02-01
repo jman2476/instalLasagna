@@ -1,5 +1,6 @@
 const { Recipe, User } = require('../models');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
+
 
 async function generateRecipeData() {
     const recipeSeeds = [];
@@ -11,7 +12,7 @@ async function generateRecipeData() {
     }
 
     for (const user of users) {
-        const numberOfRecipes = faker.datatype.number({ min:1, max: 5});
+        const numberOfRecipes = faker.datatype.number({ min:1, max: 2});
 
         for(let i = 0; i < numberOfRecipes; i++) {
             recipeSeeds.push({

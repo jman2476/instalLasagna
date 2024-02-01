@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/connection');
+const Recipe = require('./Recipe.js');
 
 class ErrorSolution extends Model{}
 

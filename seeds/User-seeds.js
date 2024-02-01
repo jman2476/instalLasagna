@@ -1,10 +1,11 @@
 const { User } = require('../models');
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
+
 
 function generateUserData() {
     const userSeeds = [];
 
-    for (let i = 0; i < 10; i++){
+    for (let i = 0; i < 5; i++){
         userSeeds.push({
             username:faker.internet.userName(),
             email:faker.internet.email(),
@@ -18,7 +19,7 @@ function generateUserData() {
 async function seedUsers() {
     const users = generateUserData();
     try {
-        await User.bulkCreate(userSeeds, { validate: true });
+        await User.bulkCreate(users, { validate: true });
     } catch (err) {
         console.log(err)
     }
