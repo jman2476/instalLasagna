@@ -1,3 +1,11 @@
 {{!-- # User dashboard with created recipes and option to create new ones --}}
 
 
+<section class="recipesContainter">
+    <ul>
+        {{#each items}}
+            <li>{{this.title}}</li>
+        {{/each}}
+    </ul>
+</section>
+

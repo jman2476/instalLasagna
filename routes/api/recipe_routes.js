@@ -1,7 +1,14 @@
 const router = require('express').Router()
-const db = require('../../db/connections.js')
-
+const db = require('../../config/connection.js')
+const {getUserRecipes} = require('../../controllers')
 // pull in the necessary models
-const User = require('../../models/User.js')
-const Step = require('../../models/Step.js')
-const Recipe = require('../../models/Recipe.js')
+// const { User, Step, Recipe } = require('../../models')
+
+
+router.get('/user_recipes', (req, res) => {
+    console.log('aiuefh')
+    res.send('res')
+})
+
+
+module.exports = router;
