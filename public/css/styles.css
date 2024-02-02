@@ -109,7 +109,30 @@ button {
     background: none;
     border: none;
 }
+.card {
+    display: grid;
+    color: #2a2826;
+    background-color:#d9d7ee;
+    border: 3px;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 120px;
+    height: 160px;
+    padding: 20px 20px;
+    text-align: center;
 
-/* button:hover, nav a:hover {
-    text-decoration: underline;
-} */
+}
+
+.tile {
+    background: linear-gradient(to bottom, #727271, #dfdccb);
+    position: relative;
+    border: black;
+    border-radius: 10px;
+    border-style: solid;
+}
+
+.bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
