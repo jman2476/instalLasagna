@@ -5,7 +5,10 @@ const {getUserRecipes} = require('../../controllers')
 // const { User, Step, Recipe } = require('../../models')
 
 
-router.get('/user_recipes', (req, res) => getUserRecipes(req, res))
+router.get('/user_recipes', (req, res) => {
+    console.log('aiuefh')
+    res.send('res')
+})
 
 
 module.exports = router;

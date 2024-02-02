@@ -2,11 +2,11 @@ const express = require("express");
 const { create } = require("express-handlebars");
 const path = require('path');
 const fs = require('fs');
-const session = require('express-session')
+const session = require('express-session');
 
 const PORT = 3340;
 const app = express();
-const { view_routes } = require("./routes");
+const router = require("./routes");
 
 // const { hbsTool } = require('./tools')
 
@@ -80,14 +80,6 @@ function registerPartials(directory){
 }
 registerPartials(path.join(__dirname, "views", "partials"));
 
-
-
-// app.engine("hbs", hbs.engine);
-// app.set("view engine", "hbs");
-// app.set("views", "./views");
-// app.use(express.static('./public'))
-
-// 
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -98,9 +90,8 @@ app.use(session({
 
 
 // Load Routes
-// app.use('/api', []);
-app.use("/", [view_routes]);
-
+app.use("/api", [router.recipeDB]);
+app.use("/", [router.view, router.user, router.step, router.recipeForm]);
 // Middleware net to catch 404's -->
 app.use((req, res, next) => {
     res.status(404).render("404");
