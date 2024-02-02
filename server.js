@@ -96,29 +96,26 @@ db.sync({ force: true }).then(() => {
 
 /*
     -- STOPPING POINT --
-        -seeding and models done
+        - building handlebars helping logic
 
     -- Tasks for project --
 
-        *all tasks subject to change upon review
+    
 
 >BACKEND TASKS
     - authentication and authorization
     - API endpoints(routes)
     - Error/validation handling
-    - tests
+    
 
 >FRONTEND TASKS
-    - create mockups for key pages
-        - Recipe view
-        - homepage
-        - user dashboard/where they can see their made recipes
     - connect frontend with backend
     - design for mobile + desktop
 
 >MAIN FEATURES
     - Implement the recipe creation and editing workflow
     - Develop the feature for viewing and following along to recipes.
+    --
     - Add the ability to report errors on recipes and steps.
     - Create a system for linking error reports to solutions or solution recipes.
     - Implement user profiles and manage user-generated content.
@@ -133,4 +130,8 @@ db.sync({ force: true }).then(() => {
 - Implement the models in Sequelize (User, Recipe, Step, ErrorReport, ErrorSolution)
 - Set up model associations and foreign key constraints
 - Seed the database with initial data for development and testing  
+- create mockups for key pages
+        - Recipe view
+        - homepage
+        - user dashboard/where they can see their made recipes
 */
