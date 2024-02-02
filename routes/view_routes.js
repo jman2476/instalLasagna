@@ -8,6 +8,8 @@ router.get('/', (req, res) => {
     res.render('pages/dashboard' , {
         title: 'InstallLasagna',
         recipes: {},
+        userId: req.session.userId,
+        userName: req.session.userName,
         errors: req.errors
     });
 });
