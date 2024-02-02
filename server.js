@@ -6,7 +6,7 @@ const session = require('express-session')
 
 const PORT = 3340;
 const app = express();
-const { view_routes } = require("./routes");
+const router = require("./routes");
 
 // const { hbsTool } = require('./tools')
 
@@ -99,7 +99,7 @@ app.use(session({
 
 // Load Routes
 // app.use('/api', []);
-app.use("/", [view_routes]);
+app.use("/", [router.view, router.user, router.step, router.recipe]);
 
 // Middleware net to catch 404's -->
 app.use((req, res, next) => {

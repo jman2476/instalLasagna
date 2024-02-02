@@ -1,21 +1,23 @@
 const { User } = require('../models')
 
-// function to handle user sign up
-const signUpUser = async(req,res) =>{
-    const {email} = req.body
-    try {
-        // check if user exists
-        const exists_user = await User.findAll({
-            where: {
-                email: email
-            }
-        })
-        
-        if(!exists_user) {
-            req.session.errors = ['Email is already in use']
-            return console.log('User exists')
-        }
+// handle the errors
+function errorHandler(err, req, res, path) {
+    let messages
 
+    if (err.errors) {
+        messages = err.errors.map(errObj => errObj.message)
+    } else {
+        messages = [err.message]
+    }
+
+    req.session.errors = messages
+
+    res.redirect(path)
+}
+
+// function to handle user sign up
+const signUpUser = async (req, res) => {
+    try {
         //create new user
         const user = await User.create(req.body)
 
@@ -23,17 +25,13 @@ const signUpUser = async(req,res) =>{
 
         res.redirect('/')
     } catch (error) {
-        const messages = error.errors.map(errObj => errObj.message)
-
-        req.session.errors = messages
-        
-        res.redirect('/signup')
+        errorHandler(error, req, res, '/signup')
     }
 }
 
 // function that handles user authentication
-const logInUser =  async (req, res) => {
-    const {email, password} = req.body
+const logInUser = async (req, res) => {
+    const { email, password } = req.body
 
     try {
         const user = await User.findOne({
@@ -51,7 +49,7 @@ const logInUser =  async (req, res) => {
         // validate password
         const valid_pass = await user.validatePass(password)
 
-        if(!valid_pass) {
+        if (!valid_pass) {
             req.session.errors = ['Invalid password']
 
             return res.redirect('/')
@@ -62,12 +60,8 @@ const logInUser =  async (req, res) => {
         res.redirect('/')
 
     } catch (error) {
-        const messages = error.errors.map(errObj => errObj.message)
-
-        req.session.errors = messages
-        
-        res.redirect('/signup')
+        errorHandler(error, req, res, '/login')
     }
 }
 
-module.exports = {signUpUser, logInUser}
+module.exports = { signUpUser, logInUser }
