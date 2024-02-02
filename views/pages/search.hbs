@@ -1,0 +1,47 @@
+
+{{!-- # Page for searching and viewing other people's recipes --}}
+
+instalLasagna/
+├── config/
+││   └── connection.js    # Model for individual steps in a recipe
+    db/
+│   ├── schema.sql
+├── models/
+│   ├── Recipe.js  # Model for recipes
+│   ├── Step.js    # Model for user data
+│   ├── ErroReport.js # model for error reports
+│   ├── ErrorSolution.js # model for error solutions
+│   ├── index.js    # easy export
+│   └── User.js    # Model for individual steps in a recipe
+├── views/
+│   ├── layouts/
+│   │   └── main.handlebars  # Main layout file
+│   ├── partials/
+│   │   ├── header.handlebars      # Header with app name, search, create_recipe, etc.
+│   │   ├── footer.handlebars      # Footer partial
+│   │   ├── searchForm.handlebars  # Search form used across pages
+│   │   ├── profilePic.handlebars  # Profile picture component
+│   │   ├── credentialsForm.handlebars  # Login/Register form
+│   │   ├── stepView.handlebars    # View-only version of a step
+│   │   └── stepEdit.handlebars    # Editable version of a step
+│   └── pages/
+│       ├── dashboard.handlebars  # User dashboard
+│       ├── recipe.handlebars     # Recipe builder and viewer
+│       └── search.handlebars     # Search page
+├── controllers/
+    ├── index.js  # to easy export
+│   ├── dashboardController.js  # Logic for the dashboard page
+│   ├── recipeController.js     # Logic for creating, viewing, and editing recipes
+│   ├── searchController.js     # Logic for search functionality
+│   └── authController.js       # Authentication logic
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   └── images/
+├── routes/
+│   ├── index.js
+│   ├── viewRoutes.js
+│  
+├── server.js
+└── package.json
