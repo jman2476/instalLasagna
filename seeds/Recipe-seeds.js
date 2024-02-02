@@ -18,7 +18,7 @@ async function generateRecipeData() {
             recipeSeeds.push({
                 title: faker.lorem.words(),
                 description: faker.lorem.paragraph(),
-                userId: user.id
+                creatorID: user.id
             });
         }
     }

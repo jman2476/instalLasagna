@@ -12,7 +12,7 @@ Recipe.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
-    userId:{
+    creatorID:{
         type:DataTypes.INTEGER,
         allowNull: false,
         references:{
