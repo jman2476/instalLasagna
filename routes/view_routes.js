@@ -41,7 +41,7 @@ router.get('/signup', async (req, res) => {
 
 // view log in page
 router.get('/login', async (req, res) => {
-    res.render('/pages/login', {
+    res.render('pages/loginPage', {
         title: 'Log into your account',
         errors: req.session.errors
     })
