@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}}</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"/>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
     <body>
+      {{> header}}
+  <main>
     {{{body}}}
+  </main>
+
+    {{> footer}}
     </body>
 </html>

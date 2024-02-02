@@ -1,1 +1,14 @@
 {{!--  # Header partial including app name, search, and profile pic --}}
+    <header>
+        <div>
+        <h1>instalLASAGNA</h1>
+{{!-- <h4>Welcome, {{this.username ? this.username : 'Guest' }}</h4> --}}
+        </div>
+        <nav>
+            <!-- <a href="#">Home</a> -->
+            <a href="#">Preview</a>
+            <a href="#">Download</a>
+        </nav>
+
+        {{> credentialsForm}}
+    </header>

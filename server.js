@@ -1,5 +1,5 @@
 const express = require('express')
-const {engine} = require('express-handlebars');
+const expHbs = require('express-handlebars');
 
 const PORT = 3333;
 const app = express();
@@ -18,13 +18,26 @@ false }));
 app.use(express.static('./public'))
 
 // Set up Handlebars
-app.engine('hbs', engine({extname:'.hbs'}));
+const hbs = expHbs.create({
+    defaultLayout: 'main',
+    partialDir:['views/partials'],
+    extname:'.hbs'
+})
+
+
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
 // Load Routes
 // app.use('/api', []);
 app.use('/', [view_routes]);
+
+
+// Middleware net to catch 404's --> 
+app.use((req, res, next) => {
+    res.status(404).render('404');
+})
 
 db.sync({force: true})
     .then(() => {
