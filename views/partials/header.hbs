@@ -1,14 +1,18 @@
 {{!--  # Header partial including app name, search, and profile pic --}}
     <header>
-        <div>
+        <div class="ml5">
+            {{!-- {{> logo}} -- needs update --}}
         <h1>instalLASAGNA</h1>
 {{!-- <h4>Welcome, {{this.username ? this.username : 'Guest' }}</h4> --}}
+        <h5 class="">Welcome, User</h5>
+        
         </div>
-        <nav>
+        <nav class="flex items-center">
             <!-- <a href="#">Home</a> -->
-            <a href="#">Preview</a>
-            <a href="#">Download</a>
+            {{> searchForm}}
+            <a href="#">Create</a>
+            {{> credentialsForm}}
         </nav>
 
-        {{> credentialsForm}}
+        
     </header>
