@@ -7,8 +7,10 @@ body {
     display: flex;
     flex-direction: column;
 }
-html, body{
-    height:100%;
+
+html,
+body {
+    height: 100%;
 }
 
 header {
@@ -19,9 +21,16 @@ header {
     justify-content: space-between;
     align-items: center;
 }
-h1, h2, h3, h4, h5, h6, p {
-    margin:0;
-    padding:0;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
 }
 
 header nav {
@@ -40,13 +49,15 @@ header nav a {
 /* パート6：メインコンテンツスタイル */
 
 main {
-        display: flex;
-        flex:1;
-    flex-grow: 1; /* Allow main content to grow and fill available space */
-    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex: 1;
+    flex-grow: 1;
+    /* Allow main content to grow and fill available space */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
     padding: 20px 3%;
     box-sizing: border-box;
-    justify-content: center; 
+    justify-content: center;
     flex-direction: column;
     /* Include padding in height calculation */
     /* ... (scrollbar styles) */
@@ -76,25 +87,29 @@ main::-webkit-scrollbar-thumb:hover {
 } */
 /* HEADER.HBS */
 
-.signUpToggle{
-    position:relative;
+.signUpToggle {
+    position: relative;
 }
+
 .credentials {
-    position:absolute;
-    top:50px;
-    right:0;
-    display:none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    display: none;
     background-color: #FFF;
 }
+
 .arrow {
-    cursor:pointer;
+    cursor: pointer;
 }
+
 /* .submitBtn{} */
 
 button {
-    background:none;
-    border:none;
+    background: none;
+    border: none;
 }
+
 /* button:hover, nav a:hover {
     text-decoration: underline;
 } */

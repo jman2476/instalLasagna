@@ -1,5 +1,5 @@
 const express = require("express");
-const expHbs = require("express-handlebars");
+const { create } = require("express-handlebars");
 const path = require('path');
 const fs = require('fs');
 const session = require('express-session')
@@ -8,7 +8,7 @@ const PORT = 3340;
 const app = express();
 const { view_routes } = require("./routes");
 
-const { hbsTool } = require('./tools')
+// const { hbsTool } = require('./tools')
 
 // Import the sequelize connection
 const db = require("./config/connection.js");
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 // Share or create a GET route for every file in the public folder
 app.use(express.static("./public"));
 
-const hbs = expHbs.create({
+const hbs = create({
     defaultLayout: "main",
     partialsDir: ["./views/partials"],
     extname: ".hbs",
@@ -37,8 +37,9 @@ const hbs = expHbs.create({
         dynamicPartial: function (name, options) {
             console.log(name);
             console.log(typeof name);
+            console.log(hbs.handlebars.partials)
             let template = hbs.handlebars.partials[name]; // getting the partial by name
-            // console.log(template);
+            console.log(template);
 
             if (typeof template !== "function") {
                 // asking if the template has been compiled
@@ -56,7 +57,13 @@ const hbs = expHbs.create({
         },
 
     },
-});
+})
+
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', './views');
+
+// const hbs = expHbs.create();
 // Register partials
 function registerPartials(directory){
     fs.readdirSync(directory).forEach((filename) => { // reading entire directory thats specified
@@ -75,10 +82,10 @@ registerPartials(path.join(__dirname, "views", "partials"));
 
 
 
-app.engine("hbs", hbs.engine);
-app.set("view engine", "hbs");
-app.set("views", "./views");
-app.use(express.static('./public'))
+// app.engine("hbs", hbs.engine);
+// app.set("view engine", "hbs");
+// app.set("views", "./views");
+// app.use(express.static('./public'))
 
 // 
 app.use(session({
@@ -101,8 +108,8 @@ app.use((req, res, next) => {
 db.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log("Server started on port", PORT);
-        let template = hbs.handlebars.partials;
-        console.log(template ? 'templates loaded!' : 'Templates not loaded');
+        // let template = hbs.handlebars.partials;
+        // console.log(template ? 'templates loaded!' : 'Templates not loaded');
     });
 });
 

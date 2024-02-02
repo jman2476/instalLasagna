@@ -1,17 +1,36 @@
 const router = require('express').Router();
+const { recipeController } = require('../controllers');
 // const Models = require('../models');
 // const user
 
-//show hp
+//show dashboard
 router.get('/', (req, res) => {
-    res.render('./pages/dashboard' , {
-        title: 'InstallLasagna'
+    res.render('pages/dashboard' , {
+        title: 'InstallLasagna',
+        recipes: {},
+        errors: req.errors
     });
 });
 
+// show recipe page
+router.get('/recipe', (req, res) => {
+    res.render('pages/recipe', {
+        title: 'Recipe',
+        errors: req.errors
+    })
+})
+
+// show search page
+router.get('/search', (req,res) => {
+    res.render('pages/search', {
+        title: 'Search',
+        errors: req.errors
+    })
+})
+
 // view sign up page
 router.get('/signup', async (req, res) => {
-    res.render('signup', {
+    res.render('pages/signupPage', {
         title: 'Sign up for an account',
         errors: req.session.errors
     })
@@ -22,7 +41,7 @@ router.get('/signup', async (req, res) => {
 
 // view log in page
 router.get('/login', async (req, res) => {
-    res.render('login', {
+    res.render('/pages/login', {
         title: 'Log into your account',
         errors: req.session.errors
     })
