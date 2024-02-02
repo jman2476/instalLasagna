@@ -9,8 +9,6 @@ require('dotenv').config();
     {
       host: process.env.DB_HOST_URL,
       dialect: 'mysql'
-      // ,
-      // logging:false
     }
   );
 

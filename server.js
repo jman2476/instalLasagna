@@ -3,7 +3,7 @@ const {engine} = require('express-handlebars');
 
 const PORT = 3333;
 const app = express();
-const {view_routes} = require('./routes')
+const { view_routes } = require('./routes')
 // Import the sequelize connection
 const db = require('./config/connection.js');
 
@@ -52,7 +52,6 @@ db.sync({force: true})
     - create mockups for key pages
         - Recipe view
         - homepage
-        - user login
         - user dashboard/where they can see their made recipes
     - connect frontend with backend
     - design for mobile + desktop
