@@ -88,10 +88,7 @@ app.use(session({
     // cookie: {}
   }))
 
-// Set up Handlebars
-app.engine('hbs', engine({extname:'.hbs'}));
-app.set('view engine', 'hbs');
-app.set('views', './views');
+
 
 // Load Routes
 // app.use('/api', []);
