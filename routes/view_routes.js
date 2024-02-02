@@ -39,16 +39,16 @@ router.get('/signup', async (req, res) => {
     delete req.session.errors
 })
 
-// view log in page
-router.get('/login', async (req, res) => {
-    res.render('/pages/login', {
-        title: 'Log into your account',
-        errors: req.session.errors
-    })
+// // view log in page
+// router.get('/login', async (req, res) => {
+//     res.render('/pages/login', {
+//         title: 'Log into your account',
+//         errors: req.session.errors
+//     })
 
-    // clear errors
-    delete req.session.errors
-})
+//     // clear errors
+//     delete req.session.errors
+// })
 
 
 module.exports = router;
