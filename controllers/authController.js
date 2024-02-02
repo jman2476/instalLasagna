@@ -10,6 +10,7 @@ function errorHandler(err, req, res, path) {
         messages = [err.message]
     }
 
+    console.log(messages)
     req.session.errors = messages
 
     res.redirect(path)
@@ -21,7 +22,9 @@ const signUpUser = async (req, res) => {
         //create new user
         const user = await User.create(req.body)
 
-        req.session.user_id = user.id
+        req.session.userId = user.id
+        req.session.userName = user.userName
+        console.log(user)
 
         res.redirect('/')
     } catch (error) {
@@ -47,7 +50,7 @@ const logInUser = async (req, res) => {
         }
 
         // validate password
-        const valid_pass = await user.validatePass(password)
+        const valid_pass = (password === user.password)
 
         if (!valid_pass) {
             req.session.errors = ['Invalid password']
@@ -55,7 +58,10 @@ const logInUser = async (req, res) => {
             return res.redirect('/')
         }
 
-        req.session.user_id = user.id
+        req.session.userId = user.dataValues.id
+        req.session.userName = user.dataValues.username
+       console.log(user.dataValues) 
+       console.log(req.session.userName)
 
         res.redirect('/')
 
