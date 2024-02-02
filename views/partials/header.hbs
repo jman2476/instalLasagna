@@ -8,10 +8,11 @@
         
         </div>
         <nav class="flex items-center">
-            <!-- <a href="#">Home</a> -->
+            <a href="#" class="pr2">Create</a>
             {{> searchForm}}
-            <a href="#">Create</a>
-            {{> credentialsForm}}
+            {{> credentialsForm type='login'}}
+            {{> credentialsForm type='sign_up'}}
+
         </nav>
 
         
