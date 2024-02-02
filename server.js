@@ -1,5 +1,6 @@
 const express = require('express')
 const {engine} = require('express-handlebars');
+const session = require('express-session')
 
 const PORT = 3340;
 const app = express();
@@ -17,6 +18,14 @@ false }));
 // Share or create a GET route for every file in the public folder
 app.use(express.static('./public'))
 
+// 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // cookie: {}
+  }))
+
 // Set up Handlebars
 app.engine('hbs', engine({extname:'.hbs'}));
 app.set('view engine', 'hbs');
@@ -26,7 +35,7 @@ app.set('views', './views');
 // app.use('/api', []);
 app.use('/', [view_routes]);
 
-db.sync({force: true})
+db.sync({force: false})
     .then(() => {
         app.listen(PORT, () => {
             console.log('Server started on port', PORT)
