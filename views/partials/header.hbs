@@ -5,13 +5,14 @@
         <h1>instalLASAGNA</h1>
 {{!-- <h4>Welcome, {{this.username ? this.username : 'Guest' }}</h4> --}}
         <h5 class="">Welcome, User</h5>
+{{print '\n aubfpaieubfip;eujbnf'}}
         
         </div>
         <nav class="flex items-center">
             <a href="#" class="pr2">Create</a>
             {{> searchForm}}
-            {{> credentialsForm type='login'}}
-            {{> credentialsForm type='sign_up'}}
+            {{dynamicPartial "credentialsForm" type="Login" truthy=0 }}
+            {{dynamicPartial "credentialsForm" type="Sign Up" truthy=1 }}
 
         </nav>
 

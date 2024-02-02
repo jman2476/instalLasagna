@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('.signUpToggle').click(function() {
         const btnText = $(this).text();
 
-        $('.credentialSubmit').val(btnText);
+        // $('.credentialSubmit').val(btnText);
 
         $('.credentials').toggle();
     })
