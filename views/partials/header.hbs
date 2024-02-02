@@ -11,8 +11,12 @@
         <nav class="flex items-center">
             <a href="#" class="pr2">Create</a>
             {{> searchForm}}
-            {{dynamicPartial "credentialsForm" type="Login" truthy=0 }}
-            {{dynamicPartial "credentialsForm" type="Sign Up" truthy=1 }}
+
+            <a href="/signup" class="pr2">Sign Up</a>
+            <a href="/login" class="pr2">Log in</a>
+
+            {{!-- {{dynamicPartial "loginForm" type="Login" truthy=0 }}  --}}
+            {{!-- {{dynamicPartial "signupForm" type="Sign Up" truthy=1 }} --}}
 
         </nav>
 

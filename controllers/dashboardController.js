@@ -1,4 +1,5 @@
-const dashboardController = {};
+const dashboardController = {
+};
 
 
 module.exports = dashboardController;
