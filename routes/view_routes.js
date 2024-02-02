@@ -39,6 +39,7 @@ router.get('/signup', async (req, res) => {
     delete req.session.errors
 })
 
+
 // view log in page
 router.get('/login', async (req, res) => {
     res.render('pages/loginPage', {
