@@ -2,8 +2,9 @@ const express = require("express");
 const expHbs = require("express-handlebars");
 const path = require('path');
 const fs = require('fs');
+const session = require('express-session')
 
-const PORT = 3333;
+const PORT = 3340;
 const app = express();
 const { view_routes } = require("./routes");
 
@@ -77,6 +78,20 @@ registerPartials(path.join(__dirname, "views", "partials"));
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "./views");
+app.use(express.static('./public'))
+
+// 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // cookie: {}
+  }))
+
+// Set up Handlebars
+app.engine('hbs', engine({extname:'.hbs'}));
+app.set('view engine', 'hbs');
+app.set('views', './views');
 
 // Load Routes
 // app.use('/api', []);
@@ -86,7 +101,7 @@ app.use("/", [view_routes]);
 app.use((req, res, next) => {
     res.status(404).render("404");
 });
-db.sync({ force: true }).then(() => {
+db.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log("Server started on port", PORT);
         let template = hbs.handlebars.partials;
