@@ -1,9 +1,10 @@
 const router = require('express').Router();
 // const Models = require('../models');
+// const user
 
 //show hp
 router.get('/', (req, res) => {
-    res.render('home' , {
+    res.render('./pages/dashboard' , {
         title: 'InstallLasagna'
     });
 });
@@ -29,5 +30,6 @@ router.get('/login', async (req, res) => {
     // clear errors
     delete req.session.errors
 })
+
 
 module.exports = router;
