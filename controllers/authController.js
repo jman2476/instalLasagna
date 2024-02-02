@@ -24,7 +24,6 @@ const signUpUser = async (req, res) => {
 
         req.session.userId = user.id
         req.session.userName = user.userName
-        console.log(user)
 
         res.redirect('/')
     } catch (error) {
@@ -60,8 +59,7 @@ const logInUser = async (req, res) => {
 
         req.session.userId = user.dataValues.id
         req.session.userName = user.dataValues.username
-       console.log(user.dataValues) 
-       console.log(req.session.userName)
+       
 
         res.redirect('/')
 
