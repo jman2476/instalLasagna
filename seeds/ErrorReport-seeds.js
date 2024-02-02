@@ -20,7 +20,7 @@ async function generateErrorReportData() {
 
             errorReportSeeds.push({
                 description: faker.lorem.sentence(),
-                userId: user.id,
+                creatorID: user.id,
                 recipeId: recipe.id,
                 stepId: step ? step.id : null
             });

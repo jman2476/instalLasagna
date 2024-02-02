@@ -6,13 +6,13 @@ const User = require('./User.js')
 
 
 // Establish associations
-Recipe.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Recipe, { foreignKey: 'userId' });
+Recipe.belongsTo(User, { foreignKey: 'creatorID' });
+User.hasMany(Recipe, { foreignKey: 'creatorID' });
 
 Step.belongsTo(Recipe, { foreignKey: 'recipeId' });
 Recipe.hasMany(Step, { foreignKey: 'recipeId' });
 
-ErrorReport.belongsTo(User, { foreignKey: 'userId' });
+ErrorReport.belongsTo(User, { foreignKey: 'creatorID' });
 ErrorReport.belongsTo(Recipe, { foreignKey: 'recipeId' });
 ErrorReport.belongsTo(Step, { foreignKey: 'stepId', allowNull: true });
 
