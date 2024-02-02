@@ -96,7 +96,7 @@ app.use("/", [router.view, router.user, router.step, router.recipeForm]);
 app.use((req, res, next) => {
     res.status(404).render("404");
 });
-db.sync({ force: true }).then(() => {
+db.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log("Server started on port", PORT);
         // let template = hbs.handlebars.partials;
