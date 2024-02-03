@@ -32,16 +32,18 @@ p {
     margin: 0;
     padding: 0;
 }
+a{
+    color: #000;
+    text-decoration: none;
 
+}
 header nav {
     margin-right: 20px;
     justify-self: flex-end;
 }
 
 header nav a {
-    color: #000;
     margin: 0 10px;
-    text-decoration: none;
 }
 
 /* Add styles for main and footer here if needed */
@@ -52,31 +54,27 @@ main {
     display: flex;
     flex: 1;
     flex-grow: 1;
-    /* Allow main content to grow and fill available space */
-    overflow-y: auto;
-    /* Enable vertical scrolling */
     padding: 20px 3%;
     box-sizing: border-box;
     justify-content: center;
     flex-direction: column;
-    /* Include padding in height calculation */
-    /* ... (scrollbar styles) */
+
 }
 
 /* Modern scrollbar styling */
-main::-webkit-scrollbar {
+::-webkit-scrollbar,.recipesContainer .card {
     width: 10px;
 }
 
-main::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,.recipesContainer .card {
     background: #f1f1f1;
 }
 
-main::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,.recipesContainer .card {
     background: #888;
 }
 
-main::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover,.recipesContainer .card {
     background: #555;
 }
 
@@ -103,46 +101,114 @@ main::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
 }
 
-/* .submitBtn{} */
 
 button {
     background: none;
     border: none;
 }
-/* .card {
-    display: grid;
-    color: #2a2826;
-    background-color:#d9d7ee;
-    border: 3px;
-    border-radius: 10px;
-    margin: 0 auto;
-    width: 120px;
-    height: 160px;
-    padding: 20px 20px;
-    text-align: center;
 
-} */
 
-.tile {
+
+/* Recipe Container */
+.recipesContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.recipesContainer .card {
+    max-width: 200px;
+    width: fit-content;
+    max-height: 300px;
     background: linear-gradient(to bottom, #727271, #dfdccb);
     position: relative;
-    border: black;
+    border: 2px solid black;
     border-radius: 10px;
-    border-style: solid;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-.bottom-right {
+.recipesContainer .card h2 {
+    font-size: 20px;
+}
+
+.operating-system {
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
 }
 
-/* RECIPE CONTAINER */
-.recipeContainer{
-    display:flex;
+.info {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 16px;
 }
 
-.recipeContainer .card{
-    width:120px;
-    height:160px;
+/* Card Types */
+.card.windows {
+    background: linear-gradient(to bottom, #0078D7, #8BC6EC); /* From Windows Blue to Sky Blue */
+}
+
+.card.macos {
+    background: linear-gradient(to bottom, #BDC3C7, #ECF0F1); /* From Silver Sand to Spun Pearl */
+}
+
+.card.linux {
+    background: linear-gradient(to bottom, #4CBB17, #A9DFBF); /* From Kelly Green to Mint Cream */
+}
+
+/* Hover Effects */
+.card.windows:hover {
+    background: #0078D7; /* Solid Windows Blue */
+}
+
+.card.macos:hover {
+    background: #ECF0F1; /* Solid Spun Pearl */
+}
+
+.card.linux:hover {
+    background: #4CBB17; /* Solid Kelly Green */
+}
+
+/* Transitions */
+.card {
+    height:250px;
+    transition: background .2s;
+    /* overflow:hidden; */
+}
+.card:hover{
+    background:#dfdccb;
+}
+
+.card p{
+    font-size:16px;
+}
+.description-box{
+    max-height:110px;
+    overflow-y:auto;
+    display:none;
+
+}
+
+.create.card{
+    transition:0.5s;
+    color:black;
+    background:#fff;
+    width: 200px;
+
+}
+
+.border-bottom{
+    border-bottom:2px solid black;
+}
+
+.plus-icon{
+    font-size:50px;
+}
+.create .submit-btn{
+    border:2px solid black;
+    border-radius:20px;
+    cursor: pointer;
 }

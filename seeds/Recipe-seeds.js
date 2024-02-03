@@ -12,12 +12,12 @@ async function generateRecipeData() {
     }
 
     for (const user of users) {
-        const numberOfRecipes = faker.datatype.number({ min:3, max: 5});
+        const numberOfRecipes = faker.datatype.number({ min:15, max: 16});
 
         for(let i = 0; i < numberOfRecipes; i++) {
             recipeSeeds.push({
                 title: faker.lorem.words(),
-                os: faker.helpers.arrayElement(['Windows', 'macOS', 'Linux', null]),
+                os: faker.helpers.arrayElement(['windows', 'macos', 'linux', null]),
                 description: faker.lorem.paragraph(),
                 creatorID: user.id
             });

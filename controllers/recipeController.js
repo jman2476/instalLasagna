@@ -39,5 +39,17 @@ async function sendUserRecipes(req, res) {
 }
 // const getUserRecipes = async(req, res);
 
+async function createNewRecipe(req, res){
+    try {
+        const creatorID = req.session.userId || 1;
+
+            
+
+    } catch (error) {
+
+    }
+
+}
+
 
 module.exports = { getUserRecipes };

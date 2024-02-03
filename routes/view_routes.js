@@ -19,8 +19,8 @@ router.get('/', async(req, res) => {
 });
 
 // show recipe page
-router.get('/recipe', (req, res) => {
-    res.render('pages/recipe', {
+router.get('/new_recipe', (req, res) => {
+    res.render('pages/newRecipePage', {
         title: 'Recipe',
         errors: req.errors
     })
