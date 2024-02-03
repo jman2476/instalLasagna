@@ -24,6 +24,7 @@ async function getUserRecipes(req, res) {
 }
 
 async function sendUserRecipes(req, res) {
+    console.log(req);
     try {
         const userRecipes = await getUserRecipes(req, res);
         if (userRecipes) {
@@ -39,6 +40,10 @@ async function sendUserRecipes(req, res) {
 }
 // const getUserRecipes = async(req, res);
 
+async function sendRecipeSteps(req, res){
+    console.log(req.params.id);
+    res.send('mhm')
+}
 
 async function startNewRecipe(req, res){
 
@@ -64,47 +69,7 @@ async function startNewRecipe(req, res){
     
 }
 
-async function createNewRecipe(req, res){
-    // console.log('wdajknd')
-    try {
-        // const creatorID = req.session.userId || 1;
-        const recipeId = req.query.recipeId;
-        console.log(recipeId);
 
-        const recipeData = await Recipe.findOne({
-            where:{
-                id:recipeId
-            }
-        })
-        const recipe = recipeData.dataValues;
-
-        // if recipe has steps, redirect to edit_recipe?recipeId=
-        const steps = await Step.findAll({
-            where:{
-                recipeId
-            }
-        })
-
-        if(steps.length){
-            return;
-        } else {
-            const step = await Step.create({ sequence:1, content:'', notes:'', recipeId })
-
-            console.log(recipe)
-            console.log(step);
-    
-            res.render('pages/editRecipePage', {
-                        title: recipe.title,
-                        os:recipe.os,
-                        errors: req.errors
-                    })
-        }
-
-        
-    } catch (error) {
-        console.log(error)
-    }
-}
 // We want to render the steps and workout how to edit it
 
 async function buildRecipe(req, res){
@@ -166,4 +131,4 @@ res.send('hello')
 // edit recipe, u can tell if person can edit if creator id matches userid
 
 // view recipe will be serverside and will render from handlebars
-module.exports = { sendUserRecipes, getUserRecipes, createNewRecipe, startNewRecipe, buildRecipe, editRecipe};
+module.exports = { sendRecipeSteps, sendUserRecipes, getUserRecipes,  startNewRecipe, buildRecipe, editRecipe};
