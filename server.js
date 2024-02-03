@@ -113,18 +113,18 @@ db.sync({ force: false }).then(() => {
     
 
 >BACKEND TASKS
-    - authentication and authorization
-    - API endpoints(routes)
-    - Error/validation handling
+    - authentication and authorization -IN PROGRESS
+    - API endpoints(routes) -IN PROGRESS
+    - Error/validation handling --> PRIORITY(server can crash if db f's up)
     
 
 >FRONTEND TASKS
-    - connect frontend with backend
+    - connect frontend with backend -IN PROGRESS
     - design for mobile + desktop
 
 >MAIN FEATURES
     - Implement the recipe creation and editing workflow
-    - Develop the feature for viewing and following along to recipes.
+    - Develop the feature for viewing and following along to recipes. -IN PROGRESS
     --
     - Add the ability to report errors on recipes and steps.
     - Create a system for linking error reports to solutions or solution recipes.
