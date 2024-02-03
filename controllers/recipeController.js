@@ -39,11 +39,27 @@ async function sendUserRecipes(req, res) {
 }
 // const getUserRecipes = async(req, res);
 
+
+async function startNewRecipe(req, res){
+    const { os, recipeTitle } = req.body;
+    const userId = 1;
+    const description = '';
+
+    const newRecipe = await Recipe.create({
+        title:recipeTitle, 
+        os:os, 
+        description:description, 
+        creatorID:userId});
+    console.log(os, recipeTitle);
+    console.log(newRecipe);
+    return res.redirect(`/new_recipe`);
+}
+
 async function createNewRecipe(req, res){
     try {
         const creatorID = req.session.userId || 1;
 
-            
+
 
     } catch (error) {
 
@@ -52,4 +68,4 @@ async function createNewRecipe(req, res){
 }
 
 
-module.exports = { getUserRecipes };
+module.exports = { getUserRecipes, createNewRecipe,  startNewRecipe};

@@ -1,9 +1,7 @@
 const router = require('express').Router()
+const { recipeController } = require('../../controllers');
+const { startNewRecipe } = recipeController;
 
-
-// pull in the necessary models
-const User = require('../../models/User.js')
-const Step = require('../../models/Step.js')
-const Recipe = require('../../models/Recipe.js')
+router.post('/new_recipe', startNewRecipe)
 
 module.exports = router
