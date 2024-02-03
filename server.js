@@ -92,10 +92,13 @@ app.use(session({
 // Load Routes
 app.use("/api", [router.recipeDB]);
 app.use("/", [router.view, router.user, router.step, router.recipeForm]);
+
 // Middleware net to catch 404's -->
 app.use((req, res, next) => {
-    res.status(404).render("404");
+    res.status(404).render("pages/404");
 });
+
+
 db.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log("Server started on port", PORT);
