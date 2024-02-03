@@ -2,8 +2,13 @@
 
 {{> heading tag='h2' title=this.title}}
 <h4 class=" pb2 mb2 mh4 {{os}}">OS: {{os}}</h4>
-<section class="flex-auto">
-    {{> stepsContainer}}
+<section class="flex flex-auto items-start justify-center">
+<form>
+             {{!-- {{#each steps}}
+        {{> stepEdit <params></params> }}
+     {{/each}} --}}
+
+    </form>
 </section>
 
 
@@ -11,7 +16,6 @@
 
 
 
-{{!-- // save button and add block do the same thing
-// after each block the page re-renders with added block --}}
+{{!-- include save button, once view_recipe is done come back --}}
 
 

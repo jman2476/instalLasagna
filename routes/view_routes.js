@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { recipeController } = require('../controllers');
-const { getUserRecipes } = recipeController;
+const { getUserRecipes, showRecipePage } = recipeController;
 // const Models = require('../models');
 // const user
 
@@ -19,12 +19,7 @@ router.get('/', async(req, res) => {
 });
 
 // show recipe page
-// router.get('/new_recipe', (req, res) => {
-//     res.render('pages/editRecipePage', {
-//         title: 'Recipe',
-//         errors: req.errors
-//     })
-// })
+router.get('/view_recipe/:id', showRecipePage);
 
 // show search page
 router.get('/search', (req,res) => {
