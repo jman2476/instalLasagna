@@ -1,15 +1,16 @@
 {{> heading tag='h2' title=this.title}}
 <h4 class=" pb2 mb2 mh4 {{os}}">OS: {{os}}</h4>
 <section class="flex flex-auto items-start justify-center {{os}}">
-    <ul>
+    <div class="flex flex-column items-center">
              {{#each steps}}
-{{!-- <li>{{this.content}}</li> --}}
+
 {{> step sequence=this.sequence text=this.content notes=this.notes }}
      {{/each}}
 
-    </ul>
+    </div>
 
 </section>
 
 
-    <button id="fetchDataButton">GET IT</button>
+    <a href="/" class="tc">FINISH</a>
+    {{!-- <button id="fetchDataButton">get it</button> --}}

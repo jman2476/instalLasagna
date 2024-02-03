@@ -106,7 +106,6 @@ db.sync({ force: false }).then(() => {
 
 /*
     -- STOPPING POINT --
-        - building handlebars helping logic
 
     -- Tasks for project --
 
