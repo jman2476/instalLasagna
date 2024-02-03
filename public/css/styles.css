@@ -109,7 +109,7 @@ button {
     background: none;
     border: none;
 }
-.card {
+/* .card {
     display: grid;
     color: #2a2826;
     background-color:#d9d7ee;
@@ -121,7 +121,7 @@ button {
     padding: 20px 20px;
     text-align: center;
 
-}
+} */
 
 .tile {
     background: linear-gradient(to bottom, #727271, #dfdccb);
@@ -135,4 +135,14 @@ button {
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+/* RECIPE CONTAINER */
+.recipeContainer{
+    display:flex;
+}
+
+.recipeContainer .card{
+    width:120px;
+    height:160px;
 }

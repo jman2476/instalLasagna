@@ -12,6 +12,10 @@ Recipe.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
+    os:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     creatorID:{
         type:DataTypes.INTEGER,
         allowNull: false,

@@ -14,7 +14,6 @@ async function generateStepData() {
             stepSeeds.push({
                 sequence:i,
                 content:faker.lorem.paragraph(),
-                os: faker.helpers.arrayElement(['Windows', 'macOS', 'Linux', null]),
                 notes:faker.helpers.arrayElement([faker.lorem.sentence(), null]),
                 recipeId: recipe.id
             })

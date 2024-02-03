@@ -2,10 +2,8 @@
 
 
 <section class="recipesContainter">
-    <ul>
-        {{#each items}}
-            <li>{{this.title}}</li>
-        {{/each}}
-    </ul>
+     {{#each recipes}}
+    {{> recipeCard}}
+     {{/each}}
 </section>
 

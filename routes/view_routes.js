@@ -1,13 +1,17 @@
 const router = require('express').Router();
 const { recipeController } = require('../controllers');
+const { getUserRecipes } = recipeController;
 // const Models = require('../models');
 // const user
 
 //show dashboard
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
+    const recipesData = await getUserRecipes(req, res);
+    const recipes = recipesData.recipes;
+    console.log(recipes);
     res.render('pages/dashboard' , {
         title: 'InstallLasagna',
-        recipes: {},
+        recipes: recipes,
         userId: req.session.userId,
         userName: req.session.userName,
         errors: req.errors

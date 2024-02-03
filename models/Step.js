@@ -12,10 +12,7 @@ Step.init({
         type: DataTypes.TEXT,
         allowNull:false
     },
-    os:{
-        type: DataTypes.STRING,
-        allowNull: true
-    },
+
     notes: {
         type: DataTypes.TEXT,
         allowNull:true
