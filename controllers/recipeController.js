@@ -1,4 +1,4 @@
-const { User, Recipe } = require('../models')
+const { User, Recipe, Step } = require('../models')
 
 // /api/user_recipes
 async function getUserRecipes(req, res) {
@@ -42,7 +42,7 @@ async function sendUserRecipes(req, res) {
 
 async function startNewRecipe(req, res){
     const { os, recipeTitle } = req.body;
-    const userId = 1;
+    const userId = req.session.userId || 1;
     const description = '';
 
     const newRecipe = await Recipe.create({
@@ -51,21 +51,111 @@ async function startNewRecipe(req, res){
         description:description, 
         creatorID:userId});
     console.log(os, recipeTitle);
-    console.log(newRecipe);
-    return res.redirect(`/new_recipe`);
+    const recipeId = newRecipe.dataValues.id;
+
+    await Step.create({ sequence:1, content:'', notes:'', recipeId })
+
+    return res.redirect(`/edit_recipe?recipeId=${recipeId}`);
 }
 
 async function createNewRecipe(req, res){
+    // console.log('wdajknd')
     try {
-        const creatorID = req.session.userId || 1;
+        // const creatorID = req.session.userId || 1;
+        const recipeId = req.query.recipeId;
+        console.log(recipeId);
 
+        const recipeData = await Recipe.findOne({
+            where:{
+                id:recipeId
+            }
+        })
+        const recipe = recipeData.dataValues;
 
+        // if recipe has steps, redirect to edit_recipe?recipeId=
+        const steps = await Step.findAll({
+            where:{
+                recipeId
+            }
+        })
 
+        if(steps.length){
+            return;
+        } else {
+            const step = await Step.create({ sequence:1, content:'', notes:'', recipeId })
+
+            console.log(recipe)
+            console.log(step);
+    
+            res.render('pages/newRecipePage', {
+                        title: recipe.title,
+                        os:recipe.os,
+                        errors: req.errors
+                    })
+        }
+
+        
     } catch (error) {
-
+        console.log(error)
     }
+}
+// We want to render the steps and workout how to edit it
 
+async function buildRecipe(req, res){
+    try {
+        // const creatorID = req.session.userId || 1;
+        const recipeId = req.query.recipeId;
+        console.log(recipeId);
+
+        const recipeData = await Recipe.findOne({
+            where:{
+                id:recipeId
+            }
+        })
+
+        console.log(recipeData);
+
+        // CREATE MORE ROBUST ERROR HANDLING
+
+        if(recipeData === null){
+            res.redirect('recipe does not exist') 
+            return;
+        }
+
+        // ERROR HANDLING --> what if recipe id doesnt exist
+        const recipe = recipeData.dataValues;
+
+        // if recipe has steps, redirect to edit_recipe?recipeId=
+        const steps = await Step.findAll({
+            where:{
+                recipeId
+            }
+        })
+
+        if(steps.length){
+            return;
+        } else {
+            const step = await Step.create({ sequence:1, content:'', notes:'', recipeId })
+
+            console.log(recipe)
+            console.log(step);
+    
+            res.render('pages/newRecipePage', {
+                        title: recipe.title,
+                        os:recipe.os,
+                        errors: req.errors
+                    })
+        }
+
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+async function editRecipe(req, res){
+res.send('hello')
 }
 
+// edit recipe, u can tell if person can edit if creator id matches userid
 
-module.exports = { getUserRecipes, createNewRecipe,  startNewRecipe};
+module.exports = { sendUserRecipes, getUserRecipes, createNewRecipe, startNewRecipe, buildRecipe, editRecipe};

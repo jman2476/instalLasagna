@@ -7,7 +7,7 @@ const { sendUserRecipes } = recipeController;
 // const { User, Step, Recipe } = require('../../models')
 
 
-router.get('/user_recipes', (req, res) => {sendUserRecipes(req, res)})
+// router.get('/user_recipes', (req, res) => {sendUserRecipes(req, res)})
 
 
 module.exports = router;

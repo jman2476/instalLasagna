@@ -19,12 +19,12 @@ router.get('/', async(req, res) => {
 });
 
 // show recipe page
-router.get('/new_recipe', (req, res) => {
-    res.render('pages/newRecipePage', {
-        title: 'Recipe',
-        errors: req.errors
-    })
-})
+// router.get('/new_recipe', (req, res) => {
+//     res.render('pages/newRecipePage', {
+//         title: 'Recipe',
+//         errors: req.errors
+//     })
+// })
 
 // show search page
 router.get('/search', (req,res) => {
