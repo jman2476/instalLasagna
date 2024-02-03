@@ -253,3 +253,15 @@ button {
     padding: 5px; /* Padding around the note text */
     border-radius: 5px; /* Optional: adds rounded corners to the note text */
 }
+
+.step-input-text {
+    min-width: 1000px; /* Or set to a specific width */
+    min-height: 50px; /* Minimum height */
+    padding: 8px;
+    box-sizing: border-box; /* Include padding and border in the element's total dimensions */
+/* Disable manual resizing */
+    overflow-y: hidden; /* Prevent scrollbar from appearing */
+    overflow-x: hidden;
+}
+
+

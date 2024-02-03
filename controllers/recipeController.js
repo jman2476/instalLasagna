@@ -112,23 +112,26 @@ async function buildRecipe(req, res) {
 
         const recipe = recipeData.dataValues;
 
-        const stepsForRecipe = await Step.findAll({
+        const stepsData = await Step.findAll({
             where: {
                 recipeId: recipeId,
             },
         });
 
-        if (!stepsForRecipe.length || stepsForRecipe === null) {
-            res.redirect("No steps exist for this recipe");
+        if (!stepsData.length || stepsData === null) {
+            res.send("No steps exist for this recipe");
             return;
         }
 
+        const steps = stepsData.map(step => step.dataValues);
+
+
         res.render("pages/editRecipePage", {
-            steps: stepsForRecipe,
             title: recipe.title,
-            os: recipe.os,
+            os:recipe.os,
+            steps:steps,
             recipeId:recipeId,
-            errors: req.errors,
+            errors: req.errors
         });
     } catch (error) {
         console.log(error);

@@ -9,12 +9,14 @@
 <section class="flex flex-auto items-start justify-center">
 <form>
              {{#each steps}}
-             {{this.sequence}}
-        {{> stepEdit}}
+             {{!-- {{this.sequence }} --}}
+        {{> stepEdit sequence=this.sequence text=this.content notes=this.notes}}
      {{/each}}
 
     </form>
+
 </section>
+<button class="grow mb4">Add Step</button>
 
 
     <button id="fetchDataButton">GET IT</button>

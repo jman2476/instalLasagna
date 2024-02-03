@@ -39,6 +39,19 @@ $(document).ready(function () {
 
     $(noteTextId).toggle();
   })  
+
+  const textArea = document.querySelector('.step-input-text');
+
+  textArea.addEventListener('input', function() {
+      this.style.height = 'auto'; // Reset the height
+      this.style.height = this.scrollHeight + 'px'; // Set the height to the scroll height
+      // this.style.width = 'auto';
+      // this.style.width = this.scrollWidth + 'px'; // Set the height to the scroll height
+
+  });
+  
+  
+  
   // Optional: Call fetchData on some event, e.g., button click
   $("#fetchDataButton").click(fetchData);
 
