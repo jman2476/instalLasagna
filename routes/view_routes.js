@@ -21,6 +21,10 @@ router.get('/', async(req, res) => {
 // show recipe page
 router.get('/view_recipe/:id', showRecipePage);
 
+// show edit recipe page
+router.get('/edit_recipe')
+
+
 // show search page
 router.get('/search', (req,res) => {
     res.render('pages/search', {

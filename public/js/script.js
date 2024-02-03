@@ -30,10 +30,15 @@ $(document).ready(function () {
 
   $(".notes-button").on('click', function(){
     let buttonId = $(this).attr('id');
+    console.log(buttonId);
 
-    let sequenceId = buttonId.replace('show-note', '');
-    let spanSelector = `#note-text-${sequenceId}`;
-  })
+    let sequenceId = buttonId.replace('show-note-', '');
+    console.log(sequenceId);
+    let noteTextId = `#note-text-${sequenceId}`;
+    console.log(noteTextId);
+
+    $(noteTextId).toggle();
+  })  
   // Optional: Call fetchData on some event, e.g., button click
   $("#fetchDataButton").click(fetchData);
 

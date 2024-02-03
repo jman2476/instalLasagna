@@ -127,6 +127,7 @@ async function buildRecipe(req, res) {
             steps: stepsForRecipe,
             title: recipe.title,
             os: recipe.os,
+            recipeId:recipeId,
             errors: req.errors,
         });
     } catch (error) {
@@ -155,10 +156,6 @@ async function showRecipePage(req, res) {
 
     const recipe = recipeData.dataValues;
 
-
-
-
-
     const stepData = await Step.findAll({
         where: {
             recipeId: recipeId,
@@ -178,6 +175,7 @@ async function showRecipePage(req, res) {
         title: recipe.title,
         os:recipe.os,
         steps:steps,
+        recipeId:recipeId,
         errors: req.errors
     })
 }

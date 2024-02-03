@@ -1,0 +1,20 @@
+<div class="step {{os}} mb4 mt2 pa3 pt4 flex justify-center items-center tc" id="sequence-{{this.sequence}}">
+<p class="step-sequence">Step {{this.sequence}}.</p>
+
+<button class="grow">Del</button>
+{{!-- Add in change sequence button --}}
+<input class="pa2 input-reset ba bg-transparent w-100 measure" type="text" name="step-{{this.sequence}}"  id="step-{{this.sequence}}" value="{{text}}">
+
+{{#if notes}}
+<button class="notes-button grow" id="show-note-{{this.sequence}}">Add Note</button>
+{{else}}
+<button class="notes-button grow" id="show-note-{{this.sequence}}">Edit Note</button>
+      <span class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-{{this.sequence}}">
+    {{notes}}
+  </span>
+{{/if}}
+
+<button>Add Step</button>
+</div>
+
+{{text}}

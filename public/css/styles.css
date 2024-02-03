@@ -238,7 +238,8 @@ button {
 .step-sequence{
     position:absolute;
     top:10px;
-    left:15px;
+    left:0px;
+    right:0;
     font-size:14px;
 }
 

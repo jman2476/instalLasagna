@@ -1,12 +1,17 @@
-{{!-- # Recipe creation, viewing, and editing page --}}
+{{!-- # Recipe editing page --}}
 
 {{> heading tag='h2' title=this.title}}
+<div class="flex justify-between">
 <h4 class=" pb2 mb2 mh4 {{os}}">OS: {{os}}</h4>
+    <button id="save-btn">SAVE</button>
+</div>
+
 <section class="flex flex-auto items-start justify-center">
 <form>
-             {{!-- {{#each steps}}
-        {{> stepEdit <params></params> }}
-     {{/each}} --}}
+             {{#each steps}}
+             {{this.sequence}}
+        {{> stepEdit}}
+     {{/each}}
 
     </form>
 </section>
