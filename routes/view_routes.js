@@ -20,7 +20,7 @@ router.get('/', async(req, res) => {
 
 // show recipe page
 // router.get('/new_recipe', (req, res) => {
-//     res.render('pages/newRecipePage', {
+//     res.render('pages/editRecipePage', {
 //         title: 'Recipe',
 //         errors: req.errors
 //     })

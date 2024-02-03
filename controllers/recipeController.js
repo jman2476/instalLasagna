@@ -41,7 +41,9 @@ async function sendUserRecipes(req, res) {
 
 
 async function startNewRecipe(req, res){
-    const { os, recipeTitle } = req.body;
+
+    try {
+        const { os, recipeTitle } = req.body;
     const userId = req.session.userId || 1;
     const description = '';
 
@@ -56,6 +58,10 @@ async function startNewRecipe(req, res){
     await Step.create({ sequence:1, content:'', notes:'', recipeId })
 
     return res.redirect(`/edit_recipe?recipeId=${recipeId}`);
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 async function createNewRecipe(req, res){
@@ -87,7 +93,7 @@ async function createNewRecipe(req, res){
             console.log(recipe)
             console.log(step);
     
-            res.render('pages/newRecipePage', {
+            res.render('pages/editRecipePage', {
                         title: recipe.title,
                         os:recipe.os,
                         errors: req.errors
@@ -113,6 +119,7 @@ async function buildRecipe(req, res){
             }
         })
 
+
         console.log(recipeData);
 
         // CREATE MORE ROBUST ERROR HANDLING
@@ -122,30 +129,30 @@ async function buildRecipe(req, res){
             return;
         }
 
-        // ERROR HANDLING --> what if recipe id doesnt exist
         const recipe = recipeData.dataValues;
 
-        // if recipe has steps, redirect to edit_recipe?recipeId=
-        const steps = await Step.findAll({
+        const stepData = await Step.findAll({
             where:{
-                recipeId
+                recipeId:recipeId
             }
         })
 
-        if(steps.length){
+        if(!stepData.length || stepData === null){
+            res.redirect('No steps exist for this recipe') 
             return;
-        } else {
-            const step = await Step.create({ sequence:1, content:'', notes:'', recipeId })
+        }
 
-            console.log(recipe)
-            console.log(step);
+        const steps = stepData.dataValues;
+
+
+        
     
-            res.render('pages/newRecipePage', {
+            res.render('pages/editRecipePage', {
                         title: recipe.title,
                         os:recipe.os,
                         errors: req.errors
                     })
-        }
+        
 
         
     } catch (error) {
@@ -155,7 +162,8 @@ async function buildRecipe(req, res){
 async function editRecipe(req, res){
 res.send('hello')
 }
-
+// edit recipe will be on clientside for dynamic building
 // edit recipe, u can tell if person can edit if creator id matches userid
 
+// view recipe will be serverside and will render from handlebars
 module.exports = { sendUserRecipes, getUserRecipes, createNewRecipe, startNewRecipe, buildRecipe, editRecipe};
