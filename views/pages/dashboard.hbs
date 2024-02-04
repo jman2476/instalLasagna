@@ -1,14 +1,11 @@
-{{!-- # User dashboard with created recipes and option to create new ones --}}
 <section class="my-recipes pa2 mh7">
 
-<h2 class="border-bottom pb2 mb2">My Recipes</h2>
+    <h2 class="border-bottom pb2 mb2">My Recipes</h2>
 
-<div class="recipesContainer flex-wrap ml4">
-    {{> newRecipeCard}}
-     {{#each recipes}}
-    {{> recipeCard}}
-     {{/each}}
-</div>
+    <div class="recipesContainer flex-wrap ml4">
+        {{> newRecipeCard}}
+        {{#each recipes}}
+            {{> recipeCard}}
+        {{/each}}
+    </div>
 </section>
-
-

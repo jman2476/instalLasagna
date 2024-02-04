@@ -4,15 +4,11 @@
 <div class="flex justify-between">
     <h4 class=" pb2 mb2 mh4 {{os}}">OS: <span id="os">{{os}}</span></h4>
 </div>
-{{!-- <p class="grow mb4 tc w-100 pointer" id="sequence-0">V Add Step V</p> --}}
 <section class="flex flex-auto items-start justify-center">
     <form id='recipe-form'>
-        {{!-- <button class="mh6 ph4 grow pointer br-pill" id="save-btn">SAVE</button> --}}
 
         {{#each steps}}
-        {{!-- {{this.sequence }} --}}
         {{> stepEdit sequence=this.sequence text=this.content notes=this.notes}}
-
         {{/each}}
     </form>
 
@@ -27,5 +23,3 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script src="/js/script.js"></script>
-
-{{!-- include save button, once view_recipe is done come back --}}

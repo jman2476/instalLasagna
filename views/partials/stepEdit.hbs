@@ -1,39 +1,29 @@
-{{! continue working on form -- add client side form dynamic and set up form routes to add to recipes }}
 <div
-  class="step sequence-{{sequence}} mb5 mt2 pa3 pt4 flex justify-center items-center tc"
+  class="step sequence-{{sequence}}
+    mb5 mt2 pa3 pt4 flex justify-center items-center tc"
   id="{{this.id}}"
 >
   <p class="grow delete-btn" id="delete-step-{{this.id}}">Delete Step</p>
 
   <p class="step-sequence grow">Step <span>{{sequence}}</span>.</p>
-  {{! change sequence button < eventually }}
+  {{! change sequence button ^ eventually }}
   <textarea
     class="tc step-input-text pa2 input-reset ba bg-transparent"
     type="text"
-    {{!-- name="step-{{sequence}}" --}}
     id="step-{{this.id}}"
     value="{{text}}"
   >{{text}}</textarea>
 
   <p class="note edit-note grow" id="edit-note-{{this.id}}">{{#if notes}}Edit
-      Note{{else}}Add Note{{/if}} {{this.status}}</p>
-
+      Note{{else}}Add Note{{/if}}</p>
 
   <input
     class="note-text white dtc v-mid child bg-black-40 pa1"
-    {{!-- name="note-{{sequence}}" --}}
     style="display:none;"
     id="note-text-{{this.id}}"
     value="{{notes}}"
   />
-{{!-- <a id="add-step-{{sequence}}"
-      class="add-between-step mw5 dt hide-child br2 w-100 pointer grow" > --}}
   <p id="sequence-{{sequence}}" class="grow add-step pointer">
     V Add Step V
   </p>
-{{!-- </a> --}}
 </div>
-
- {{!-- <p id="add-step-{{sequence}}" class="add-between-step grow mb4 tc w-100 pointer">Add Step</p> --}}
-
- 

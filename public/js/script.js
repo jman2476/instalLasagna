@@ -61,10 +61,10 @@ Add Step
 
 function sendRecipeData() {
   const baseURL = window.location.origin;
-  const queryString = window.location.search;
-  const urLParams = new URLSearchParams(queryString);
+  const path = window.location.pathname;
+  const segments = path.split('/');
 
-  const recipeId = urLParams.get("recipeId");
+  const recipeId = segments.pop() || segments.pop();
   const apiUrl = `${baseURL}/api/recipes/${recipeId}/update`
 
   let steps = []

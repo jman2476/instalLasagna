@@ -2,6 +2,10 @@
 const router = require('express').Router();
 const { recipeController, dashboardController, searchController, authController } = require('../controllers');
 
+console.log(`\n\n\nrecipe`)
+console.log(recipeController)
+console.log(`\n\n\nrecipe`)
+
 //show dashboard
 router.get('/', dashboardController.showDashBoardPage);
 
