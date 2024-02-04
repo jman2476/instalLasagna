@@ -205,12 +205,15 @@ button {
 .plus-icon{
     font-size:50px;
 }
-.create .submit-btn{
+.create .submit-btn, .save-btn{
     border:2px solid black;
     border-radius:20px;
     cursor: pointer;
 }
 
+.pointer{
+    cursor: pointer;
+}
 
 
 
@@ -226,22 +229,27 @@ button {
     position:relative;
 }
 
-.notes-button{
-    content:'notes';
+
+.note, .step-sequence, .delete-btn{
     position:absolute;
     top:10px;
-    right:15px;
     font-size:14px;
     cursor:pointer;
 }
 
-.step-sequence{
-    position:absolute;
-    top:10px;
-    left:0px;
-    right:0;
-    font-size:14px;
+.note{
+    right:15px;
 }
+
+.step-sequence{
+    left:0;
+    right:0;
+}
+
+.delete-btn{
+    left:15px;
+}
+
 
 .note-text {
     position: absolute;
@@ -254,6 +262,10 @@ button {
     border-radius: 5px; /* Optional: adds rounded corners to the note text */
 }
 
+
+
+
+
 .step-input-text {
     min-width: 1000px; /* Or set to a specific width */
     min-height: 50px; /* Minimum height */
@@ -265,3 +277,7 @@ button {
 }
 
 
+
+.add-step{
+    cursor:pointer;
+}

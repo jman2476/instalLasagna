@@ -1,22 +1,30 @@
+{{! continue working on form -- add client side form dynamic and set up form routes to add to recipes }}
+<div
+  class="step {{os}} mb4 mt2 pa3 pt4 flex justify-center items-center tc"
+  id="{{this.id}}"
+>
+  {{!-- <p class="grow delete-btn" id="delete-step-{{sequence}}">Del</p> --}}
 
-{{!-- continue working on form -- add client side form dynamic and set up form routes to add to recipes --}}
-<div class="step {{os}} mb4 mt2 pa3 pt4 flex justify-center items-center tc" id="sequence-{{this.sequence}}">
-    <button class="grow" id="delete-step-{{this.sequence}}">Del</button>
-<p class="step-sequence">Step {{this.sequence}}.</p>
+  <p class="step-sequence grow">Step {{sequence}}.</p>
+  {{! change sequence button < eventually }}
+  <textarea
+    class="tc step-input-text pa2 input-reset ba bg-transparent"
+    type="text"
+    name="step-{{sequence}}"
+    id="step-{{sequence}}"
+    value="{{text}}"
+  >{{text}}</textarea>
 
-{{!-- Add in change sequence button --}}
-<textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" name="step-{{this.sequence}}"  id="step-{{this.sequence}}" value="{{text}}">{{text}}</textarea>
+  <p class="note edit-note grow" id="edit-note-{{sequence}}">{{#if notes}}Edit
+      Note{{else}}Add Note{{/if}}</p>
 
-{{#if notes}}
-<button class="notes-button grow" id="add-note-{{this.sequence}}">Add Note</button>
-{{else}}
-<button class="notes-button grow" id="edit-note-{{this.sequence}}">Edit Note</button>
-      <input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-{{this.sequence}}" value="{{notes}}">
-    
-  
-{{/if}}
 
+  <input
+    class="note-text white dtc v-mid child bg-black-40 pa1"
+    name="note-{{sequence}}"
+    style="display:none;"
+    id="note-text-{{sequence}}"
+    value="{{notes}}"
+  />
 
 </div>
-
-

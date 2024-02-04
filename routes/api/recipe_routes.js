@@ -1,14 +1,15 @@
 const router = require('express').Router()
 const db = require('../../config/connection.js')
 const {recipeController} = require('../../controllers');
-console.log(recipeController)
-const { sendUserRecipes, getRecipeSteps } = recipeController;
+const { sendUserRecipes, getRecipeSteps, updateRecipe } = recipeController;
 // pull in the necessary models
 // const { User, Step, Recipe } = require('../../models')
 
 
 // router.get('/user_recipes', (req, res) => {sendUserRecipes(req, res)})
 
-router.get('/recipe_steps/:id', getRecipeSteps)
+router.get('/recipes/:id', getRecipeSteps);
+
+router.post('/recipes/:id/update', updateRecipe);
 
 module.exports = router;

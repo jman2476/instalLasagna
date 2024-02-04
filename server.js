@@ -28,28 +28,22 @@ const hbs = create({
     extname: ".hbs",
     helpers: {
         print: function(name, second){
-            console.log(name);
             return name === second;
         },
         eq: function (v1, v2){
             return v1 === v2;
         },
         dynamicPartial: function (name, options) {
-            console.log(name);
-            console.log(typeof name);
-            console.log(hbs.handlebars.partials)
+
             let template = hbs.handlebars.partials[name]; // getting the partial by name
-            console.log(template);
 
             if (typeof template !== "function") {
                 // asking if the template has been compiled
                 template = hbs.handlebars.compile(template);
-                console.log(template);
 
             }
 
             let data = Object.assign({}, this, options.hash);
-            // console.log(data);
             let renderedHtml = template(data);
             
             // renders compiled template with additional options
@@ -95,16 +89,14 @@ app.use("/", [router.view, router.user, router.step, router.recipeForm]);
 
 // Middleware net to catch 404's -->
 app.use((req, res, next) => {
-    res.status(404).render("pages/404");
+    res.status(404).render("pages/404",  {title: '404'});
 });
 
 
 db.sync({ force: false }).then(() => {
     app.listen(PORT, () => {
         console.log("Server started on port", PORT);
-        // let template = hbs.handlebars.partials;
-        // console.log(template ? 'templates loaded!' : 'Templates not loaded');
-    });
+      });
 });
 
 /*
@@ -112,7 +104,6 @@ db.sync({ force: false }).then(() => {
 
     -- Tasks for project --
 
-    
 
 >BACKEND TASKS
     - authentication and authorization -IN PROGRESS

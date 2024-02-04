@@ -8,7 +8,6 @@ const { getUserRecipes, showRecipePage } = recipeController;
 router.get('/', async(req, res) => {
     const recipesData = await getUserRecipes(req, res);
     const recipes = recipesData.recipes;
-    console.log(recipes);
     res.render('pages/dashboard' , {
         title: 'InstallLasagna',
         recipes: recipes,

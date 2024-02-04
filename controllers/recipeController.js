@@ -1,3 +1,4 @@
+const { Sequelize } = require("sequelize");
 const { User, Recipe, Step } = require("../models");
 
 // /api/user_recipes
@@ -28,7 +29,7 @@ async function getUserRecipes(req, res) {
 }
 
 async function sendUserRecipes(req, res) {
-    console.log(req);
+    // console.log(req);
     try {
         const userRecipes = await getUserRecipes(req, res);
         if (userRecipes) {
@@ -57,8 +58,7 @@ async function getRecipeSteps(req, res) {
         return;
     }
 
-    // const steps = stepData.dataValues;
-    // console.log(steps)
+
     res.send(stepData);
 }
 
@@ -76,7 +76,6 @@ async function startNewRecipe(req, res) {
             description: description,
             creatorID: userId,
         });
-        console.log(os, recipeTitle);
         const recipeId = newRecipe.dataValues.id;
 
         await Step.create({ sequence: 1, content: "", notes: "", recipeId });
@@ -93,15 +92,12 @@ async function buildRecipe(req, res) {
     try {
         // const creatorID = req.session.userId || 1;
         const recipeId = req.query.recipeId;
-        console.log(recipeId);
 
         const recipeData = await Recipe.findOne({
             where: {
                 id: recipeId,
             },
         });
-
-        console.log(recipeData);
 
         // CREATE MORE ROBUST ERROR HANDLING
 
@@ -173,7 +169,6 @@ async function showRecipePage(req, res) {
 
     const steps = stepData.map(step => step.dataValues);
 
-    console.log(steps);
     res.render('pages/viewRecipePage', {
         title: recipe.title,
         os:recipe.os,
@@ -181,6 +176,39 @@ async function showRecipePage(req, res) {
         recipeId:recipeId,
         errors: req.errors
     })
+}
+
+async function updateRecipe(req, res) {
+    const { id } = req.params;
+    const { steps } = req.body;
+
+    try {
+        const currentSteps = await Step.findAll({ where: { recipeId : id}});
+
+        for(const formStep of steps){
+            if(formStep.id) {
+                await Step.update(formStep, { where: { id: formStep.id}});
+            } else {
+                await Step.create({ ...formStep, recipeId: id})
+            }
+        }
+
+        const formStepIds = steps.filter(step => step.id).map(step => step.id);
+
+        await Step.destroy({
+            where: {
+                recipeId: id,
+                id : {[Sequelize.Op.notIn]: formStepIds}
+            }
+        });
+
+        res.redirect(`/recipes/${id}`)
+    } catch(err) {
+        console.log(err)
+    }
+    console.log(req.body)
+    console.log('request made');
+    return res.redirect('/')
 }
 
 // edit recipe will be on clientside for dynamic building
@@ -195,4 +223,5 @@ module.exports = {
     startNewRecipe,
     buildRecipe,
     editRecipe,
+    updateRecipe,
 };
