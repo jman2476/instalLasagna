@@ -14,9 +14,13 @@
         <nav class="flex items-center">
             <a href="/new_recipe" class="pr2">New Recipe</a>
             {{> searchForm}}
-
-            <a href="/signup" class="pr2">Sign Up</a>
+        {{#if userId}}
+        <a href="/logout">Log Out</a>
+        {{else}}
+        <a href="/signup" class="pr2">Sign Up</a>
             <a href="/login" class="pr2">Log in</a>
+        {{/if}}
+            
         </nav>
 
         

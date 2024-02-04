@@ -19,7 +19,6 @@ async function getUserRecipes(req, res) {
             return {
                 recipes: userRecipes.map((recipe) => recipe.get({ plain: true })),
             };
-            // res.send({recipes: userRecipes.map(recipe => recipe.toJSON())});
         } else {
             console.log("No user recipes found");
         }

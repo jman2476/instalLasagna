@@ -16,13 +16,6 @@ User.init({
             args: true,
             msg: 'A user with that username already exists.'
         }
-        // ,
-        // validate: {
-        //     isAlphanumeric: {
-        //         args: true,
-        //         msg: 'Username must only cotain letters and numbers>'
-        //     }
-        // }
     },
     email: {
         type: DataTypes.STRING,
