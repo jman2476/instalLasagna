@@ -24,18 +24,18 @@ function fetchData() {
 }
 
 
-function addStep() {
+function addStep(sequence) {
   let lastStep = $('#recipe-form div:last-child');
   let stepTextarea = lastStep.find('textarea.step-input-text');
   let stepTextareaId = stepTextarea.attr("id");
 
-  let sequence = stepTextareaId.replace('step-', '')
-  sequence++;
+  // let sequence = stepTextareaId.replace('step-', '')
+  // sequence++;
   let os = $('#os').text();
 
   step = `
 
-<div class="step ${os} mb4 mt2 pa3 pt4 flex justify-center items-center tc">
+<div class="step ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
 
 <p class="grow delete-btn" id="delete-step-{{sequence}}">Delete Step</p>
 
@@ -48,6 +48,10 @@ function addStep() {
 
 
 <input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${sequence}" value="">
+
+<p id="sequence-${sequence}" class="grow add-step pointer">
+Add Step
+</p>
 
 
 </div>
@@ -137,7 +141,6 @@ $(document).ready(function () {
   })
 
   recipeForm.on('click', '.delete-btn', function () {
-    console.log('clkcike')
 
     let btnId = $(this).attr('id');
     let stepClass = btnId.replace('delete-step-', '.sequence-');
@@ -145,12 +148,17 @@ $(document).ready(function () {
     $(stepClass).addClass('deleted');
   })
 
+  recipeForm.on('click', '.add-step', function () {
+
+    let addStepId = $(this).attr('id');
+    let sequence = addStepId.replace('sequence-', '')
+    sequence++;
+    $(`.${addStepId}`).after(addStep(sequence))
+  })
   
 
   $("#add-step").on('click', function () {
-    console.log(addStep())
-    const form = $('#recipe-form');
-    form.append(addStep())
+
 
   })
 
@@ -167,7 +175,6 @@ $(document).ready(function () {
     });
 
   $('#save-btn').on('click', function () {
-    // console.log('uwbf')
     sendRecipeData();
   })
 

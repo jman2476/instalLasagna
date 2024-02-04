@@ -279,11 +279,21 @@ button {
 
 
 
-.add-step{
-    cursor:pointer;
-}
 
 
 .deleted{
     display:none;
 }
+
+.add-step{
+position: absolute;
+left:0;
+right:0;
+bottom:-55px;
+opacity:0.1;
+}
+
+.add-step:hover{
+    opacity:1;
+    transition: ease-in 0.2s;
+    }
