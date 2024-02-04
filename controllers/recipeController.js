@@ -182,19 +182,22 @@ async function updateRecipe(req, res) {
     const { id } = req.params;
     const { steps } = req.body;
 
+    console.log(steps);
     try {
         const currentSteps = await Step.findAll({ where: { recipeId : id}});
+        let formStepIds = steps.filter(step => step.id).map(step => step.id);
 
         for(const formStep of steps){
             if(formStep.id) {
                 await Step.update(formStep, { where: { id: formStep.id}});
             } else {
-                await Step.create({ ...formStep, recipeId: id})
+               const newStep = await Step.create({ ...formStep, recipeId: id});
+                formStepIds.push(newStep.id)
             }
         }
 
-        const formStepIds = steps.filter(step => step.id).map(step => step.id);
-
+        console.log(`\n\n\n  ------------------ UPDATED`);
+        console.log(formStepIds);
         await Step.destroy({
             where: {
                 recipeId: id,
@@ -202,13 +205,16 @@ async function updateRecipe(req, res) {
             }
         });
 
-        res.redirect(`/recipes/${id}`)
+        const updatedSteps = await Step.findAll({ where: { recipeId : id}});
+        
+        console.log(updatedSteps);
+
+        console.log('request made');
+
+        res.redirect(`/view_recipe/${id}`)
     } catch(err) {
         console.log(err)
     }
-    console.log(req.body)
-    console.log('request made');
-    return res.redirect('/')
 }
 
 // edit recipe will be on clientside for dynamic building

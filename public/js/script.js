@@ -25,24 +25,29 @@ function fetchData() {
 
 
 function addStep() {
-  let lastSequenceId =  $('#recipe-form div:last-child').attr('id');
-  let lastSequence = lastSequenceId.replace('sequence-', '')
-  lastSequence++;
+  let lastStep = $('#recipe-form div:last-child');
+  let stepTextarea = lastStep.find('textarea.step-input-text');
+  let stepTextareaId = stepTextarea.attr("id");
+
+  let sequence = stepTextareaId.replace('step-', '')
+  sequence++;
   let os = $('#os').text();
 
   step = `
 
-<div class="step ${os} mb4 mt2 pa3 pt4 flex justify-center items-center tc" id="">
+<div class="step ${os} mb4 mt2 pa3 pt4 flex justify-center items-center tc">
 
-<p class="step-sequence grow">Step ${lastSequence}.</p> 
+<p class="grow delete-btn" id="delete-step-{{sequence}}">Delete Step</p>
 
-<textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" name="step-${lastSequence}"  id="step-${lastSequence}" value=""></textarea>
+<p class="step-sequence grow">Step ${sequence}.</p> 
+
+<textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" name="step-${sequence}"  id="step-${sequence}" value=""></textarea>
 
 
-<p class="note edit-note grow" id="edit-note-${lastSequence}">Add Note</p>
+<p class="note edit-note grow" id="edit-note-${sequence}">Add Note</p>
 
 
-<input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${lastSequence}" value="">
+<input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${sequence}" value="">
 
 
 </div>
@@ -61,7 +66,7 @@ function sendRecipeData() {
 
   let steps = []
 
-  $('.step').each(function() {
+  $('.step').each(function () {
     let step = $(this);
     let stepId = $(this).attr("id") || '';
 
@@ -74,12 +79,17 @@ function sendRecipeData() {
 
     let notes = step.find('input.note-text').val();
 
-    steps.push({
-      id:stepId,
+    let stepObj = {
       sequence,
-      content,
-      notes
-    })
+      content: content ? content : ' ',
+      notes: notes ? notes : ' '
+    }
+
+    if(stepId){
+      stepObj.id = stepId;
+    }
+
+    steps.push(stepObj)
 
   })
   console.log(steps);
@@ -89,20 +99,22 @@ function sendRecipeData() {
     type: 'POST',
     contentType: 'application/json', // Setting the content type to JSON
     data: JSON.stringify({
-        steps:steps
+      steps: steps
     }),
-    success: function(response) {
-        console.log('Success:', response);
+    success: function (response) {
+      console.log('Success:', response);
     },
-    error: function(xhr, status, error) {
-        console.error('Error:', error);
+    error: function (xhr, status, error) {
+      console.error('Error:', error);
     }
-});
+  });
 }
 
 // function getFormData
 
 $(document).ready(function () {
+
+  const recipeForm = $('#recipe-form')
 
   $(".notes-button").on("click", function () {
     let buttonId = $(this).attr("id");
@@ -116,7 +128,7 @@ $(document).ready(function () {
     $(noteTextId).toggle();
   });
 
-  $('#recipe-form').on('click', '.edit-note', function(){
+  recipeForm.on('click', '.edit-note', function () {
     let editBtnId = $(this).attr('id');
     let inputId = editBtnId.replace('edit-note-', '')
     let input = `#note-text-${inputId}`;
@@ -124,11 +136,22 @@ $(document).ready(function () {
     $(input).toggle();
   })
 
-  $("#add-step").on('click', function(){
+  recipeForm.on('click', '.delete-btn', function () {
+    console.log('clkcike')
+
+    let btnId = $(this).attr('id');
+    let stepClass = btnId.replace('delete-step-', '.sequence-');
+    console.log(stepClass)
+    $(stepClass).addClass('deleted');
+  })
+
+  
+
+  $("#add-step").on('click', function () {
     console.log(addStep())
     const form = $('#recipe-form');
     form.append(addStep())
-    
+
   })
 
   $(".step-input-text")
@@ -143,10 +166,12 @@ $(document).ready(function () {
       this.style.height = this.scrollHeight + "px";
     });
 
-    $('#save-btn').on('click', function(){
-      // console.log('uwbf')
-      sendRecipeData();
-    })
+  $('#save-btn').on('click', function () {
+    // console.log('uwbf')
+    sendRecipeData();
+  })
+
+  
 
 
   $("#fetchDataButton").click(fetchData);

@@ -244,6 +244,7 @@ button {
 .step-sequence{
     left:0;
     right:0;
+    z-index:-1;
 }
 
 .delete-btn{
@@ -280,4 +281,9 @@ button {
 
 .add-step{
     cursor:pointer;
+}
+
+
+.deleted{
+    display:none;
 }
