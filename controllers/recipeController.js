@@ -80,7 +80,7 @@ async function startNewRecipe(req, res) {
 
         await Step.create({ sequence: 1, content: "", notes: "", recipeId });
 
-        return res.redirect(`/edit_recipe?recipeId=${recipeId}`);
+        return res.redirect(`/edit_recipe/${recipeId}`);
     } catch (error) {
         console.log(error);
     }
@@ -91,7 +91,15 @@ async function startNewRecipe(req, res) {
 async function buildRecipe(req, res) {
     try {
         // const creatorID = req.session.userId || 1;
-        const recipeId = req.query.recipeId;
+        const viewRecipeId = req.params.id; // editing recipe
+        const editRecipeId = req.params.editId; 
+
+        const recipeId = viewRecipeId || editRecipeId;
+        console.log(`\n\nId's`)
+        console.log(viewRecipeId)
+        console.log(editRecipeId)
+        console.log(recipeId)
+        console.log(`\n\n`)
 
         const recipeData = await Recipe.findOne({
             where: {
@@ -120,64 +128,27 @@ async function buildRecipe(req, res) {
         }
 
         const sortedSteps = stepsData.map(step => step.dataValues).sort((a, b) => a.sequence - b.sequence);
-        console.log('sorted Steps:');
-
-        console.log(sortedSteps);
-
-        res.render("pages/editRecipePage", {
+        const recipeDataToSend = {
             title: recipe.title,
             os:recipe.os,
             steps:sortedSteps,
             recipeId:recipeId,
             errors: req.errors
-        });
+        }
+        
+        console.log('sorted Steps:');
+
+        console.log(sortedSteps);
+        if(viewRecipeId){
+            res.render("pages/viewRecipePage", recipeDataToSend);
+
+        } else if (editRecipeId){
+            res.render("pages/editRecipePage", recipeDataToSend);
+        }
+        
     } catch (error) {
         console.log(error);
     }
-}
-async function editRecipe(req, res) {
-    res.send("hello");
-}
-
-async function showRecipePage(req, res) {
-    const recipeId = req.params.id;
-
-    const recipeData = await Recipe.findOne({
-        where: {
-            id: recipeId,
-        },
-    });
-
-    // CREATE MORE ROBUST ERROR HANDLING
-
-    if (recipeData === null) {
-        res.redirect("recipe does not exist");
-        return;
-    }
-
-    const recipe = recipeData.dataValues;
-
-    const stepData = await Step.findAll({
-        where: {
-            recipeId: recipeId,
-        },
-    });
-    // console.log(stepData);
-
-    if (!stepData.length || stepData === null) {
-        res.send("No steps exist for this recipe edit");
-        return;
-    }
-
-    const steps = stepData.map(step => step.dataValues);
-
-    res.render('pages/viewRecipePage', {
-        title: recipe.title,
-        os:recipe.os,
-        steps:steps,
-        recipeId:recipeId,
-        errors: req.errors
-    })
 }
 
 async function updateRecipe(req, res) {
@@ -237,12 +208,10 @@ async function createNewStep(req, res){
 
 module.exports = {
     createNewStep,
-    showRecipePage,
     getRecipeSteps,
     sendUserRecipes,
     getUserRecipes,
     startNewRecipe,
     buildRecipe,
-    editRecipe,
     updateRecipe,
 };

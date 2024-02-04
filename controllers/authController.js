@@ -95,4 +95,24 @@ function logoutUser(req, res){
     })
 }
 
-module.exports = { signUpUser, logInUser, logoutUser }
+function showSignUpPage(req, res){
+    res.render('pages/signupPage', {
+        title: 'Sign up for an account',
+        errors: req.session.errors
+    })
+
+    // clear errors
+    delete req.session.errors
+}
+
+function showLoginPage(req, res){
+    res.render('pages/loginPage', {
+        title: 'Log into your account',
+        errors: req.session.errors
+    })
+
+    // clear errors
+    delete req.session.errors
+}
+
+module.exports = { signUpUser, logInUser, logoutUser, showSignUpPage, showLoginPage}

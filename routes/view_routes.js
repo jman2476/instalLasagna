@@ -1,59 +1,24 @@
+// get mods
 const router = require('express').Router();
-const { recipeController } = require('../controllers');
-const { getUserRecipes, showRecipePage } = recipeController;
-// const Models = require('../models');
-// const user
+const { recipeController, dashboardController, searchController, authController } = require('../controllers');
 
 //show dashboard
-router.get('/', async(req, res) => {
-    const recipesData = await getUserRecipes(req, res);
-    const recipes = recipesData.recipes;
-    res.render('pages/dashboard' , {
-        title: 'InstallLasagna',
-        recipes: recipes,
-        userId: req.session.userId,
-        userName: req.session.userName,
-        errors: req.errors
-    });
-});
+router.get('/', dashboardController.showDashBoardPage);
 
 // show recipe page
-router.get('/view_recipe/:id', showRecipePage);
+router.get('/view_recipe/:id', recipeController.buildRecipe);
 
 // show edit recipe page
-router.get('/edit_recipe')
-
+router.get('/edit_recipe/:editId', recipeController.buildRecipe);
 
 // show search page
-router.get('/search', (req,res) => {
-    res.render('pages/search', {
-        title: 'Search',
-        errors: req.errors
-    })
-})
+router.get('/search', searchController.showSearchPage);
 
-// view sign up page
-router.get('/signup', async (req, res) => {
-    res.render('pages/signupPage', {
-        title: 'Sign up for an account',
-        errors: req.session.errors
-    })
+// show sign up page
+router.get('/signup', authController.showSignUpPage);
 
-    // clear errors
-    delete req.session.errors
-})
-
-
-// view log in page
-router.get('/login', async (req, res) => {
-    res.render('pages/loginPage', {
-        title: 'Log into your account',
-        errors: req.session.errors
-    })
-
-    // clear errors
-    delete req.session.errors
-})
+// show log in page
+router.get('/login', authController.showLoginPage);
 
 
 module.exports = router;

@@ -30,11 +30,11 @@ function addStep(sequence, newStepId) {
 
   console.log(newStepId)
 
-  let os = $('#os').text();
+  // let os = $('#os').text();
 
   step = `
 
-<div class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc" id="${newStepId}">
+<div class="step sequence-${sequence} mb5 mt2 pa3 pt4 flex justify-center items-center tc" id="${newStepId}">
 
 <p class="grow delete-btn" id="delete-step-${newStepId}">Delete Step</p>
 
@@ -136,47 +136,51 @@ function updateSequence() {
 }
 
 
-async function getNewStepId(){
+// async function getNewStepId(){
 
-  const unusedStepIds = JSON.parse(localStorage.getItem('unusedStepIds') || '[]')
-  if(unusedStepIds > 0){
-    return unusedStepIds.shift()
-  }
-
-
-  const baseURL = window.location.origin;
-  const queryString = window.location.search;
-  const urLParams = new URLSearchParams(queryString);
-
-  const recipeId = urLParams.get("recipeId");
-  const apiUrl = `${baseURL}/api/recipes/new_step`
-  console.log(apiUrl);
+//   const unusedStepIds = JSON.parse(localStorage.getItem('unusedStepIds') || '[]')
+//   if(unusedStepIds > 0){
+//     return unusedStepIds.shift()
+//   }
 
 
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: apiUrl,
-      type: 'GET', // GETTING NEW STEP IDGETTING NEW STEP IDGETTING NEW STEP ID
-      success: function (response) {
-        console.log(response)
-        resolve(response)
-      },
-      error: function (xhr, status, error) {
-        console.error('Error:', error);
-        reject(error)
-      }
-    });
-  })
+//   const baseURL = window.location.origin;
+//   const queryString = window.location.search;
+//   const urLParams = new URLSearchParams(queryString);
 
-}
+//   const recipeId = urLParams.get("recipeId");
+//   const apiUrl = `${baseURL}/api/recipes/new_step`
+//   console.log(apiUrl);
 
 
+//   return new Promise((resolve, reject) => {
+//     $.ajax({
+//       url: apiUrl,
+//       type: 'GET', // GETTING NEW STEP IDGETTING NEW STEP IDGETTING NEW STEP ID
+//       success: function (response) {
+//         console.log(response)
+//         resolve(response)
+//       },
+//       error: function (xhr, status, error) {
+//         console.error('Error:', error);
+//         reject(error)
+//       }
+//     });
+//   })
 
-function saveUnusedStepId(unusedStepId) {
-  const unusedStepIds = JSON.parse(localStorage.getItem('unusedStepId') || '[]');
-  unusedStepIds.push(unusedStepId);
-  localStorage.setItem('unusedStepIds', JSON.stringify(unusedStepIds));
-}
+// }
+
+// async preFetchStepIds(count) {
+//   for(let i = 0; i < count; i++){
+//     let newStepId = await this.getNewStepId()
+//     let id = newStepId.stepId;
+//     console.log(id)
+//     stepIdQueue.push(id)
+//   }
+//   console.log(this.stepIdQueue)
+// },
+
+
 
 const stepIdManager = {
   stepIdQueue:[],
@@ -186,24 +190,89 @@ const stepIdManager = {
       let newStepId = await this.getNewStepId()
       let id = newStepId.stepId;
       console.log(id)
-      stepIdQueue.push(id)
+      this.stepIdQueue.push(id)
     }
     console.log(this.stepIdQueue)
-  }
-}
+  },
+  async getNewStepId(){ 
+    const unusedStepIds = JSON.parse(localStorage.getItem(this.unusedStepIdsKey) || '[]')
+    if(unusedStepIds.length > 0){
+      const id = unusedStepIds.shift();
+      localStorage.setItem(this.unusedStepIdsKey, JSON.stringify(unusedStepIds))
+      return { stepId: id };
+    }
+  
+  
+    const baseURL = window.location.origin;
+    const apiUrl = `${baseURL}/api/recipes/new_step`
+    console.log(apiUrl);
+  
+  
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: apiUrl,
+        type: 'GET', // GETTING NEW STEP IDGETTING NEW STEP IDGETTING NEW STEP ID
+        success: function (response) {
+          console.log(response)
+          resolve(response)
+        },
+        error: function (xhr, status, error) {
+          console.error('Error:', error);
+          reject(error)
+        }
+      });
+    })
+  
+  },
+  saveUnusedStepId(unusedStepId) {
+    const unusedStepIds = JSON.parse(localStorage.getItem(this.unusedStepIdsKey) || '[]');
+    unusedStepIds.push(unusedStepId);
+    localStorage.setItem(this.unusedStepIdsKey, JSON.stringify(unusedStepIds));
+  },
+  async loadUnusedStepIds() {
+    const unusedStepIds = JSON.parse(localStorage.getItem(this.unusedStepIdsKey) || '[]');
+    console.log('unused ids', unusedStepIds)
+    this.stepIdQueue = this.stepIdQueue.concat(unusedStepIds)
+    localStorage.setItem(this.unusedStepIdsKey, JSON.stringify([]));
+  },
+  async getStepIdFromQueue(){
+    if(this.stepIdQueue.length === 0){
+      console.warn('Step Id queue is empty, replenishing...')
+      await this.preFetchStepIds(5)
+    }
+    return this.stepIdQueue.shift();
+  },
+  saveQueueToLocalStorage() {
+    if(this.stepIdQueue.length > 0) {
+      const existingStepIds = JSON.parse(localStorage.getItem(this.unusedStepIdsKey) || '[]');
+      const combinedStepIds = [...new Set([...existingStepIds, ...this.stepIdQueue])];
 
+      localStorage.setItem(this.unusedStepIdsKey, JSON.stringify(combinedStepIds));
+      console.log('queue saved to local storage')
+    }
+  },
+  async init(){
+    console.log('Initializing')
+    await this.loadUnusedStepIds();
+    const currentLength = this.stepIdQueue.length;
+    const idsNeeded = 5 - currentLength;
+    if(idsNeeded > 0) {
+      await this.preFetchStepIds(idsNeeded)
+    }
+  }
+  
+}
 
 // when user presses edit all the steps that are present have a status of 'confirmed'
 // 5 blank step ids with sequence of -1, recipeId of -1 and a status of 'temporary'
 // user adds in a step and sequence + recipeId are correct, but still holds status of temporary
 // if user saves, the step with correct sequence and recipeId's status changes to 'confirmed'
-
+// --^ depreacted
 
 
 
 $(document).ready(async function () {
-
-  await preFetchStepIds(5)
+  await stepIdManager.init();
   updateSequence()
 
 
@@ -235,7 +304,7 @@ $(document).ready(async function () {
   // then uses that to get the id of the step div
   // it adds the class of deleted and removes its sequence class, then updates the sequence of the recipe
 
-  $('.step').on('click', '.delete-btn', function () {
+  recipeForm.on('click', '.step .delete-btn', function () {
     console.log($(this).parent())
       console.log($(this).attr('id'))
       console.log($(this).siblings('p.add-step'))
@@ -244,10 +313,11 @@ $(document).ready(async function () {
 
 
     let btnId = $(this).attr('id');
-    let stepId = btnId.replace('delete-step-', '#');
+    let stepElement = btnId.replace('delete-step-', '#');
     let sequenceClass = $(this).siblings('p.add-step').attr('id');
-    $(stepId).addClass('deleted');
-    $(stepId).removeClass(sequenceClass);
+    $(stepElement).addClass('deleted');
+    $(stepElement).removeClass(sequenceClass);
+    $(stepElement).remove()
     updateSequence()
   })
 
@@ -259,21 +329,16 @@ $(document).ready(async function () {
     // where the new step is supposed to go it gets inserted in 
 
   recipeForm.on('click', '.add-step', async function () {
-    if(stepIdQueue.length === 0) {
-      await preFetchStepIds(5)
-    }
+    let newStepId = await stepIdManager.getStepIdFromQueue();
+    console.log(localStorage);
 
-
-    let addStepId = $(this).attr('id');
-    let sequence = addStepId.replace('sequence-', '')
+    let addStepSequence = $(this).attr('id');
+    let sequence = addStepSequence.replace('sequence-', '')
     sequence++;
-
-    let newStepId = stepIdQueue.shift();
-
 
 
     console.log(sequence, newStepId)
-      $(`.${addStepId}`).after(addStep(sequence, newStepId))
+      $(`.${addStepSequence}`).after(addStep(sequence, newStepId))
     updateSequence()
   })
   
@@ -293,8 +358,12 @@ $(document).ready(async function () {
     });
 
   $('#save-btn').on('click', function () {
+    stepIdManager.saveQueueToLocalStorage();
     sendRecipeData();
   })
+
+ 
+
 
   
 
@@ -302,3 +371,6 @@ $(document).ready(async function () {
   $("#fetchDataButton").click(fetchData);
 });
 
+$(window).on('beforeunload', function() {
+  stepIdManager.saveQueueToLocalStorage();
+})
