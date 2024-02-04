@@ -15,7 +15,8 @@ async function generateStepData() {
                 sequence:i,
                 content:faker.lorem.paragraph(),
                 notes:faker.helpers.arrayElement([faker.lorem.sentence(), null]),
-                recipeId: recipe.id
+                recipeId: recipe.id,
+                status:'confirmed'
             })
         }
     }

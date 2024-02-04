@@ -8,10 +8,10 @@ const { sendUserRecipes, getRecipeSteps, updateRecipe, createNewStep } = recipeC
 
 // router.get('/user_recipes', (req, res) => {sendUserRecipes(req, res)})
 
-router.get('/recipes/:id', getRecipeSteps);
+// router.get('/recipes/:id', getRecipeSteps);
 
 router.post('/recipes/:id/update', updateRecipe);
 
-router.get('/recipes/:id/new_step/:sequence', createNewStep)
+router.get('/recipes/new_step', createNewStep)
 
 module.exports = router;

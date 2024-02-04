@@ -44,6 +44,7 @@ async function sendUserRecipes(req, res) {
 }
 
 async function getRecipeSteps(req, res) {
+    console.log(`\n\n get recipe steps`)
     const recipeId = req.params.id;
     const stepData = await Step.findAll({
         where: {
@@ -53,7 +54,7 @@ async function getRecipeSteps(req, res) {
     // console.log(stepData);
 
     if (!stepData.length || stepData === null) {
-        res.send("No steps exist for this recipe");
+        res.send("No steps exist for this recipe get recipesteps");
         return;
     }
 
@@ -114,7 +115,7 @@ async function buildRecipe(req, res) {
         });
 
         if (!stepsData.length || stepsData === null) {
-            res.send("No steps exist for this recipe");
+            res.send("No steps exist for this recipe build");
             return;
         }
 
@@ -164,7 +165,7 @@ async function showRecipePage(req, res) {
     // console.log(stepData);
 
     if (!stepData.length || stepData === null) {
-        res.send("No steps exist for this recipe");
+        res.send("No steps exist for this recipe edit");
         return;
     }
 
@@ -219,17 +220,12 @@ async function updateRecipe(req, res) {
 
 
 async function createNewStep(req, res){
-    const { id, sequence } = req.params;
-    const recipeId = req.params.id
-    console.log(req.params)
-
-    console.log(id, sequence)
     
     const stepData = {
-        sequence:sequence,
+        sequence:-1,
         content:'',
         notes:'',
-        recipeId:recipeId
+        recipeId:1
     }
     console.log('stepdata')
 

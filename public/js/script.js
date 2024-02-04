@@ -34,7 +34,7 @@ function addStep(sequence, newStepId) {
 
   step = `
 
-<div id="${newStepId}" class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
+<div class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc" id="${newStepId}">
 
 <p class="grow delete-btn" id="delete-step-${newStepId}">Delete Step</p>
 
@@ -84,9 +84,12 @@ function sendRecipeData() {
     let notes = step.find('input.note-text').val();
 
     let stepObj = {
+      id:stepId,
       sequence,
       content: content ? content : ' ',
-      notes: notes ? notes : ' '
+      notes: notes ? notes : ' ',
+      recipeId:recipeId,
+      status:'confirmed'
     }
 
     if(stepId){
@@ -123,36 +126,30 @@ function updateSequence() {
         return c.replace(/sequence-\d+/, 'sequence-' + sequenceNumber);
     });
 
-    // Update the textarea id
-    // $(this).find('textarea').attr('id', 'step-' + sequenceNumber);
-
-    // Update the edit note id
-    // $(this).find('.edit-note').attr('id', 'edit-note-' + sequenceNumber);
-
-    // Update the input id
-    // $(this).find('.note-text').attr('id', 'note-text-' + sequenceNumber);
-
     // Update the sequence text inside p.step-sequence
     $(this).find('p.step-sequence').text('Step ' + sequenceNumber + '.');
-
-    // update delete id
-    // $(this).find('.delete-btn').attr('delete-step-' + sequenceNumber );
+    $(this).find('p.add-step').attr('id', 'sequence-' + sequenceNumber);
 
     sequenceNumber++;
   });
   console.log(`\nupdated sequence\n`)
-
-
 }
 
 
-async function getNewStepId(sequence){
+async function getNewStepId(){
+
+  const unusedStepIds = JSON.parse(localStorage.getItem('unusedStepIds') || '[]')
+  if(unusedStepIds > 0){
+    return unusedStepIds.shift()
+  }
+
+
   const baseURL = window.location.origin;
   const queryString = window.location.search;
   const urLParams = new URLSearchParams(queryString);
 
   const recipeId = urLParams.get("recipeId");
-  const apiUrl = `${baseURL}/api/recipes/${recipeId}/new_step/${sequence}`
+  const apiUrl = `${baseURL}/api/recipes/new_step`
   console.log(apiUrl);
 
 
@@ -173,21 +170,40 @@ async function getNewStepId(sequence){
 
 }
 
-async function preFetchStepIds(count) {
-  for(let i = 0; i < count; i++){
-    let newStepId = await getNewStepId(0)
-    let id = newStepId.stepId;
-    console.log(id)
-    stepIdQueue.push(id)
-  }
-  console.log(stepIdQueue)
+
+
+function saveUnusedStepId(unusedStepId) {
+  const unusedStepIds = JSON.parse(localStorage.getItem('unusedStepId') || '[]');
+  unusedStepIds.push(unusedStepId);
+  localStorage.setItem('unusedStepIds', JSON.stringify(unusedStepIds));
 }
+
+const stepIdManager = {
+  stepIdQueue:[],
+  unusedStepIdsKey:'unusedStepIds',
+  async preFetchStepIds(count) {
+    for(let i = 0; i < count; i++){
+      let newStepId = await this.getNewStepId()
+      let id = newStepId.stepId;
+      console.log(id)
+      stepIdQueue.push(id)
+    }
+    console.log(this.stepIdQueue)
+  }
+}
+
+
+// when user presses edit all the steps that are present have a status of 'confirmed'
+// 5 blank step ids with sequence of -1, recipeId of -1 and a status of 'temporary'
+// user adds in a step and sequence + recipeId are correct, but still holds status of temporary
+// if user saves, the step with correct sequence and recipeId's status changes to 'confirmed'
+
 
 
 
 $(document).ready(async function () {
 
-  await preFetchStepIds(5) // save to local storage
+  await preFetchStepIds(5)
   updateSequence()
 
 
@@ -215,16 +231,32 @@ $(document).ready(async function () {
     $(input).toggle();
   })
 
+  // When user clicks delete button it grabs the id of the button that was clicked(it should be the id of the step)
+  // then uses that to get the id of the step div
+  // it adds the class of deleted and removes its sequence class, then updates the sequence of the recipe
+
   $('.step').on('click', '.delete-btn', function () {
+    console.log($(this).parent())
       console.log($(this).attr('id'))
+      console.log($(this).siblings('p.add-step'))
+      console.log($(this).siblings('p.add-step').attr('id'))
+
+
+
     let btnId = $(this).attr('id');
     let stepId = btnId.replace('delete-step-', '#');
     let sequenceClass = $(this).siblings('p.add-step').attr('id');
-    console.log(sequenceClass)
     $(stepId).addClass('deleted');
     $(stepId).removeClass(sequenceClass);
     updateSequence()
   })
+
+    // When a user adds a step if no id's grab step id's
+    // grabs sequence from id of what add step button was pressed
+    // adds the step with the sequence + 1, then updates all other steps accordingly
+
+    // maybe we have the user add one, and it updates the sequence sequentially, and on
+    // where the new step is supposed to go it gets inserted in 
 
   recipeForm.on('click', '.add-step', async function () {
     if(stepIdQueue.length === 0) {
@@ -269,5 +301,4 @@ $(document).ready(async function () {
 
   $("#fetchDataButton").click(fetchData);
 });
-
 

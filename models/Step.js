@@ -24,6 +24,11 @@ Step.init({
             model: Recipe,
             key:'id'
         }
+    },
+    status: {
+        type: DataTypes.ENUM('temporary', 'confirmed'),
+        defaultValue: 'temporary',
+        allowNull:false
     }
     }, {
         sequelize,
