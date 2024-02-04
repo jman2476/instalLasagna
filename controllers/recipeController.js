@@ -119,6 +119,7 @@ async function buildRecipe(req, res) {
         }
 
         const sortedSteps = stepsData.map(step => step.dataValues).sort((a, b) => a.sequence - b.sequence);
+        console.log('sorted Steps:');
 
         console.log(sortedSteps);
 
@@ -181,6 +182,7 @@ async function showRecipePage(req, res) {
 async function updateRecipe(req, res) {
     const { id } = req.params;
     const { steps } = req.body;
+    console.log('Update');
 
     console.log(steps);
     try {
@@ -218,6 +220,7 @@ async function updateRecipe(req, res) {
 
 async function createNewStep(req, res){
     const { id, sequence } = req.params;
+    const recipeId = req.params.id
     console.log(req.params)
 
     console.log(id, sequence)
@@ -226,8 +229,10 @@ async function createNewStep(req, res){
         sequence:sequence,
         content:'',
         notes:'',
-        recipeId:id
+        recipeId:recipeId
     }
+    console.log('stepdata')
+
     console.log(stepData)
 
     const newStep = await Step.create(stepData);

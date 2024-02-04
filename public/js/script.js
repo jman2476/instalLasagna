@@ -1,3 +1,5 @@
+let stepIdQueue = [];
+
 // Function to send a GET request to the API
 function fetchData() {
   const baseURL = window.location.origin;
@@ -73,10 +75,11 @@ function sendRecipeData() {
 
 
     let stepTextarea = step.find('textarea.step-input-text');
-    let stepTextareaId = stepTextarea.attr("id");
 
     let content = stepTextarea.val();
-    let sequence = stepTextareaId.replace('step-', '');
+    let sequenceClass = $(this).find('p.add-step').attr('id');
+    console.log(sequenceClass)
+    let sequence = sequenceClass.replace('sequence-', '');
 
     let notes = step.find('input.note-text').val();
 
@@ -101,11 +104,10 @@ function sendRecipeData() {
 contentType: 'application/json', // Setting the content type to JSON
     data: JSON.stringify({
       steps: steps
-    }),
+    }), // SENDING RECIPE DATA SENDING RECIPE DATA SENDING RECIPE DATA 
     success: function (response) {
       console.log('Success:');
-      
-      // return response;
+      return response;
 
     },
     error: function (xhr, status, error) {
@@ -122,26 +124,24 @@ function updateSequence() {
     });
 
     // Update the textarea id
-    $(this).find('textarea').attr('id', 'step-' + sequenceNumber);
+    // $(this).find('textarea').attr('id', 'step-' + sequenceNumber);
 
     // Update the edit note id
-    $(this).find('.edit-note').attr('id', 'edit-note-' + sequenceNumber);
+    // $(this).find('.edit-note').attr('id', 'edit-note-' + sequenceNumber);
 
     // Update the input id
-    $(this).find('.note-text').attr('id', 'note-text-' + sequenceNumber);
+    // $(this).find('.note-text').attr('id', 'note-text-' + sequenceNumber);
 
     // Update the sequence text inside p.step-sequence
     $(this).find('p.step-sequence').text('Step ' + sequenceNumber + '.');
 
     // update delete id
-    $(this).find('.delete-btn').attr('delete-step-' + sequenceNumber );
-    console.log(`\nupdated sequence\n`)
-    console.log($(this).find('.delete-btn').attr('id'));
+    // $(this).find('.delete-btn').attr('delete-step-' + sequenceNumber );
 
     sequenceNumber++;
   });
+  console.log(`\nupdated sequence\n`)
 
-  console.log(`\n\n\n\\n\n\n\n\n\n\n`)
 
 }
 
@@ -150,31 +150,52 @@ async function getNewStepId(sequence){
   const baseURL = window.location.origin;
   const queryString = window.location.search;
   const urLParams = new URLSearchParams(queryString);
-  console.log(sequence)
 
   const recipeId = urLParams.get("recipeId");
   const apiUrl = `${baseURL}/api/recipes/${recipeId}/new_step/${sequence}`
+  console.log(apiUrl);
 
 
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: apiUrl,
+      type: 'GET', // GETTING NEW STEP IDGETTING NEW STEP IDGETTING NEW STEP ID
+      success: function (response) {
+        console.log(response)
+        resolve(response)
+      },
+      error: function (xhr, status, error) {
+        console.error('Error:', error);
+        reject(error)
+      }
+    });
+  })
 
-  $.ajax({
-    url: apiUrl,
-    type: 'GET',
-    success: function (response) {
-      console.log(response)
-      return response
-    },
-    error: function (xhr, status, error) {
-      console.error('Error:', error);
-    }
-  });
 }
 
-$(document).ready(function () {
+async function preFetchStepIds(count) {
+  for(let i = 0; i < count; i++){
+    let newStepId = await getNewStepId(0)
+    let id = newStepId.stepId;
+    console.log(id)
+    stepIdQueue.push(id)
+  }
+  console.log(stepIdQueue)
+}
+
+
+
+$(document).ready(async function () {
+
+  await preFetchStepIds(5) // save to local storage
+  updateSequence()
+
 
   const recipeForm = $('#recipe-form')
 
-  $(".notes-button").on("click", function () {
+  // FOR WHEN VIEWING RECIPES, IT WONT WORK NEED TO UPDATED IT'S ID
+
+  $(".notes-button").on("click", function () { 
     let buttonId = $(this).attr("id");
     console.log(buttonId);
 
@@ -195,22 +216,32 @@ $(document).ready(function () {
   })
 
   $('.step').on('click', '.delete-btn', function () {
-      console.log('clicked')
       console.log($(this).attr('id'))
     let btnId = $(this).attr('id');
-    let stepClass = btnId.replace('delete-step-', '.sequence-');
-    console.log(stepClass)
-    $(stepClass).addClass('deleted');
+    let stepId = btnId.replace('delete-step-', '#');
+    let sequenceClass = $(this).siblings('p.add-step').attr('id');
+    console.log(sequenceClass)
+    $(stepId).addClass('deleted');
+    $(stepId).removeClass(sequenceClass);
     updateSequence()
   })
 
   recipeForm.on('click', '.add-step', async function () {
+    if(stepIdQueue.length === 0) {
+      await preFetchStepIds(5)
+    }
+
 
     let addStepId = $(this).attr('id');
     let sequence = addStepId.replace('sequence-', '')
     sequence++;
-    console.log(sequence)
-    $(`.${addStepId}`).after(addStep(sequence, await getNewStepId(sequence)))
+
+    let newStepId = stepIdQueue.shift();
+
+
+
+    console.log(sequence, newStepId)
+      $(`.${addStepId}`).after(addStep(sequence, newStepId))
     updateSequence()
   })
   
