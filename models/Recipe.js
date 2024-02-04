@@ -12,6 +12,10 @@ Recipe.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
+    os:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     creatorID:{
         type:DataTypes.INTEGER,
         allowNull: false,
@@ -19,6 +23,11 @@ Recipe.init({
             model:User,
             key:'id'
         }
+    },
+    published: {
+        type:DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue:false
     }
     },
     {

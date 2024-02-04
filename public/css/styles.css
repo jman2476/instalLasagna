@@ -32,51 +32,46 @@ p {
     margin: 0;
     padding: 0;
 }
+a{
+    color: #000;
+    text-decoration: none;
 
+}
 header nav {
     margin-right: 20px;
     justify-self: flex-end;
 }
 
 header nav a {
-    color: #000;
     margin: 0 10px;
-    text-decoration: none;
 }
 
-/* Add styles for main and footer here if needed */
-
-/* パート6：メインコンテンツスタイル */
 
 main {
     display: flex;
     flex: 1;
     flex-grow: 1;
-    /* Allow main content to grow and fill available space */
-    overflow-y: auto;
-    /* Enable vertical scrolling */
     padding: 20px 3%;
     box-sizing: border-box;
     justify-content: center;
     flex-direction: column;
-    /* Include padding in height calculation */
-    /* ... (scrollbar styles) */
+
 }
 
 /* Modern scrollbar styling */
-main::-webkit-scrollbar {
+::-webkit-scrollbar,.recipesContainer .card {
     width: 10px;
 }
 
-main::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,.recipesContainer .card {
     background: #f1f1f1;
 }
 
-main::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,.recipesContainer .card {
     background: #888;
 }
 
-main::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover,.recipesContainer .card {
     background: #555;
 }
 
@@ -103,36 +98,204 @@ main::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
 }
 
-/* .submitBtn{} */
 
 button {
     background: none;
     border: none;
 }
-.card {
-    display: grid;
-    color: #2a2826;
-    background-color:#d9d7ee;
-    border: 3px;
-    border-radius: 10px;
-    margin: 0 auto;
-    width: 120px;
-    height: 160px;
-    padding: 20px 20px;
-    text-align: center;
 
+
+
+/* Recipe Container */
+.recipesContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
-.tile {
+.recipesContainer .card {
+    max-width: 200px;
+    width: fit-content;
+    max-height: 300px;
     background: linear-gradient(to bottom, #727271, #dfdccb);
     position: relative;
-    border: black;
+    border: 2px solid black;
     border-radius: 10px;
-    border-style: solid;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
-.bottom-right {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+.recipesContainer .card h2 {
+    font-size: 20px;
 }
+
+.operating-system {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+}
+
+.info {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 16px;
+}
+
+/* Card Types */
+.card.windows, .windows .step {
+    background: linear-gradient(to bottom, #0078D7, #8BC6EC); /* From Windows Blue to Sky Blue */
+}
+
+.card.macos, .macos .step {
+    background: linear-gradient(to bottom, #BDC3C7, #ECF0F1); /* From Silver Sand to Spun Pearl */
+}
+
+.card.linux, .linux .step {
+    background: linear-gradient(to bottom, #4CBB17, #A9DFBF); /* From Kelly Green to Mint Cream */
+}
+
+/* Hover Effects */
+.card.windows:hover {
+    background: #0078D7; /* Solid Windows Blue */
+}
+
+.card.macos:hover {
+    background: #ECF0F1; /* Solid Spun Pearl */
+}
+
+.card.linux:hover {
+    background: #4CBB17; /* Solid Kelly Green */
+}
+
+/* Transitions */
+.card {
+    height:250px;
+    min-width:200px;
+    transition: background .2s;
+    /* overflow:hidden; */
+}
+.card:hover{
+    background:#dfdccb;
+}
+
+.card p{
+    font-size:16px;
+}
+.description-box{
+    max-height:110px;
+    overflow-y:auto;
+    display:none;
+
+}
+
+.create.card{
+    transition:0.5s;
+    color:black;
+    background:#fff;
+    width: 200px;
+
+}
+
+.border-bottom{
+    border-bottom:2px solid black;
+}
+
+.plus-icon{
+    font-size:50px;
+}
+.create .submit-btn, .save-btn{
+    border:2px solid black;
+    border-radius:20px;
+    cursor: pointer;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+
+
+.step{
+    width:fit-content;
+    min-width:300px;
+    max-width:1200px;
+    /* height:100px; */
+    /* max-height:fit-content; */
+    border-radius: 20px;
+    /* background-color: #9ab8ff; */
+    border:2px solid black;
+    position:relative;
+}
+
+
+.note, .step-sequence, .delete-btn{
+    position:absolute;
+    top:10px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.note{
+    right:15px;
+}
+
+.step-sequence{
+    left:0;
+    right:0;
+    /* z-index:-1; */
+    width:fit-content;
+    margin:auto;
+}
+
+.delete-btn{
+    left:15px;
+}
+
+
+.note-text {
+    position: absolute;
+    top: -35px; /* Moves the note text above the step div */
+    right: 0;
+    white-space: nowrap; /* Ensures the note text stays on a single line */
+    background-color: rgba(0, 0, 0, 0.4); /* Example background for visibility */
+    color: white; /* Text color */
+    padding: 5px; /* Padding around the note text */
+    border-radius: 5px; /* Optional: adds rounded corners to the note text */
+}
+
+
+
+
+
+.step-input-text {
+    min-width: 1000px; /* Or set to a specific width */
+    min-height: 50px; /* Minimum height */
+    padding: 8px;
+    box-sizing: border-box; /* Include padding and border in the element's total dimensions */
+/* Disable manual resizing */
+    overflow-y: hidden; /* Prevent scrollbar from appearing */
+    overflow-x: hidden;
+}
+
+
+
+
+
+.deleted{
+    display:none;
+}
+
+.add-step{
+position: absolute;
+left:0;
+right:0;
+bottom:-55px;
+opacity:0.1;
+}
+
+.add-step:hover{
+    opacity:1;
+    transition: ease-in 0.2s;
+    }

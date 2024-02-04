@@ -1,0 +1,19 @@
+{{> heading tag='h2' title=this.title}}
+<div class="flex justify-between">
+<h4 class=" pb2 mb2 mh4 {{os}}">OS: {{os}}</h4>
+    <a href="/edit_recipe/{{this.recipeId}}">EDIT</a>
+</div>
+<section class="flex flex-auto items-start justify-center {{os}}">
+    <div class="flex flex-column items-center">
+             {{#each steps}}
+{{!-- if user logged in AND they made this recipe, edit button appears --}}
+{{> step sequence=this.sequence text=this.content notes=this.notes }}
+     {{/each}}
+
+    </div>
+
+</section>
+
+
+    <a href="/" class="tc">DONE.</a>
+    {{!-- <button id="fetchDataButton">get it</button> --}}

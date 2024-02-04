@@ -1,10 +1,10 @@
-
-<body>
-    <div class="card">
-        <section class="tile text-center content-align-center">
-        <h2>{{title}}</h2>
-      <h3 class="bottom-right">{{type}}</h3>
-    </section>
+<a href="/view_recipe/{{id}}">
+<div class="card tile ph3 pv5 ma2 mr1 items-center {{os}}">
+    {{!-- <a class="info">info</a> --}}
+    <h2>{{title}}</h2>
+    <h3 class="operating-system {{os}}_icon" >{{os}}</h3> 
+    {{!-- ^ this will be replaced by icon --}}
+    <div class="description-box mt2"><p>{{description}}weewee</p></div>
+    
 </div>
-</div>
-</body>
+</a>
