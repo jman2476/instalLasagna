@@ -4,7 +4,7 @@ const { User, Recipe, Step } = require("../models");
 // /api/user_recipes
 async function getUserRecipes(req, res) {
     try {
-        const userId = req.session.userId || 1;
+        const userId = req.session.userId || 2;
 
         const userRecipes = await Recipe.findAll({
             where: { creatorID: userId },
@@ -209,9 +209,7 @@ async function updateRecipe(req, res) {
         
         console.log(updatedSteps);
 
-        console.log('request made');
-
-        res.redirect(`/view_recipe/${id}`)
+        return res.redirect(`/view_recipe/${id}`)
     } catch(err) {
         console.log(err)
     }

@@ -19,11 +19,15 @@ function errorHandler(err, req, res, path) {
 // function to handle user sign up
 const signUpUser = async (req, res) => {
     try {
+
+        console.log(req.body)
         //create new user
         const user = await User.create(req.body)
 
         req.session.userId = user.id
         req.session.userName = user.userName
+        console.log(req.session.userId)
+        console.log(req.session.userName)
 
         res.redirect('/')
     } catch (error) {
@@ -61,7 +65,9 @@ const logInUser = async (req, res) => {
         
         req.session.userId = user.dataValues.id
         req.session.userName = user.dataValues.username
-       
+       console.log(req.session.userId)
+       console.log(req.session.userName)
+
 
         res.redirect('/')
 

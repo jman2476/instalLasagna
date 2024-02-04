@@ -23,6 +23,11 @@ Recipe.init({
             model:User,
             key:'id'
         }
+    },
+    published: {
+        type:DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue:false
     }
     },
     {

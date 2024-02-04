@@ -19,7 +19,8 @@ async function generateRecipeData() {
                 title: faker.lorem.words(),
                 os: faker.helpers.arrayElement(['windows', 'macos', 'linux', null]),
                 description: faker.lorem.paragraph(),
-                creatorID: user.id
+                creatorID: user.id,
+                published:faker.datatype.boolean()
             });
         }
     }
