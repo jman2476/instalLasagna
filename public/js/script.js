@@ -24,25 +24,27 @@ function fetchData() {
 }
 
 
-function addStep(sequence) {
+function addStep(sequence, newStepId) {
+
+  console.log(newStepId)
 
   let os = $('#os').text();
 
   step = `
 
-<div class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
+<div id="${newStepId}" class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
 
-<p class="grow delete-btn" id="delete-step-${sequence}">Delete Step</p>
+<p class="grow delete-btn" id="delete-step-${newStepId}">Delete Step</p>
 
 <p class="step-sequence grow">Step <span>${sequence}</span>.</p> 
 
-<textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" name="step-${sequence}"  id="step-${sequence}" value=""></textarea>
+<textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" id="step-${newStepId}" value=""></textarea>
 
 
-<p class="note edit-note grow" id="edit-note-${sequence}">Add Note</p>
+<p class="note edit-note grow" id="edit-note-${newStepId}">Add Note</p>
 
 
-<input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${sequence}" value="">
+<input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${newStepId}" value="">
 
 <p id="sequence-${sequence}" class="grow add-step pointer">
 Add Step
@@ -96,12 +98,15 @@ function sendRecipeData() {
   $.ajax({
     url: apiUrl,
     type: 'POST',
-    contentType: 'application/json', // Setting the content type to JSON
+contentType: 'application/json', // Setting the content type to JSON
     data: JSON.stringify({
       steps: steps
     }),
     success: function (response) {
       console.log('Success:');
+      
+      // return response;
+
     },
     error: function (xhr, status, error) {
       console.error('Error:', error);
@@ -128,7 +133,40 @@ function updateSequence() {
     // Update the sequence text inside p.step-sequence
     $(this).find('p.step-sequence').text('Step ' + sequenceNumber + '.');
 
+    // update delete id
+    $(this).find('.delete-btn').attr('delete-step-' + sequenceNumber );
+    console.log(`\nupdated sequence\n`)
+    console.log($(this).find('.delete-btn').attr('id'));
+
     sequenceNumber++;
+  });
+
+  console.log(`\n\n\n\\n\n\n\n\n\n\n`)
+
+}
+
+
+async function getNewStepId(sequence){
+  const baseURL = window.location.origin;
+  const queryString = window.location.search;
+  const urLParams = new URLSearchParams(queryString);
+  console.log(sequence)
+
+  const recipeId = urLParams.get("recipeId");
+  const apiUrl = `${baseURL}/api/recipes/${recipeId}/new_step/${sequence}`
+
+
+
+  $.ajax({
+    url: apiUrl,
+    type: 'GET',
+    success: function (response) {
+      console.log(response)
+      return response
+    },
+    error: function (xhr, status, error) {
+      console.error('Error:', error);
+    }
   });
 }
 
@@ -156,8 +194,9 @@ $(document).ready(function () {
     $(input).toggle();
   })
 
-  recipeForm.on('click', '.delete-btn', function () {
-
+  $('.step').on('click', '.delete-btn', function () {
+      console.log('clicked')
+      console.log($(this).attr('id'))
     let btnId = $(this).attr('id');
     let stepClass = btnId.replace('delete-step-', '.sequence-');
     console.log(stepClass)
@@ -165,12 +204,13 @@ $(document).ready(function () {
     updateSequence()
   })
 
-  recipeForm.on('click', '.add-step', function () {
+  recipeForm.on('click', '.add-step', async function () {
 
     let addStepId = $(this).attr('id');
     let sequence = addStepId.replace('sequence-', '')
     sequence++;
-    $(`.${addStepId}`).after(addStep(sequence))
+    console.log(sequence)
+    $(`.${addStepId}`).after(addStep(sequence, await getNewStepId(sequence)))
     updateSequence()
   })
   

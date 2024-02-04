@@ -120,6 +120,7 @@ async function buildRecipe(req, res) {
 
         const sortedSteps = stepsData.map(step => step.dataValues).sort((a, b) => a.sequence - b.sequence);
 
+        console.log(sortedSteps);
 
         res.render("pages/editRecipePage", {
             title: recipe.title,
@@ -214,11 +215,27 @@ async function updateRecipe(req, res) {
     }
 }
 
-// edit recipe will be on clientside for dynamic building
-// edit recipe, u can tell if person can edit if creator id matches userid
 
-// view recipe will be serverside and will render from handlebars
+async function createNewStep(req, res){
+    const { id, sequence } = req.params;
+    console.log(req.params)
+
+    console.log(id, sequence)
+    
+    const stepData = {
+        sequence:sequence,
+        content:'',
+        notes:'',
+        recipeId:id
+    }
+    console.log(stepData)
+
+    const newStep = await Step.create(stepData);
+    res.json({stepId:newStep.id});
+}
+
 module.exports = {
+    createNewStep,
     showRecipePage,
     getRecipeSteps,
     sendUserRecipes,
