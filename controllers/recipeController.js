@@ -119,13 +119,13 @@ async function buildRecipe(req, res) {
             return;
         }
 
-        const steps = stepsData.map(step => step.dataValues);
+        const sortedSteps = stepsData.map(step => step.dataValues).sort((a, b) => a.sequence - b.sequence);
 
 
         res.render("pages/editRecipePage", {
             title: recipe.title,
             os:recipe.os,
-            steps:steps,
+            steps:sortedSteps,
             recipeId:recipeId,
             errors: req.errors
         });

@@ -25,21 +25,16 @@ function fetchData() {
 
 
 function addStep(sequence) {
-  let lastStep = $('#recipe-form div:last-child');
-  let stepTextarea = lastStep.find('textarea.step-input-text');
-  let stepTextareaId = stepTextarea.attr("id");
 
-  // let sequence = stepTextareaId.replace('step-', '')
-  // sequence++;
   let os = $('#os').text();
 
   step = `
 
-<div class="step ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
+<div class="step sequence-${sequence} ${os} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
 
-<p class="grow delete-btn" id="delete-step-{{sequence}}">Delete Step</p>
+<p class="grow delete-btn" id="delete-step-${sequence}">Delete Step</p>
 
-<p class="step-sequence grow">Step ${sequence}.</p> 
+<p class="step-sequence grow">Step <span>${sequence}</span>.</p> 
 
 <textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" name="step-${sequence}"  id="step-${sequence}" value=""></textarea>
 
@@ -70,7 +65,7 @@ function sendRecipeData() {
 
   let steps = []
 
-  $('.step').each(function () {
+  $('.step:not(.deleted').each(function () {
     let step = $(this);
     let stepId = $(this).attr("id") || '';
 
@@ -106,15 +101,36 @@ function sendRecipeData() {
       steps: steps
     }),
     success: function (response) {
-      console.log('Success:', response);
+      console.log('Success:');
     },
     error: function (xhr, status, error) {
       console.error('Error:', error);
     }
   });
 }
+function updateSequence() {
+  let sequenceNumber = 1;
+  $('.step:not(.deleted)').each(function() {
+       // Update the class of the div
+       $(this).attr('class', function(index, c) {
+        return c.replace(/sequence-\d+/, 'sequence-' + sequenceNumber);
+    });
 
-// function getFormData
+    // Update the textarea id
+    $(this).find('textarea').attr('id', 'step-' + sequenceNumber);
+
+    // Update the edit note id
+    $(this).find('.edit-note').attr('id', 'edit-note-' + sequenceNumber);
+
+    // Update the input id
+    $(this).find('.note-text').attr('id', 'note-text-' + sequenceNumber);
+
+    // Update the sequence text inside p.step-sequence
+    $(this).find('p.step-sequence').text('Step ' + sequenceNumber + '.');
+
+    sequenceNumber++;
+  });
+}
 
 $(document).ready(function () {
 
@@ -146,6 +162,7 @@ $(document).ready(function () {
     let stepClass = btnId.replace('delete-step-', '.sequence-');
     console.log(stepClass)
     $(stepClass).addClass('deleted');
+    updateSequence()
   })
 
   recipeForm.on('click', '.add-step', function () {
@@ -154,13 +171,11 @@ $(document).ready(function () {
     let sequence = addStepId.replace('sequence-', '')
     sequence++;
     $(`.${addStepId}`).after(addStep(sequence))
+    updateSequence()
   })
   
 
-  $("#add-step").on('click', function () {
 
-
-  })
 
   $(".step-input-text")
     .each(function () {
