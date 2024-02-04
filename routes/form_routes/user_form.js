@@ -1,17 +1,16 @@
 const router = require('express').Router()
-const {signUpUser, logInUser, logoutUser} = require('../../controllers/authController.js')
-
-// pull in the necessary models
-const User = require('../../models/User.js')
+const { authController } = require('../../controllers')
 
 
 // create a new user
-router.post('/signup', signUpUser)
+router.post('/signup', authController.signUpUser)
 
 // login existing user
-router.post('/login', logInUser)
+router.post('/login', authController.logInUser)
 
-router.get('/logout', logoutUser)
+// logout user
+
+router.get('/logout', authController.logoutUser)
 
 // export router
 
