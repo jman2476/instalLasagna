@@ -69,7 +69,7 @@ const recipeController = {
       const userId = req.session.userId || 1;
       const description = "";
 
-      if (recipeTitle === '') return res.redirect('/')
+      if (recipeTitle === '') return 
 
       if (validateSession(req)) {
         const newRecipe = await Recipe.create({

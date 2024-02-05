@@ -1,9 +1,12 @@
 // function to check if there is title text
 function checkTitleText() {
-    const titleText = $("")
+    const title = $("#recipeTitle").val()
 
+    if (!title) {
+        $('#recipe-error').text(`You need a title for the recipe`)
+    }
 }
 
 
 // listener
-$("#new-recipe-div>button").on("click", checkTitleText)
+$("#new-recipe-div>button").click(checkTitleText)
