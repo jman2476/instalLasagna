@@ -18,11 +18,11 @@ async function seedAll() {
     await seedSteps();
     console.log('\n----- STEPS SEEDED -----\n')
 
-    await seedErrorSolutions();
-    console.log('\n----- ERROR SOLUTIONS SEEDED -----\n')
+    // await seedErrorSolutions();
+    // console.log('\n----- ERROR SOLUTIONS SEEDED -----\n')
 
-    await seedErrorReports();
-    console.log('\n----- ERROR REPORTS SEEDED -----\n')
+    // await seedErrorReports();
+    // console.log('\n----- ERROR REPORTS SEEDED -----\n')
 
     process.exit(0);
 }
