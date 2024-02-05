@@ -18,6 +18,32 @@ router.get('/edit_recipe/:editId', recipeController.buildRecipe);
 // show search page
 router.get('/search', searchController.showSearchPage);
 
+// show search result based on the title
+// router.get('/search', async (req, res) =>{
+//     try{
+//         const searchQuery = req.query.title;
+//         const receipes = await Receipe.findAll({
+//             where: {
+//                 title: {
+//                     [Op.like]: `%${searchQuery}%`
+//                 }
+//             }
+//         });
+//         if(receipes.length){
+//             return res.json({
+//                 error: 404,
+//                 message: 'No receipe found by that title.'
+//             });
+//         }
+//         res.json(receipes);
+//     }catch (err) {
+//         console.log(err);
+//         res.json({
+//             error: 400,
+//             message: 'There was an error searching for that book'
+//         })
+//     }
+// })
 // show sign up page
 router.get('/signup', authController.showSignUpPage);
 
