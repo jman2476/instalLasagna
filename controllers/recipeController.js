@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
-const {validateSession} = require('./authController')
+const { errorHandler, validateSession } = require('./authController')
 
 // /api/user_recipes
 const recipeController = {
@@ -69,7 +69,7 @@ const recipeController = {
       const userId = req.session.userId || 1;
       const description = "";
 
-      if (recipeTitle === '') return 
+      if (recipeTitle === '') return
 
       if (validateSession(req)) {
         const newRecipe = await Recipe.create({
@@ -83,8 +83,8 @@ const recipeController = {
         await Step.create({ sequence: 1, content: "", notes: "", recipeId });
 
         return res.redirect(`/edit_recipe/${recipeId}`);
-      } 
-      
+      }
+
       return res.redirect('/')
 
     } catch (error) {
@@ -97,6 +97,9 @@ const recipeController = {
       // const creatorID = req.session.userId || 1;
       const viewRecipeId = req.params.id; // editing recipe
       const editRecipeId = req.params.editId;
+
+      // get current user information
+      const userIDcurrent = req.session.userId
 
       const recipeId = viewRecipeId || editRecipeId;
       console.log(`\n\nId's`);
@@ -119,37 +122,44 @@ const recipeController = {
       }
 
       const recipe = recipeData.dataValues;
+      const creatorId = recipe.creatorID
+      const boolId = creatorId === userIDcurrent
 
-      const stepsData = await Step.findAll({
-        where: {
+        console.log('RECIPE', recipe)
+
+        const stepsData = await Step.findAll({
+          where: {
+            recipeId: recipeId,
+          },
+        });
+
+        if (!stepsData.length || stepsData === null) {
+          res.send("No steps exist for this recipe build");
+          return;
+        }
+
+        const sortedSteps = stepsData
+          .map((step) => step.dataValues)
+          .sort((a, b) => a.sequence - b.sequence);
+        const recipeDataToSend = {
+          title: recipe.title,
+          os: recipe.os,
+          steps: sortedSteps,
           recipeId: recipeId,
-        },
-      });
+          errors: req.errors,
+        };
 
-      if (!stepsData.length || stepsData === null) {
-        res.send("No steps exist for this recipe build");
-        return;
-      }
+        console.log("sorted Steps:");
 
-      const sortedSteps = stepsData
-        .map((step) => step.dataValues)
-        .sort((a, b) => a.sequence - b.sequence);
-      const recipeDataToSend = {
-        title: recipe.title,
-        os: recipe.os,
-        steps: sortedSteps,
-        recipeId: recipeId,
-        errors: req.errors,
-      };
-
-      console.log("sorted Steps:");
-
-      console.log(sortedSteps);
-      if (viewRecipeId) {
-        return res.render("pages/viewRecipePage", recipeDataToSend);
-      } else if (editRecipeId) {
-        return res.render("pages/editRecipePage", recipeDataToSend);
-      }
+        console.log(sortedSteps);
+        if (editRecipeId && boolId) {
+          return res.render("pages/editRecipePage", recipeDataToSend);
+        } else {
+          return res.render("pages/viewRecipePage", recipeDataToSend);
+        }
+      
+      
+      
     } catch (error) {
       console.log(error);
     }
@@ -210,14 +220,14 @@ const recipeController = {
 
       const transaction = await sequelize.transaction();
 
-        try { 
-            // deleting related error reports
-            await Step.destroy({
-                where:{
-                    recipeId:recipeId
-                },
-                transaction:transaction
-            });
+      try {
+        // deleting related error reports
+        await Step.destroy({
+          where: {
+            recipeId: recipeId
+          },
+          transaction: transaction
+        });
 
         // delete recipe
         await Recipe.destroy({
@@ -246,10 +256,10 @@ const recipeController = {
     }
 
   },
-  handleDelete(req, res){
+  handleDelete(req, res) {
     res.redirect('/')
   },
-  async getAllRecipes(){
+  async getAllRecipes() {
     try {
       const allRecipes = await Recipe.findAll({
         include: [
