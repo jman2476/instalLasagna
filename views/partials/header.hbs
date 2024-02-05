@@ -12,7 +12,13 @@
 
         </div>
         <nav class="flex items-center">
-            <a href="/new_recipe" class="pr2 hide">New Recipe</a>
+            <a href="/all_recipes" class="pr2">All Recipes</a>
+{{#if userId}}
+            <a href="/my_recipes" class="pr2">My Recipes</a>
+        
+
+            <a href="/new_recipe" class="pr2">New Recipe</a>
+            {{/if}}
             {{> searchForm}}
         {{#if userId}}
         <a href="/logout">Log Out</a>

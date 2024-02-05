@@ -15,30 +15,30 @@ const authController = {
         console.log(messages);
         req.session.errors = messages;
         console.log(req.session.errors);
+        if (path){
         res.redirect(path);
+        }
     },
 
 
     // check who someOne is signed in, and return:
     //        -- userId if true
     //        == redirect to loging page if false
-    async validateSession(req, res) {
-        const userId = req.session.userId
-
-
+    async validateSession(req) {
+        const userId = req.session.userId || null
+        console.log(req.session)
         if (userId) {
             return true
         } else {
             return false
         }
-
-        res.redirect('/login')
     },
 
+
+    // making a random test comment
     // function to handle user sign up
     async signUpUser(req, res) {
         try {
-            const errors = req.session.errors;
 
             console.log(req.session.errors);
             console.log(req.body);

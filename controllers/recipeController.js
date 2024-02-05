@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
-const { User, Recipe, Step, ErrorReport } = require("../models");
+const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
+const { errorHandler, validateSession } = require('./authController')
 
 // /api/user_recipes
 const recipeController = {
@@ -68,17 +69,24 @@ const recipeController = {
       const userId = req.session.userId || 1;
       const description = "";
 
-      const newRecipe = await Recipe.create({
-        title: recipeTitle,
-        os: os,
-        description: description,
-        creatorID: userId,
-      });
-      const recipeId = newRecipe.dataValues.id;
+      if (recipeTitle === '') return
 
-      await Step.create({ sequence: 1, content: "", notes: "", recipeId });
+      if (validateSession(req)) {
+        const newRecipe = await Recipe.create({
+          title: recipeTitle,
+          os: os,
+          description: description,
+          creatorID: userId,
+        });
+        const recipeId = newRecipe.dataValues.id;
 
-      return res.redirect(`/edit_recipe/${recipeId}`);
+        await Step.create({ sequence: 1, content: "", notes: "", recipeId });
+
+        return res.redirect(`/edit_recipe/${recipeId}`);
+      }
+
+      return res.redirect('/')
+
     } catch (error) {
       console.log(error);
     }
@@ -89,6 +97,9 @@ const recipeController = {
       // const creatorID = req.session.userId || 1;
       const viewRecipeId = req.params.id; // editing recipe
       const editRecipeId = req.params.editId;
+
+      // get current user information
+      const userIDcurrent = req.session.userId
 
       const recipeId = viewRecipeId || editRecipeId;
       console.log(`\n\nId's`);
@@ -111,37 +122,44 @@ const recipeController = {
       }
 
       const recipe = recipeData.dataValues;
+      const creatorId = recipe.creatorID
+      const boolId = creatorId === userIDcurrent
 
-      const stepsData = await Step.findAll({
-        where: {
+        console.log('RECIPE', recipe)
+
+        const stepsData = await Step.findAll({
+          where: {
+            recipeId: recipeId,
+          },
+        });
+
+        if (!stepsData.length || stepsData === null) {
+          res.send("No steps exist for this recipe build");
+          return;
+        }
+
+        const sortedSteps = stepsData
+          .map((step) => step.dataValues)
+          .sort((a, b) => a.sequence - b.sequence);
+        const recipeDataToSend = {
+          title: recipe.title,
+          os: recipe.os,
+          steps: sortedSteps,
           recipeId: recipeId,
-        },
-      });
+          errors: req.errors,
+        };
 
-      if (!stepsData.length || stepsData === null) {
-        res.send("No steps exist for this recipe build");
-        return;
-      }
+        console.log("sorted Steps:");
 
-      const sortedSteps = stepsData
-        .map((step) => step.dataValues)
-        .sort((a, b) => a.sequence - b.sequence);
-      const recipeDataToSend = {
-        title: recipe.title,
-        os: recipe.os,
-        steps: sortedSteps,
-        recipeId: recipeId,
-        errors: req.errors,
-      };
-
-      console.log("sorted Steps:");
-
-      console.log(sortedSteps);
-      if (viewRecipeId) {
-        return res.render("pages/viewRecipePage", recipeDataToSend);
-      } else if (editRecipeId) {
-        return res.render("pages/editRecipePage", recipeDataToSend);
-      }
+        console.log(sortedSteps);
+        if (editRecipeId && boolId) {
+          return res.render("pages/editRecipePage", recipeDataToSend);
+        } else {
+          return res.render("pages/viewRecipePage", recipeDataToSend);
+        }
+      
+      
+      
     } catch (error) {
       console.log(error);
     }
@@ -196,47 +214,71 @@ const recipeController = {
     const newStep = await Step.create(stepData);
     res.json({ stepId: newStep.id });
   },
-  async deleteRecipe(req, res){
-    try{
-        const recipeId = req.params.id;
+  async deleteRecipe(req, res) {
+    try {
+      const recipeId = req.params.id;
 
-        const transaction = await sequelize.transaction();
+      const transaction = await sequelize.transaction();
 
-        try { 
-            // deleting related error reports
-            await ErrorReport.destroy({
-                where:{
-                    recipeId:recipeId
-                },
-                transaction:transaction
-            });
+      try {
+        // deleting related error reports
+        await Step.destroy({
+          where: {
+            recipeId: recipeId
+          },
+          transaction: transaction
+        });
 
-            // delete recipe
-            await Recipe.destroy({
-            where: {
-              id: recipeId,
-            },
-            transaction:transaction,
-          });
-        
+        // delete recipe
+        await Recipe.destroy({
+          where: {
+            id: recipeId,
+          },
+          transaction: transaction,
+        });
 
-          await transaction.commit();
 
-        res.redirect('/')
+        await transaction.commit();
 
-        } catch(err) {
-            await transaction.rollback();
-            console.log(err);
-            res.status(500).send('An error occured while deleting the recipe')
-        }
+        res.redirect('/my-recipes')
 
-       
-    } catch(err){
-        console.log(err)
+      } catch (err) {
+        await transaction.rollback();
+        console.log(err);
         res.status(500).send('An error occured while deleting the recipe')
+      }
+
+
+    } catch (err) {
+      console.log(err)
+      res.status(500).send('An error occured while deleting the recipe')
 
     }
 
+  },
+  handleDelete(req, res) {
+    res.redirect('/')
+  },
+  async getAllRecipes() {
+    try {
+      const allRecipes = await Recipe.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["username"],
+          },
+        ],
+      });
+      if (allRecipes.length) {
+        return {
+          recipes: allRecipes.map((recipe) => recipe.get({ plain: true })),
+        };
+      } else {
+        console.log("No user recipes found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 

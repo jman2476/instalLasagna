@@ -12,11 +12,11 @@ User.hasMany(Recipe, { foreignKey: 'creatorID' });
 Step.belongsTo(Recipe, { foreignKey: 'recipeId' });
 Recipe.hasMany(Step, { foreignKey: 'recipeId' });
 
-ErrorReport.belongsTo(User, { foreignKey: 'creatorID' });
-ErrorReport.belongsTo(Recipe, { foreignKey: 'recipeId' });
-ErrorReport.belongsTo(Step, { foreignKey: 'stepId', allowNull: true });
+// ErrorReport.belongsTo(User, { foreignKey: 'creatorID' });
+// ErrorReport.belongsTo(Recipe, { foreignKey: 'recipeId' });
+// ErrorReport.belongsTo(Step, { foreignKey: 'stepId', allowNull: true });
 
-ErrorReport.belongsTo(ErrorSolution, { foreignKey: 'solutionId', allowNull: true });
-ErrorSolution.hasMany(ErrorReport, { foreignKey: 'solutionId' });
+// ErrorReport.belongsTo(ErrorSolution, { foreignKey: 'solutionId', allowNull: true });
+// ErrorSolution.hasMany(ErrorReport, { foreignKey: 'solutionId' });
 
 module.exports = {Recipe, Step, ErrorReport, ErrorSolution, User}
