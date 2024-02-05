@@ -3,7 +3,10 @@
 {{> heading tag='h2' title=this.title}}
 <div class="flex justify-between">
     <h4 class=" pb2 mb2 mh4 {{os}}">OS: <span id="os">{{os}}</span></h4>
-    <span class="flex pr4"><p id="save-btn" class="mr4 pointer">Save</p><p id="delete-recipe-btn" class="mr4 pointer">Delete</p><a href="/view_recipe/{{recipeId}}">Leave Editor</a></span>
+    <span class="flex pr4">
+        <p id="save-btn" class="mr4 pointer">Save</p>
+        <a href="/delete" id="delete-recipe-btn" class="mr4 pointer">Delete</a>
+        <a href="/view_recipe/{{recipeId}}">Leave Editor</a></span>
 </div>
 {{!-- <div class="flex justify-between">
 <h4 class=" pb2 mb2 mh4 {{os}}">OS: {{os}}</h4>
@@ -22,6 +25,5 @@
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/js/editRecipe.js"></script>
 

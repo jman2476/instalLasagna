@@ -22,19 +22,18 @@ const authController = {
     // check who someOne is signed in, and return:
     //        -- userId if true
     //        == redirect to loging page if false
-    async validateSession(req, res) {
+    async validateSession(req) {
         const userId = req.session.userId
-
-
+        console.log(req.session)
         if (userId) {
             return true
         } else {
             return false
         }
-
-        res.redirect('/login')
     },
 
+
+    // making a random test comment
     // function to handle user sign up
     async signUpUser(req, res) {
         try {
