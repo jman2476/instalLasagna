@@ -9,6 +9,10 @@ console.log(`\n\n\nrecipe`)
 //show dashboard
 router.get('/', dashboardController.showDashBoardPage);
 
+router.get('/my_recipes', dashboardController.showMyRecipes) // need
+
+router.get('/all_recipes', dashboardController.showAllRecipes) // need
+
 // show recipe page
 router.get('/view_recipe/:id', recipeController.buildRecipe);
 
@@ -20,32 +24,6 @@ router.get('/search', searchController.showSearchPage);
 
 router.get('/delete', recipeController.handleDelete)
 
-// show search result based on the title
-// router.get('/search', async (req, res) =>{
-//     try{
-//         const searchQuery = req.query.title;
-//         const receipes = await Receipe.findAll({
-//             where: {
-//                 title: {
-//                     [Op.like]: `%${searchQuery}%`
-//                 }
-//             }
-//         });
-//         if(receipes.length){
-//             return res.json({
-//                 error: 404,
-//                 message: 'No receipe found by that title.'
-//             });
-//         }
-//         res.json(receipes);
-//     }catch (err) {
-//         console.log(err);
-//         res.json({
-//             error: 400,
-//             message: 'There was an error searching for that book'
-//         })
-//     }
-// })
 // show sign up page
 router.get('/signup', authController.showSignUpPage);
 

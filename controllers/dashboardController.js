@@ -3,9 +3,6 @@ const test = require('./')
 
 const dashboardController = {
     async showDashBoardPage(req, res) {
-        console.log('recipe contoller')
-
-        console.log(test)
         const recipesData = await recipeController.getUserRecipes(req, res);
         const recipes = recipesData.recipes;
         res.render('pages/dashboard' , {
@@ -15,7 +12,28 @@ const dashboardController = {
             userName: req.session.userName,
             errors: req.errors
         });
-    }
+    },
+    async showMyRecipes() {
+
+        const recipesData = await recipeController.getAllRecipes(req, res);
+        const recipes = recipesData.recipes;
+        res.render('pages/all_recipes' , {
+            title: 'All Recipes',
+            header: 'All Recipes',
+            recipes: recipes,
+            errors: req.errors
+        });
+    },
+    async showAllRecipes() {
+        const recipesData = await recipeController.getAllRecipes(req, res);
+        const recipes = recipesData.recipes;
+        res.render('pages/all_recipes' , {
+            title: 'All Recipes',
+            header: 'All Recipes',
+            recipes: recipes,
+            errors: req.errors
+        });
+     }
 };
 
 

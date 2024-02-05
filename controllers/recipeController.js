@@ -248,6 +248,27 @@ const recipeController = {
   },
   handleDelete(req, res){
     res.redirect('/')
+  },
+  async getAllRecipes(){
+    try {
+      const allRecipes = await Recipe.findAll({
+        include: [
+          {
+            model: User,
+            attributes: ["username"],
+          },
+        ],
+      });
+      if (allRecipes.length) {
+        return {
+          recipes: allRecipes.map((recipe) => recipe.get({ plain: true })),
+        };
+      } else {
+        console.log("No user recipes found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
