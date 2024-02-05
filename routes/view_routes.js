@@ -7,7 +7,7 @@ console.log(recipeController)
 console.log(`\n\n\nrecipe`)
 
 //show dashboard
-router.get('/', dashboardController.showDashBoardPage);
+router.get('/', dashboardController.showAllRecipes);
 
 router.get('/my_recipes', dashboardController.showMyRecipes) // need
 

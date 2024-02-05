@@ -4,13 +4,18 @@
   {{!-- <input>
 <h2>New Recipe</h2> --}}
 <div id="new-recipe-div">
+      {{#if userId}}
 <select name="os" id="os-select" class="operating-system">
+
     <option value="">None</option>
     <option value="windows">Windows</option>
     <option value="linux">Linux</option>
     <option value="macos">macOS</option>
 </select>
-    <input class="w-100" type="text" name="recipeTitle" placeholder="New Recipe" id="recipeTitle">
+    {{/if}}
+
+    <input class="w-100" type="text" name="recipeTitle" placeholder="{{#if userId}}
+New Recipe{{else}}login to make{{/if}}" {{#if userId}}id="recipeTitle" {{/if}}>
     <p id="recipe-error"></p>
     </div>
 <button type="submit" class="submit-btn mt4 grow w-100">

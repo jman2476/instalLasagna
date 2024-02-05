@@ -13,21 +13,22 @@ const dashboardController = {
             errors: req.errors
         });
     },
-    async showMyRecipes() {
-
-        const recipesData = await recipeController.getAllRecipes(req, res);
+    async showMyRecipes(req, res) {
+        const recipesData = await recipeController.getUserRecipes(req, res);
         const recipes = recipesData.recipes;
-        res.render('pages/all_recipes' , {
-            title: 'All Recipes',
-            header: 'All Recipes',
+        res.render('pages/dashboard' , {
+            title: 'My Recipes',
+            header: 'My Recipes',
+            userId: req.session.userId,
+            userName: req.session.userName,
             recipes: recipes,
             errors: req.errors
         });
     },
-    async showAllRecipes() {
+    async showAllRecipes(req, res) {
         const recipesData = await recipeController.getAllRecipes(req, res);
         const recipes = recipesData.recipes;
-        res.render('pages/all_recipes' , {
+        res.render('pages/allRecipesPage' , {
             title: 'All Recipes',
             header: 'All Recipes',
             recipes: recipes,
