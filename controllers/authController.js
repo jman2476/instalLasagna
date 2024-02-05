@@ -15,7 +15,9 @@ const authController = {
         console.log(messages);
         req.session.errors = messages;
         console.log(req.session.errors);
+        if (path){
         res.redirect(path);
+        }
     },
 
 
@@ -23,7 +25,7 @@ const authController = {
     //        -- userId if true
     //        == redirect to loging page if false
     async validateSession(req) {
-        const userId = req.session.userId
+        const userId = req.session.userId || null
         console.log(req.session)
         if (userId) {
             return true

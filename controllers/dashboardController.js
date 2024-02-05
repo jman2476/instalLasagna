@@ -1,6 +1,4 @@
 const recipeController = require('./recipeController');
-const test = require('./')
-
 const dashboardController = {
     async showDashBoardPage(req, res) {
         const recipesData = await recipeController.getUserRecipes(req, res);
@@ -31,6 +29,8 @@ const dashboardController = {
         res.render('pages/allRecipesPage' , {
             title: 'All Recipes',
             header: 'All Recipes',
+            userId: req.session.userId,
+            userName: req.session.userName,
             recipes: recipes,
             errors: req.errors
         });
