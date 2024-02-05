@@ -98,6 +98,9 @@ const recipeController = {
       const viewRecipeId = req.params.id; // editing recipe
       const editRecipeId = req.params.editId;
 
+      // get current user information
+      const userIDcurrent = req.session.userId
+
       const recipeId = viewRecipeId || editRecipeId;
       console.log(`\n\nId's`);
       console.log(viewRecipeId);
@@ -119,6 +122,9 @@ const recipeController = {
       }
 
       const recipe = recipeData.dataValues;
+      const creatorId = recipe.creatorID
+
+      console.log('RECIPE',recipe)
 
       const stepsData = await Step.findAll({
         where: {
