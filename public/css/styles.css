@@ -304,7 +304,7 @@ opacity:0.1;
 
     .glow {
         /* Initial state of the element */
-        animation: pulseGlow 1s infinite alternate;
+        animation: pulseGlow 3s infinite alternate;
       }
       
       @keyframes pulseGlow {
@@ -317,4 +317,13 @@ opacity:0.1;
         100% {
           box-shadow: 0 0 5px rgba(0, 0, 0, 0);
         }
+      }
+
+
+      .username{
+        position:absolute;
+        bottom: 0;
+        left:0;
+        right:0;
+        margin:auto;
       }

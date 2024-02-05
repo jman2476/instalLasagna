@@ -1,8 +1,11 @@
-<section class="my-recipes pa2 mh7">
+<section class="my-recipes pa2 mh7 flex flex-column items-center">
+{{#if userId}}
+    <h2 class="border-bottom pb2 mb2 tc w-30">{{title}}</h2>
 
-    <h2 class="border-bottom pb2 mb2">{{title}}</h2>
-
-    <div class="recipesContainer flex-wrap ml4">
+    <div class="recipesContainer flex-wrap">
         {{> newRecipeCard}}
     </div>
+    {{else}}
+<h3 class="{{class}} br4 pa2 tc w-50">Please login to create Recipes.</h3>
+{{/if}}
 </section>
