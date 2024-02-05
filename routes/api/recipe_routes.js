@@ -13,4 +13,6 @@ router.post('/recipes/:id/update', recipeController.updateRecipe);
 
 router.get('/recipes/new_step', recipeController.createNewStep)
 
+router.delete('/recipes/:id/delete', recipeController.deleteRecipe)
+
 module.exports = router;
