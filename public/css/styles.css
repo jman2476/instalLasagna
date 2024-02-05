@@ -215,7 +215,9 @@ button {
     cursor: pointer;
 }
 
-
+.hide{
+    display: none;
+}
 
 .step{
     width:fit-content;
