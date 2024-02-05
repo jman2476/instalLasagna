@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
 const { User, Recipe, Step, ErrorReport } = require("../models");
 const sequelize = require("../config/connection");
+const {validateSession} = require('./authController')
 
 // /api/user_recipes
 const recipeController = {
@@ -68,17 +69,24 @@ const recipeController = {
       const userId = req.session.userId || 1;
       const description = "";
 
-      const newRecipe = await Recipe.create({
-        title: recipeTitle,
-        os: os,
-        description: description,
-        creatorID: userId,
-      });
-      const recipeId = newRecipe.dataValues.id;
+      if (recipeTitle === '') return res.redirect('/')
 
-      await Step.create({ sequence: 1, content: "", notes: "", recipeId });
+      if (validateSession(req)) {
+        const newRecipe = await Recipe.create({
+          title: recipeTitle,
+          os: os,
+          description: description,
+          creatorID: userId,
+        });
+        const recipeId = newRecipe.dataValues.id;
 
-      return res.redirect(`/edit_recipe/${recipeId}`);
+        await Step.create({ sequence: 1, content: "", notes: "", recipeId });
+
+        return res.redirect(`/edit_recipe/${recipeId}`);
+      } 
+      
+      return res.redirect('/')
+
     } catch (error) {
       console.log(error);
     }
@@ -196,44 +204,44 @@ const recipeController = {
     const newStep = await Step.create(stepData);
     res.json({ stepId: newStep.id });
   },
-  async deleteRecipe(req, res){
-    try{
-        const recipeId = req.params.id;
+  async deleteRecipe(req, res) {
+    try {
+      const recipeId = req.params.id;
 
-        const transaction = await sequelize.transaction();
+      const transaction = await sequelize.transaction();
 
-        try { 
-            // deleting related error reports
-            await ErrorReport.destroy({
-                where:{
-                    recipeId:recipeId
-                },
-                transaction:transaction
-            });
+      try {
+        // deleting related error reports
+        await ErrorReport.destroy({
+          where: {
+            recipeId: recipeId
+          },
+          transaction: transaction
+        });
 
-            // delete recipe
-            await Recipe.destroy({
-            where: {
-              id: recipeId,
-            },
-            transaction:transaction,
-          });
-        
+        // delete recipe
+        await Recipe.destroy({
+          where: {
+            id: recipeId,
+          },
+          transaction: transaction,
+        });
 
-          await transaction.commit();
+
+        await transaction.commit();
 
         res.redirect('/')
 
-        } catch(err) {
-            await transaction.rollback();
-            console.log(err);
-            res.status(500).send('An error occured while deleting the recipe')
-        }
-
-       
-    } catch(err){
-        console.log(err)
+      } catch (err) {
+        await transaction.rollback();
+        console.log(err);
         res.status(500).send('An error occured while deleting the recipe')
+      }
+
+
+    } catch (err) {
+      console.log(err)
+      res.status(500).send('An error occured while deleting the recipe')
 
     }
 
