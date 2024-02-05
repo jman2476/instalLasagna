@@ -37,7 +37,6 @@ const authController = {
     // function to handle user sign up
     async signUpUser(req, res) {
         try {
-            const errors = req.session.errors;
 
             console.log(req.session.errors);
             console.log(req.body);

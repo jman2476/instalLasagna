@@ -301,3 +301,20 @@ opacity:0.1;
     opacity:1;
     transition: ease-in 0.2s;
     }
+
+    .glow {
+        /* Initial state of the element */
+        animation: pulseGlow 1s infinite alternate;
+      }
+      
+      @keyframes pulseGlow {
+        0% {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(0, 0, 255, 0.7);
+        }
+        100% {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+        }
+      }
