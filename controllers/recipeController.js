@@ -3,6 +3,7 @@ const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
 const { errorHandler, validateSession } = require('./authController')
 const NULL_STEP_RECIPE_ID = 0;
+const SYSTEM_CREATOR_ID = 1;
 // /api/user_recipes
 const recipeController = {
   async getUserRecipes(req, res) {
@@ -202,11 +203,12 @@ const recipeController = {
     }
   },
   async createNewStep(req, res) {
+    // await ensureNullStepRecipeExists();
     const stepData = {
       sequence: -1,
       content: "",
       notes: "",
-      recipeId: 1,
+      recipeId: NULL_STEP_RECIPE_ID,
     };
     console.log("stepdata");
 
@@ -281,13 +283,19 @@ const recipeController = {
       console.log(error);
     }
   }, 
-  async ensureNullStepRecipeExists() {
+  async ensureNullStepRecipeExists() { // need to create a system user
     const nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID)
     if(!nullStepRecipe){
       nullStepRecipe = await Recipe.create({
-        
+        id:NULL_STEP_RECIPE_ID,
+        title:'Blank Step Holder',
+        description:'This recipe holds blank steps to send to recipe builder',
+        os:'',
+        creatorID: SYSTEM_CREATOR_ID,
+        published:false
       })
     }
+    return nullStepRecipe;
   }
 };
 

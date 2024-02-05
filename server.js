@@ -4,11 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const session = require('express-session');
 
-const PORT = 3340;
+const PORT = process.env.PORT || 3340;
 const app = express();
 const router = require("./routes");
-
-// const { hbsTool } = require('./tools')
 
 // Import the sequelize connection
 const db = require("./config/connection.js");
