@@ -125,42 +125,42 @@ const recipeController = {
       const creatorId = recipe.creatorID
       const boolId = creatorId === userIDcurrent
 
-        console.log('RECIPE', recipe)
+      console.log('RECIPE', recipe)
 
-        const stepsData = await Step.findAll({
-          where: {
-            recipeId: recipeId,
-          },
-        });
-
-        if (!stepsData.length || stepsData === null) {
-          res.send("No steps exist for this recipe build");
-          return;
-        }
-
-        const sortedSteps = stepsData
-          .map((step) => step.dataValues)
-          .sort((a, b) => a.sequence - b.sequence);
-        const recipeDataToSend = {
-          title: recipe.title,
-          os: recipe.os,
-          steps: sortedSteps,
+      const stepsData = await Step.findAll({
+        where: {
           recipeId: recipeId,
-          boolId: boolId,
-          errors: req.errors,
-        };
+        },
+      });
 
-        console.log("sorted Steps:");
+      if (!stepsData.length || stepsData === null) {
+        res.send("No steps exist for this recipe build");
+        return;
+      }
 
-        console.log(sortedSteps);
-        if (editRecipeId && boolId) {
-          return res.render("pages/editRecipePage", recipeDataToSend);
-        } else {
-          return res.render("pages/viewRecipePage", recipeDataToSend);
-        }
-      
-      
-      
+      const sortedSteps = stepsData
+        .map((step) => step.dataValues)
+        .sort((a, b) => a.sequence - b.sequence);
+      const recipeDataToSend = {
+        title: recipe.title,
+        os: recipe.os,
+        steps: sortedSteps,
+        recipeId: recipeId,
+        boolId: boolId,
+        errors: req.errors,
+      };
+
+      console.log("sorted Steps:");
+
+      console.log(sortedSteps);
+      if (editRecipeId && boolId) {
+        return res.render("pages/editRecipePage", recipeDataToSend);
+      } else {
+        return res.render("pages/viewRecipePage", recipeDataToSend);
+      }
+
+
+
     } catch (error) {
       console.log(error);
     }
@@ -266,10 +266,14 @@ const recipeController = {
         include: [
           {
             model: User,
-            attributes: ["username"], // creator id and creator username
+            where: {
+              id: Recipe.creatorID
+            }
           },
         ],
       });
+
+      console.log(allRecipes)
       if (allRecipes.length) {
         return {
           recipes: allRecipes.map((recipe) => recipe.get({ plain: true })),
@@ -280,7 +284,7 @@ const recipeController = {
     } catch (error) {
       console.log(error);
     }
-  }, 
+  },
   async ensureSpecialRecipeExists() {
 
   }

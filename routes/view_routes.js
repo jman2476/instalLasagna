@@ -24,6 +24,9 @@ router.get('/edit_recipe/:editId', recipeController.buildRecipe);
 // show search page
 router.get('/search', searchController.showSearchPage);
 
+// search by userId
+router.get('/search/:userId', searchController.showUsersRecipes)
+
 router.get('/delete', recipeController.handleDelete)
 
 // show sign up page

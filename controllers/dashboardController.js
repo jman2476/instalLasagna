@@ -32,7 +32,9 @@ const dashboardController = {
             userId: req.session.userId,
             userName: req.session.userName,
             recipes: recipes,
-            errors: req.errors
+            errors: req.errors,
+            // creatorName: ,
+            // creatorId: 
         });
      },
      async newRecipe(req, res) {
