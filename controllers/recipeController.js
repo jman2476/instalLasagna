@@ -146,6 +146,7 @@ const recipeController = {
           os: recipe.os,
           steps: sortedSteps,
           recipeId: recipeId,
+          boolId: boolId,
           errors: req.errors,
         };
 
@@ -265,7 +266,7 @@ const recipeController = {
         include: [
           {
             model: User,
-            attributes: ["username"],
+            attributes: ["username"], // creator id and creator username
           },
         ],
       });
@@ -279,6 +280,9 @@ const recipeController = {
     } catch (error) {
       console.log(error);
     }
+  }, 
+  async ensureSpecialRecipeExists() {
+
   }
 };
 

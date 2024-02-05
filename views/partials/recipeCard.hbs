@@ -1,10 +1,10 @@
 <a href="/view_recipe/{{id}}">
 <div class="card tile ph3 pv5 ma2 mr1 items-center {{os}}">
-    {{!-- <a class="info">info</a> --}}
+
     <h2>{{title}}</h2>
     <h3 class="operating-system {{os}}_icon" >{{os}}</h3> 
     {{!-- ^ this will be replaced by icon --}}
-    <div class="description-box mt2"><p>{{description}}weewee</p></div>
-    
+    <div class="description-box mt2"><p>{{description}}</p></div>
+    <a class="username pb2 tl pl2" href="/search/{{creatorId}}">Username{{creatorName}}</a>
 </div>
 </a>
