@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-const { User, Recipe, Step, ErrorReport } = require("../models");
+const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
 
 // /api/user_recipes
@@ -204,7 +204,7 @@ const recipeController = {
 
         try { 
             // deleting related error reports
-            await ErrorReport.destroy({
+            await Step.destroy({
                 where:{
                     recipeId:recipeId
                 },
@@ -222,7 +222,7 @@ const recipeController = {
 
           await transaction.commit();
 
-        res.redirect('/')
+        res.redirect('/my-recipes')
 
         } catch(err) {
             await transaction.rollback();
@@ -237,6 +237,9 @@ const recipeController = {
 
     }
 
+  },
+  handleDelete(req, res){
+    res.redirect('/')
   }
 };
 

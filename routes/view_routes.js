@@ -18,6 +18,8 @@ router.get('/edit_recipe/:editId', recipeController.buildRecipe);
 // show search page
 router.get('/search', searchController.showSearchPage);
 
+router.get('/delete', recipeController.handleDelete)
+
 // show search result based on the title
 // router.get('/search', async (req, res) =>{
 //     try{
