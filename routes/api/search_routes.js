@@ -1,7 +1,9 @@
-const router = require('express').Router()
-const db = require('../../config/connection.js')
-const {recipeController} = require('../../controllers');
-// pull in the necessary models
-// const { User, Step, Recipe } = require('../../models')
+const router = require('express').Router();
+const { searchController } = require('../../controllers');
 
-module.exports = router;
+
+router.post('/search', searchController.getSearchResult)
+
+// http://localhost:3340/search/cura
+
+module.exports = router

@@ -84,7 +84,7 @@ app.use(session({
 
 
 // Load Routes
-app.use("/api", [router.recipeDB]);
+app.use("/api", [router.recipeDB, router.searchDB]);
 app.use("/", [router.view, router.user, router.step, router.recipeForm]);
 
 // Middleware net to catch 404's -->
