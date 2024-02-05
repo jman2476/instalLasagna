@@ -35,6 +35,8 @@ const authController = {
         res.redirect('/login')
     },
 
+
+    // making a random test comment
     // function to handle user sign up
     async signUpUser(req, res) {
         try {
