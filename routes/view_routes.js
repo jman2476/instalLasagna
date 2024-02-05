@@ -13,6 +13,8 @@ router.get('/my_recipes', dashboardController.showMyRecipes) // need
 
 router.get('/all_recipes', dashboardController.showAllRecipes) // need
 
+router.get('/new_recipe', dashboardController.newRecipe)
+
 // show recipe page
 router.get('/view_recipe/:id', recipeController.buildRecipe);
 

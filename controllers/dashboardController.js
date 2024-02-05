@@ -34,6 +34,13 @@ const dashboardController = {
             recipes: recipes,
             errors: req.errors
         });
+     },
+     async newRecipe() {
+        res.render('pages/newRecipePage', {
+            title:'New Recipe',
+            class: 'glow'
+
+        })
      }
 };
 
