@@ -205,6 +205,29 @@ const serverCommunicator = {
       },
     });
   },
+  deleteRecipe(){
+    console.log('delete clicked')
+    const baseURL = window.location.origin;
+    const path = window.location.pathname;
+    const segments = path.split("/");
+
+    const recipeId = segments.pop() || segments.pop();
+    const apiUrl = `${baseURL}/api/recipes/${recipeId}/delete`;
+
+    $.ajax({
+      url: apiUrl,
+      type: "DELETE",
+      contentType: "application/json", // Setting the content type to JSON
+                                        // delete RECIPE DATA delete RECIPE DATA delete RECIPE DATA
+      success: function (response) {
+        console.log("Success: ", response);
+        return response;
+      },
+      error: function (xhr, status, error) {
+        console.error("Error:", error);
+      },
+    });
+  }
 };
 
 $(document).ready(async function () {
@@ -265,6 +288,10 @@ $(document).ready(async function () {
     stepIdManager.saveQueueToLocalStorage();
     serverCommunicator.sendRecipeData();
   });
+
+  $("#delete-recipe-btn").on("click", function() {
+    serverCommunicator.deleteRecipe();
+  })
 });
 // save unused ids to local storage b4 user reloads/moves pages
 $(window).on("beforeunload", function () {

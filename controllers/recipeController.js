@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
-const { User, Recipe, Step } = require("../models");
+const { User, Recipe, Step, ErrorReport } = require("../models");
+const sequelize = require("../config/connection");
 
 // /api/user_recipes
 const recipeController = {
@@ -195,6 +196,48 @@ const recipeController = {
     const newStep = await Step.create(stepData);
     res.json({ stepId: newStep.id });
   },
+  async deleteRecipe(req, res){
+    try{
+        const recipeId = req.params.id;
+
+        const transaction = await sequelize.transaction();
+
+        try { 
+            // deleting related error reports
+            await ErrorReport.destroy({
+                where:{
+                    recipeId:recipeId
+                },
+                transaction:transaction
+            });
+
+            // delete recipe
+            await Recipe.destroy({
+            where: {
+              id: recipeId,
+            },
+            transaction:transaction,
+          });
+        
+
+          await transaction.commit();
+
+        res.redirect('/')
+
+        } catch(err) {
+            await transaction.rollback();
+            console.log(err);
+            res.status(500).send('An error occured while deleting the recipe')
+        }
+
+       
+    } catch(err){
+        console.log(err)
+        res.status(500).send('An error occured while deleting the recipe')
+
+    }
+
+  }
 };
 
 module.exports = recipeController;
