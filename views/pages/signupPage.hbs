@@ -1,24 +1,28 @@
-<div>
-      <h2 class="ml2 signUpToggle">Login</h2>
-</div>
-
 <article class="pa1 pl2 pb2 mt3 black-80">
-  <form action="/login" method="POST" accept-charset="utf-8">
+  <h2 class="mr signUpToggle">Sign Up</h2>
+
+  <form action="/signup" method="POST" accept-charset="utf-8">
     <fieldset id="userForm" class="ba b--transparent ph0 mh0">
 
       <div class="mt3">
-        <label class="db fw4 lh-copy f6" for="email">Email</label>
-        <input class="pa2 input-reset ba bg-transparent w-100 measure" type="text" name="email"  id="email">
+        <label class="db fw4 lh-copy f6" for="username">Username</label>
+        <input class="pa2 input-reset ba bg-transparent w-100 measure" type="text" name="username" id="username">
       </div>
-        
+
 
       <div class="mt3">
+        <label class="db fw4 lh-copy f6" for="email-address">Email address</label>
+        <input class="pa2 input-reset ba bg-transparent w-100 measure" type="email" name="email" id="email-address">
+      </div>
+      <div class="mt3">
         <label class="db fw4 lh-copy f6" for="password">Password</label>
-        <input class="b pa2 input-reset ba bg-transparent" type="password" name="password"  id="password">
+        <input class="b pa2 input-reset ba bg-transparent" type="password" name="password" id="password">
       </div>
     </fieldset>
-    <div class="mt3"><input class="credentialSubmit b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit" value="Log in"></div>
+    <div class="mt3"><input class=" b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" type="submit"
+        value="Sign Up"></div>
   </form>
   <br>
   {{errors}}
+
 </article>
