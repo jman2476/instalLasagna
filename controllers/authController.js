@@ -36,7 +36,10 @@ const authController = {
       res.redirect("/signup");
     } catch (error) {
       console.log(error);
-      this.errorHandler(error, req, res, "/signup");
+      console.log('this')
+
+      console.log(this)
+      authController.errorHandler(error, req, res, "/signup");
     }
   },
   async logInUser(req, res) {
@@ -74,7 +77,7 @@ const authController = {
 
       res.redirect(`/?login=success&username=${req.session.userName}`);
     } catch (error) {
-      this.errorHandler(error, req, res, "/login");
+      authController.errorHandler(error, req, res, "/login");
     }
   },
   logoutUser(req, res) {
