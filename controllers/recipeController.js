@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
 const { errorHandler, validateSession } = require('./authController')
-
+const NULL_STEP_RECIPE_ID = 0;
 // /api/user_recipes
 const recipeController = {
   async getUserRecipes(req, res) {
@@ -284,9 +284,14 @@ const recipeController = {
     } catch (error) {
       console.log(error);
     }
-  },
-  async ensureSpecialRecipeExists() {
-
+  }, 
+  async ensureNullStepRecipeExists() {
+    const nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID)
+    if(!nullStepRecipe){
+      nullStepRecipe = await Recipe.create({
+        
+      })
+    }
   }
 };
 
