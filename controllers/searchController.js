@@ -4,11 +4,14 @@ const { User, Recipe, Step } = require("../models");
 
 const searchController = {
     showSearchPage(req, res) {
+        console.log('Hey Charles');
+        console.log(req.body);
         const recipes = req.session.recipes;
         res.render('pages/search', {
             title: 'Search',
             recipes: recipes,
-            errors: req.errors
+            errors: req.errors,
+            query: req.body.title
         })
     },
     async getSearchResult(req, res) {

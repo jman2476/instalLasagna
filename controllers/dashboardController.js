@@ -18,8 +18,8 @@ const dashboardController = {
         const recipesData = await recipeController.getUserRecipes(req, res);
         const recipes = recipesData.recipes;
         res.render('pages/dashboard' , {
-            title: 'My Recipes',
-            header: 'My Recipes',
+            title: 'Showing search result',
+            header: 'Showing search result',
             userId: req.session.userId,
             userName: req.session.userName,
             recipes: recipes,
