@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 const { User, Recipe, Step } = require("../models");
 const sequelize = require("../config/connection");
-const { errorHandler, validateSession } = require('./authController')
+const { errorHandler, validateSession } = require("./authController");
 const NULL_STEP_RECIPE_ID = 0;
 const SYSTEM_CREATOR_ID = 1;
 // /api/user_recipes
@@ -38,7 +38,7 @@ const recipeController = {
       if (userRecipes) {
         res.send({ recipes: userRecipes.map((recipe) => recipe.toJSON()) });
       } else {
-        res.status(404).send("No recipes for this user");
+        res.status(500).send("No recipes for this user");
       }
     } catch (error) {
       console.log(error);
@@ -70,7 +70,7 @@ const recipeController = {
       const userId = req.session.userId || 1;
       const description = "";
 
-      if (recipeTitle === '') return
+      if (recipeTitle === "") return;
 
       if (validateSession(req)) {
         const newRecipe = await Recipe.create({
@@ -86,8 +86,7 @@ const recipeController = {
         return res.redirect(`/edit_recipe/${recipeId}`);
       }
 
-      return res.redirect('/')
-
+      return res.redirect("/");
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +99,7 @@ const recipeController = {
       const editRecipeId = req.params.editId;
 
       // get current user information
-      const userIDcurrent = req.session.userId
+      const userIDcurrent = req.session.userId;
 
       const recipeId = viewRecipeId || editRecipeId;
       console.log(`\n\nId's`);
@@ -123,45 +122,42 @@ const recipeController = {
       }
 
       const recipe = recipeData.dataValues;
-      const creatorId = recipe.creatorID
-      const boolId = creatorId === userIDcurrent
+      const creatorId = recipe.creatorID;
+      const boolId = creatorId === userIDcurrent;
 
-        console.log('RECIPE', recipe)
+      console.log("RECIPE", recipe);
 
-        const stepsData = await Step.findAll({
-          where: {
-            recipeId: recipeId,
-          },
-        });
-
-        if (!stepsData.length || stepsData === null) {
-          res.send("No steps exist for this recipe build");
-          return;
-        }
-
-        const sortedSteps = stepsData
-          .map((step) => step.dataValues)
-          .sort((a, b) => a.sequence - b.sequence);
-        const recipeDataToSend = {
-          title: recipe.title,
-          os: recipe.os,
-          steps: sortedSteps,
+      const stepsData = await Step.findAll({
+        where: {
           recipeId: recipeId,
-          boolId: boolId,
-          errors: req.errors,
-        };
+        },
+      });
 
-        console.log("sorted Steps:");
+      if (!stepsData.length || stepsData === null) {
+        res.send("No steps exist for this recipe build");
+        return;
+      }
 
-        console.log(sortedSteps);
-        if (editRecipeId && boolId) {
-          return res.render("pages/editRecipePage", recipeDataToSend);
-        } else {
-          return res.render("pages/viewRecipePage", recipeDataToSend);
-        }
-      
-      
-      
+      const sortedSteps = stepsData
+        .map((step) => step.dataValues)
+        .sort((a, b) => a.sequence - b.sequence);
+      const recipeDataToSend = {
+        title: recipe.title,
+        os: recipe.os,
+        steps: sortedSteps,
+        recipeId: recipeId,
+        boolId: boolId,
+        errors: req.errors,
+      };
+
+      console.log("sorted Steps:");
+
+      console.log(sortedSteps);
+      if (editRecipeId && boolId) {
+        return res.render("pages/editRecipePage", recipeDataToSend);
+      } else {
+        return res.render("pages/viewRecipePage", recipeDataToSend);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -203,19 +199,30 @@ const recipeController = {
     }
   },
   async createNewStep(req, res) {
-    // await ensureNullStepRecipeExists();
-    const stepData = {
-      sequence: -1,
-      content: "",
-      notes: "",
-      recipeId: NULL_STEP_RECIPE_ID,
-    };
-    console.log("stepdata");
+    try {
+        // need to create a system user
+        const systemUser = await User.findOne({
+          where:{
+            username:'system'
+          }
+        })
+         
+      await recipeController.ensureNullStepRecipeExists();
+      const stepData = {
+        sequence: -1,
+        content: "",
+        notes: "",
+        recipeId: systemUser.id,
+      };
+      console.log("stepdata");
 
-    console.log(stepData);
+      console.log(stepData);
 
-    const newStep = await Step.create(stepData);
-    res.json({ stepId: newStep.id });
+      const newStep = await Step.create(stepData);
+      res.json({ stepId: newStep.id });
+    } catch (err) {
+      console.log("Failed to create Null Step", err);
+    }
   },
   async deleteRecipe(req, res) {
     try {
@@ -227,9 +234,9 @@ const recipeController = {
         // deleting related error reports
         await Step.destroy({
           where: {
-            recipeId: recipeId
+            recipeId: recipeId,
           },
-          transaction: transaction
+          transaction: transaction,
         });
 
         // delete recipe
@@ -240,27 +247,21 @@ const recipeController = {
           transaction: transaction,
         });
 
-
         await transaction.commit();
 
-        res.redirect('/my-recipes')
-
+        res.redirect("/my-recipes");
       } catch (err) {
         await transaction.rollback();
         console.log(err);
-        res.status(500).send('An error occured while deleting the recipe')
+        res.status(500).send("An error occured while deleting the recipe");
       }
-
-
     } catch (err) {
-      console.log(err)
-      res.status(500).send('An error occured while deleting the recipe')
-
+      console.log(err);
+      res.status(500).send("An error occured while deleting the recipe");
     }
-
   },
   handleDelete(req, res) {
-    res.redirect('/')
+    res.redirect("/");
   },
   async getAllRecipes() {
     try {
@@ -282,21 +283,45 @@ const recipeController = {
     } catch (error) {
       console.log(error);
     }
-  }, 
-  async ensureNullStepRecipeExists() { // need to create a system user
-    const nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID)
-    if(!nullStepRecipe){
+  },
+  async ensureNullStepRecipeExists() {
+
+
+
+    try{
+    // need to create a system user
+    const systemUser = await User.findOne({
+      where:{
+        username:'system'
+      }
+    })
+     systemUser.id;
+    
+    console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
+    console.log(systemUser)
+
+    let nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID);
+    
+    
+    console.log(nullStepRecipe) 
+
+    if (!nullStepRecipe) { // if null step doesnt exist, create one
+      console.log('making Null Step Recipe by System...')
       nullStepRecipe = await Recipe.create({
-        id:NULL_STEP_RECIPE_ID,
-        title:'Blank Step Holder',
-        description:'This recipe holds blank steps to send to recipe builder',
-        os:'',
-        creatorID: SYSTEM_CREATOR_ID,
-        published:false
-      })
+        title: "Blank Step Holder",
+        description: "This recipe holds blank steps to send to recipe builder",
+        os: "",
+        creatorID: systemUser.id,
+        published: false,
+      });
     }
+    console.log(nullStepRecipe)
     return nullStepRecipe;
-  }
+    } catch(err){
+      console.log('Could not create Null Step Recipe', err)
+    }
+
+  },
 };
 
 module.exports = recipeController;

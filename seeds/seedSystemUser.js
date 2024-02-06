@@ -1,16 +1,23 @@
 const sequelize = require('../config/connection');
 const {User} = require('../models');
 const bcrypt = require('bcrypt')
-const SYSTEM_USER_ID = -1;
+
+
+const saltRounds = 10; // Define saltRounds for bcrypt
+
 
 async function seedSystemUser(){
     try{
         const hashedPassword = await bcrypt.hash('password', saltRounds);
         await sequelize.sync();
-        const systemUser = await User.findByPk(SYSTEM_USER_ID)
+        const systemUser = await User.findOne({
+            where:{
+              username:'system'
+            }
+          })       
+          
         if(!systemUser){
             await User.create({
-                id:SYSTEM_USER_ID,
                 username:'system',
                 email:'system@gmail.com',
                 password:hashedPassword
@@ -24,5 +31,8 @@ async function seedSystemUser(){
 
     }
 }
-
+console.log('about to seed user')
 seedSystemUser();
+console.log('\n----- SYSTEM SEEDED -----\n')
+
+module.exports = seedSystemUser;
