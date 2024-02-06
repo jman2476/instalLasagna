@@ -9,9 +9,9 @@ console.log(`\n\n\nrecipe`)
 //show dashboard
 router.get('/', dashboardController.showAllRecipes);
 
-router.get('/my_recipes', dashboardController.showMyRecipes) // need
+router.get('/my_recipes', dashboardController.showMyRecipes) 
 
-router.get('/all_recipes', dashboardController.showAllRecipes) // need
+router.get('/all_recipes', dashboardController.showAllRecipes) 
 
 router.get('/new_recipe', dashboardController.newRecipe)
 

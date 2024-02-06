@@ -157,6 +157,8 @@ const serverCommunicator = {
     const recipeId = segments.pop() || segments.pop();
     const apiUrl = `${baseURL}/api/recipes/${recipeId}/update`;
 
+    
+
     let steps = [];
 
     $(".step:not(.deleted").each(function () {
@@ -189,6 +191,8 @@ const serverCommunicator = {
     });
     console.log(steps);
 
+
+
     $.ajax({
       url: apiUrl,
       type: "POST",
@@ -197,10 +201,23 @@ const serverCommunicator = {
         steps: steps,
       }), // SENDING RECIPE DATA SENDING RECIPE DATA SENDING RECIPE DATA
       success: function (response) {
+        $('#save-status').text('Save Successful!');
+
+        setTimeout(function() {
+          $('#save-status').text('');
+        }, 1000);
+    
         console.log("Success:");
         return response;
       },
       error: function (xhr, status, error) {
+        $('#save-status').text('Save unsuccessful, please try again');
+
+        setTimeout(function() {
+          $('#save-status').text('');
+        }, 1000);
+    
+
         console.error("Error:", error);
       },
     });
