@@ -24,9 +24,11 @@ const searchController = {
         try {
             const searchQuery = req.body.title;
             const recipes = await Recipe.findAll({
+
                 where: {
                     title: {
-                        [Sequelize.Op.like]: `%${searchQuery}%`
+                        [Sequelize.Op.like]: `%${searchQuery}%`,
+                        [Sequelize.Op.ne]: 'Blank Step Holder'
                     }
                 }
             });

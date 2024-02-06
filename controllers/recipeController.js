@@ -8,7 +8,7 @@ const SYSTEM_CREATOR_ID = 1;
 const recipeController = {
   async getUserRecipes(req, res) {
     try {
-      const userId = req.session.userId || 2;
+      const userId = req.session.userId;
 
       const userRecipes = await Recipe.findAll({
         where: {
@@ -300,7 +300,6 @@ const recipeController = {
     try {
       const allRecipes = await Recipe.findAll({
         where: {
-          creatorID: userId,
           title: {
             [Sequelize.Op.ne]: 'Blank Step Holder' // Exclude recipes with 'Blank Step Holder' as title
           }
@@ -341,7 +340,11 @@ const recipeController = {
       console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
       console.log(systemUser)
 
-      let nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID);
+      let nullStepRecipe = await Recipe.findOne({
+        where:{
+          title: "Blank Step Holder"
+        }
+      });
 
 
       console.log(nullStepRecipe)
