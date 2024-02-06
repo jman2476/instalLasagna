@@ -53,7 +53,6 @@ const dashboardController = {
             userId: req.session.userId,
             userName: req.session.userName,
             class: 'glow'
-
         })
      }
 };
