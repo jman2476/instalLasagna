@@ -12,7 +12,8 @@ async function seedSystemUser(){
         await sequelize.sync();
         const systemUser = await User.findOne({
             where:{
-              username:'system'
+              username:'system',
+              email:'system@gmail.com'
             }
           })       
           
