@@ -1,5 +1,7 @@
 # INSTALLASAGNA
 
+![Logotoro](./public/assets/lasagna-logo.png)
+
 ## User Story
 
 This application helps any and all people who needs some guidance when they have an error while installing a program, or downloading new software on to their hardware. But most importantly it will help them cook up a tasty lasagna out of their spaghetti mess. The user can also be a contributor to the recipe enabling others to resolve their problems
