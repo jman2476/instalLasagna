@@ -62,7 +62,7 @@ const authController = {
             console.log(req.session.userId);
             console.log(req.session.username);
 
-            res.redirect("/");
+            res.redirect("/my_recipes");
         } catch (error) {
             console.log(error);
             console.log('this')
@@ -104,7 +104,7 @@ const authController = {
             console.log(req.session.userId);
             console.log(req.session.userName);
 
-            res.redirect(`/?login=success&username=${req.session.userName}`);
+            res.redirect(`/my_recipes`);
         } catch (error) {
             authController.errorHandler(error, req, res, "/login");
         }

@@ -94,10 +94,19 @@ const recipeController = {
 
   async buildRecipe(req, res) {
     try {
+
       // const creatorID = req.session.userId || 1;
       const viewRecipeId = req.params.id; // editing recipe
       const editRecipeId = req.params.editId;
 
+
+      if(viewRecipeId){
+        console.log('should be viewing the recipe');
+        console.log(req.session.userId, req.session.userName,)
+      } else {
+        console.log('should be editing the recipe');
+        console.log(req.session.userId, req.session.userName,)
+      }
       // get current user information
       const userIDcurrent = req.session.userId;
 
@@ -148,6 +157,8 @@ const recipeController = {
         recipeId: recipeId,
         boolId: boolId,
         errors: req.errors,
+        userId: req.session.userId,
+        userName: req.session.userName,
       };
 
       console.log("sorted Steps:");
