@@ -11,7 +11,12 @@ const recipeController = {
       const userId = req.session.userId || 2;
 
       const userRecipes = await Recipe.findAll({
-        where: { creatorID: userId },
+        where: {
+          creatorID: userId,
+          title: {
+            [Sequelize.Op.ne]: 'Blank Step Holder' // Exclude recipes with 'Blank Step Holder' as title
+          }
+        },
         include: [
           {
             model: User,
@@ -294,13 +299,19 @@ const recipeController = {
   async getAllRecipes() {
     try {
       const allRecipes = await Recipe.findAll({
-        include: [
+        where: {
+          creatorID: userId,
+          title: {
+            [Sequelize.Op.ne]: 'Blank Step Holder' // Exclude recipes with 'Blank Step Holder' as title
+          }
+        }, include: [
           {
             model: User,
             attributes: ["id", "username"], // creator id and creator username
           },
         ],
       });
+
       if (allRecipes.length) {
         // res.render('pages/allRecipesPage', {
 

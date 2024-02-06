@@ -12,7 +12,7 @@ async function generateRecipeData() {
     }
 
     for (const user of users) {
-        const numberOfRecipes = faker.datatype.number({ min:15, max: 16});
+        const numberOfRecipes = faker.datatype.number({ min:5, max: 10});
 
         for(let i = 0; i < numberOfRecipes; i++) {
             recipeSeeds.push({

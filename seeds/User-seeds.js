@@ -5,7 +5,7 @@ const { faker } = require('@faker-js/faker');
 function generateUserData() {
     const userSeeds = [];
 
-    for (let i = 0; i < 5; i++){
+    for (let i = 0; i < 2; i++){
         let name = faker.internet.userName();
         userSeeds.push({
             username:name,
