@@ -4,15 +4,20 @@ const { User, Recipe, Step } = require("../models");
 
 const searchController = {
     showSearchPage(req, res) {
-        console.log('Hey Charles');
-        console.log(req.body);
-        const recipes = req.session.recipes;
-        res.render('pages/search', {
-            title: 'Search',
-            recipes: recipes,
-            errors: req.errors,
-            query: req.body.title
-        })
+        try {
+            const recipes = req.session.recipes;
+
+            res.render('pages/search', {
+                title: 'Search',
+                recipes: recipes,
+                errors: req.errors,
+
+            })
+        } catch (error) {
+            console.log('Show search Page has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
+        }
+
     },
     async getSearchResult(req, res) {
         console.log(req.body);
@@ -32,11 +37,16 @@ const searchController = {
                 });
             }
 
-
             const simplifiedRecipes = recipes.map(recipe => recipe.dataValues);
             req.session.recipes = simplifiedRecipes;
             console.log(req.session.recipes)
-            res.redirect('/search');
+            res.render('pages/search', {
+                title: 'Search',
+                recipes: simplifiedRecipes,
+                errors: req.errors,
+                query: searchQuery
+
+            })
 
         } catch (err) {
             console.log(err);
@@ -45,7 +55,7 @@ const searchController = {
                 message: 'There was an error searching for that book'
             })
         }
-     
+
     }
 };
 
