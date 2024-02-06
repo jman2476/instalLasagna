@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "seed": "node ./seeds/seeds.js",
-    "start": "node ./seeds/seedSystemUser.js && server.js",
+    "start": "node ./seeds/seedSystemUser.js && node server.js",
     "dev": "node ./seeds/seedSystemUser.js && nodemon server.js"
   },
   "keywords": [],
