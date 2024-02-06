@@ -1,32 +1,33 @@
-{{!--  # Header partial including app name, search, and profile pic --}}
-    <header>
-        <div class="ml5 flex items-center">
-           <img src="/assets/lasagna-logo.png" alt:"logo" style="width:100px; height:auto;">
+{{!-- # Header partial including app name, search, and profile pic --}}
+<header>
+    <div class="ml5 flex items-center">
+        <img src="/assets/lasagna-logo.png" alt:"logo" style="width:100px; height:auto;">
         <a href="/">
-        <h1>instalLASAGNA</h1>
+            <section class="welcome">
+                <h1>instalLASAGNA</h1>
         </a>
         {{#if userId}}
         <h5 class="">Welcome, {{userName}}</h5>
         {{/if}}
+        </section>
+    </div>
+    <nav class="flex items-center">
+        <a href="/all_recipes" class="pr2">All Recipes</a>
+        {{#if userId}}
+        <a href="/my_recipes" class="pr2">My Recipes</a>
 
-        </div>
-        <nav class="flex items-center">
-            <a href="/all_recipes" class="pr2">All Recipes</a>
-{{#if userId}}
-            <a href="/my_recipes" class="pr2">My Recipes</a>
-        
 
-            <a href="/new_recipe" class="pr2">New Recipe</a>
-            {{/if}}
-            {{> searchForm}}
+        <a href="/new_recipe" class="pr2">New Recipe</a>
+        {{/if}}
+        {{> searchForm}}
         {{#if userId}}
         <a href="/logout">Log Out</a>
         {{else}}
         <a href="/signup" class="pr2">Sign Up</a>
-            <a href="/login" class="pr2">Log in</a>
+        <a href="/login" class="pr2">Log in</a>
         {{/if}}
-            
-        </nav>
 
-        
-    </header>
+    </nav>
+
+
+</header>
