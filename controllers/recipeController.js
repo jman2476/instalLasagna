@@ -22,12 +22,14 @@ const recipeController = {
       if (userRecipes) {
         return {
           recipes: userRecipes.map((recipe) => recipe.get({ plain: true })),
+
         };
       } else {
         console.log("No user recipes found");
       }
     } catch (error) {
-      console.log(error);
+      console.log('Get User Recipe has an error', error);
+      res.status(500).json({ error: 'Internal Server error' });
     }
   },
 
@@ -41,27 +43,34 @@ const recipeController = {
         res.status(500).send("No recipes for this user");
       }
     } catch (error) {
-      console.log(error);
+      console.log('Send User Recipes has an error', error);
+      res.status(500).json({ error: 'Internal Server error' });
     }
   },
 
   async getRecipeSteps(req, res) {
     // currently not in use
-    console.log(`\n\n get recipe steps`);
-    const recipeId = req.params.id;
-    const stepData = await Step.findAll({
-      where: {
-        recipeId: recipeId,
-      },
-    });
-    // console.log(stepData);
+    try {
+      console.log(`\n\n get recipe steps`);
+      const recipeId = req.params.id;
+      const stepData = await Step.findAll({
+        where: {
+          recipeId: recipeId,
+        },
+      });
+      // console.log(stepData);
 
-    if (!stepData.length || stepData === null) {
-      res.send("No steps exist for this recipe get recipesteps");
-      return;
+      if (!stepData.length || stepData === null) {
+        res.send("No steps exist for this recipe get recipesteps");
+        return;
+      }
+
+      res.send(stepData);
+    } catch (error) {
+      console.log('Get Recipe Steps has an error', error);
+      res.status(500).json({ error: 'Internal Server error' });
     }
 
-    res.send(stepData);
   },
 
   async startNewRecipe(req, res) {
@@ -88,7 +97,8 @@ const recipeController = {
 
       return res.redirect("/");
     } catch (error) {
-      console.log(error);
+      console.log('Start New Recipe has an error', error);
+      res.status(500).json({ error: 'Internal Server error' });
     }
   },
 
@@ -170,10 +180,13 @@ const recipeController = {
         return res.render("pages/viewRecipePage", recipeDataToSend);
       }
     } catch (error) {
-      console.log(error);
+      console.log('Build Recipe has an error',error);
+      res.status(500).json({ error: 'Internal Server error' });
+
     }
   },
   async updateRecipe(req, res) {
+   
     const { id } = req.params;
     const { steps } = req.body;
     console.log("Update");
@@ -206,18 +219,20 @@ const recipeController = {
 
       return res.redirect(`/view_recipe/${id}`);
     } catch (err) {
-      console.log(err);
+      console.log('Update Recipe has an error',err);
+      res.status(500).json({ error: 'Internal Server error' });
+
     }
   },
   async createNewStep(req, res) {
     try {
-        // need to create a system user
-        const systemUser = await User.findOne({
-          where:{
-            username:'system'
-          }
-        })
-         
+      // need to create a system user
+      const systemUser = await User.findOne({
+        where: {
+          username: 'system'
+        }
+      })
+
       await recipeController.ensureNullStepRecipeExists();
       const stepData = {
         sequence: -1,
@@ -232,7 +247,9 @@ const recipeController = {
       const newStep = await Step.create(stepData);
       res.json({ stepId: newStep.id });
     } catch (err) {
-      console.log("Failed to create Null Step", err);
+      console.log("Create New Step has an error", err);
+      res.status(500).json({ error: 'Internal Server error' });
+
     }
   },
   async deleteRecipe(req, res) {
@@ -292,44 +309,45 @@ const recipeController = {
         console.log("No user recipes found");
       }
     } catch (error) {
-      console.log(error);
+      console.log('Handle Delete has an error',error);
+      res.status(500).json({ error: 'Internal Server error' });
+
     }
   },
   async ensureNullStepRecipeExists() {
+    try {
+      // need to create a system user
+      const systemUser = await User.findOne({
+        where: {
+          username: 'system'
+        }
+      })
+      systemUser.id;
+
+      console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
+      console.log(systemUser)
+
+      let nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID);
 
 
+      console.log(nullStepRecipe)
 
-    try{
-    // need to create a system user
-    const systemUser = await User.findOne({
-      where:{
-        username:'system'
+      if (!nullStepRecipe) { // if null step doesnt exist, create one
+        console.log('making Null Step Recipe by System...')
+        nullStepRecipe = await Recipe.create({
+          title: "Blank Step Holder",
+          description: "This recipe holds blank steps to send to recipe builder",
+          os: "",
+          creatorID: systemUser.id,
+          published: false,
+        });
       }
-    })
-     systemUser.id;
-    
-    console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
-    console.log(systemUser)
-
-    let nullStepRecipe = await Recipe.findByPk(NULL_STEP_RECIPE_ID);
-    
-    
-    console.log(nullStepRecipe) 
-
-    if (!nullStepRecipe) { // if null step doesnt exist, create one
-      console.log('making Null Step Recipe by System...')
-      nullStepRecipe = await Recipe.create({
-        title: "Blank Step Holder",
-        description: "This recipe holds blank steps to send to recipe builder",
-        os: "",
-        creatorID: systemUser.id,
-        published: false,
-      });
-    }
-    console.log(nullStepRecipe)
-    return nullStepRecipe;
-    } catch(err){
+      console.log(nullStepRecipe)
+      return nullStepRecipe;
+    } catch (err) {
       console.log('Could not create Null Step Recipe', err)
+      res.status(500).json({ error: 'Internal Server error' });
+
     }
 
   },
