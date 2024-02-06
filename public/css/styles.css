@@ -1,28 +1,24 @@
 body {
     font-family: "Montserrat", sans-serif;
     margin: 0;
-    padding: 10px;
+    padding: 0;
     background: #b9b9b9;
     color: #333;
     display: flex;
     flex-direction: column;
 }
-
 html,
 body {
     height: 100%;
 }
-
 header {
     background: #fff;
     /* color: #fff; */
     padding: 10px 0;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
-
 h1,
 h2,
 h3,
@@ -32,23 +28,18 @@ h6,
 p {
     margin: 0;
     padding: 0;
-    
 }
 a{
     color: #000;
     text-decoration: none;
-
 }
 header nav {
     margin-right: 20px;
     justify-self: flex-end;
 }
-
 header nav a {
     margin: 0 10px;
 }
-
-
 main {
     display: flex;
     flex: 1;
@@ -60,39 +51,27 @@ main {
 
 }
 
-h1 {
-    margin-top: 0;
-}
-
-
 /* Modern scrollbar styling */
 ::-webkit-scrollbar,.recipesContainer .card {
     width: 10px;
 }
-
 ::-webkit-scrollbar-track,.recipesContainer .card {
     background: #f1f1f1;
 }
-
 ::-webkit-scrollbar-thumb,.recipesContainer .card {
     background: #888;
 }
-
 ::-webkit-scrollbar-thumb:hover,.recipesContainer .card {
     background: #555;
 }
-
-
 /* GENERAL */
 /* .flex{
     display:
 } */
 /* HEADER.HBS */
-
 .signUpToggle {
     position: relative;
 }
-
 .credentials {
     position: absolute;
     top: 50px;
@@ -100,53 +79,34 @@ h1 {
     display: none;
     background-color: #FFF;
 }
-
 .arrow {
     cursor: pointer;
 }
-
-
 button {
     background: none;
     border: none;
 }
-
-
-
 /* Recipe Container */
 .recipesContainer {
     display: flex;
-    /* flex-direction: row; */
-    flex-wrap: wrap;
-    justify-content: space-around;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .recipesContainer .card {
-    max-width: calc(25% - 20px);
+    max-width: 200px;
     width: fit-content;
-    flex: 0 0 calc(25% - 20px);
-    margin-bottom: 20px;
-    /* max-height: 300px; */
+    max-height: 300px;
     background: linear-gradient(to bottom, #727271, #dfdccb);
     position: relative;
     border: 2px solid black;
     border-radius: 10px;
-    overflow: hidden;
-    /* overflow-y: hidden;
-    overflow-x: hidden; */
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
-
 
 .recipesContainer .card h2 {
     font-size: 20px;
-}
-
-@media screen and (max-width: 768px) {
-    .recipesContainer .card {
-        max-width: calc(50% - 20px);
-        flex: 1 0 calc(50% - 20px);
-        flex-direction: column;
-    }
 }
 
 .operating-system {
@@ -155,40 +115,32 @@ button {
     left: 10px;
     font-size: 16px;
 }
-
 .info {
     position: absolute;
     bottom: 10px;
     right: 10px;
     font-size: 16px;
 }
-
 /* Card Types */
 .card.windows, .windows .step {
     background: linear-gradient(to bottom, #0078D7, #8BC6EC); /* From Windows Blue to Sky Blue */
 }
-
 .card.macos, .macos .step {
     background: linear-gradient(to bottom, #BDC3C7, #ECF0F1); /* From Silver Sand to Spun Pearl */
 }
-
 .card.linux, .linux .step {
     background: linear-gradient(to bottom, #4CBB17, #A9DFBF); /* From Kelly Green to Mint Cream */
 }
-
 /* Hover Effects */
 .card.windows:hover {
     background: #0078D7; /* Solid Windows Blue */
 }
-
 .card.macos:hover {
     background: #ECF0F1; /* Solid Spun Pearl */
 }
-
 .card.linux:hover {
     background: #4CBB17; /* Solid Kelly Green */
 }
-
 /* Transitions */
 .card {
     height:250px;
@@ -199,30 +151,23 @@ button {
 .card:hover{
     background:#dfdccb;
 }
-
 .card p{
     font-size:16px;
 }
-
 .description-box{
     max-height:110px;
     overflow-y:auto;
     display:none;
-
 }
-
 .create.card{
     transition:0.5s;
     color:black;
     background:#fff;
     width: 200px;
-
 }
-
 .border-bottom{
     border-bottom:2px solid black;
 }
-
 .plus-icon{
     font-size:50px;
 }
@@ -231,15 +176,12 @@ button {
     border-radius:20px;
     cursor: pointer;
 }
-
 .pointer{
     cursor: pointer;
 }
-
 .hide{
     display: none;
 }
-
 .step{
     width:fit-content;
     min-width:300px;
@@ -251,19 +193,15 @@ button {
     border:2px solid black;
     position:relative;
 }
-
-
 .note, .step-sequence, .delete-btn{
     position:absolute;
     top:10px;
     font-size:14px;
     cursor:pointer;
 }
-
 .note{
     right:15px;
 }
-
 .step-sequence{
     left:0;
     right:0;
@@ -271,12 +209,9 @@ button {
     width:fit-content;
     margin:auto;
 }
-
 .delete-btn{
     left:15px;
 }
-
-
 .note-text {
     position: absolute;
     top: -35px; /* Moves the note text above the step div */
@@ -287,11 +222,6 @@ button {
     padding: 5px; /* Padding around the note text */
     border-radius: 5px; /* Optional: adds rounded corners to the note text */
 }
-
-
-
-
-
 .step-input-text {
     min-width: 1000px; /* Or set to a specific width */
     min-height: 50px; /* Minimum height */
@@ -301,15 +231,9 @@ button {
     overflow-y: hidden; /* Prevent scrollbar from appearing */
     overflow-x: hidden;
 }
-
-
-
-
-
 .deleted{
     display:none;
 }
-
 .add-step{
 position: absolute;
 left:0;
@@ -317,12 +241,10 @@ right:0;
 bottom:-55px;
 opacity:0.1;
 }
-
 .add-step:hover{
     opacity:1;
     transition: ease-in 0.2s;
     }
-
     .glow {
         /* Initial state of the element */
         animation: pulseGlow 3s infinite alternate;
@@ -339,8 +261,6 @@ opacity:0.1;
           box-shadow: 0 0 5px rgba(0, 0, 0, 0);
         }
       }
-
-
       .username{
         position:absolute;
         bottom: 0;
@@ -348,4 +268,3 @@ opacity:0.1;
         right:0;
         margin:auto;
       }
-      

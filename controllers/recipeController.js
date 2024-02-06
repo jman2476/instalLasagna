@@ -297,11 +297,14 @@ const recipeController = {
         include: [
           {
             model: User,
-            attributes: ["username"], // creator id and creator username
+            attributes: ["id", "username"], // creator id and creator username
           },
         ],
       });
       if (allRecipes.length) {
+        // res.render('pages/allRecipesPage', {
+
+        // })
         return {
           recipes: allRecipes.map((recipe) => recipe.get({ plain: true })),
         };
