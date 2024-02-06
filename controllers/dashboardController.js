@@ -48,12 +48,12 @@ const dashboardController = {
 
      },
      async newRecipe(req, res) {
-        res.render('pages/newRecipePage', {
-            title:'New Recipe',
-            userId: req.session.userId,
-            userName: req.session.userName,
-            class: 'glow'
-        })
+            res.render('pages/newRecipePage', {
+                title:'New Recipe',
+                userId: req.session.userId,
+                userName: req.session.userName,
+                class: 'glow'
+            })
      }
 };
 
