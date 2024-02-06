@@ -3,21 +3,27 @@ const { User } = require("../models");
 const authController = {
     // handle the errors
     errorHandler(err, req, res, path) {
-        let messages;
+        try {
+            let messages;
 
-        if (err.errors) {
-            messages = err.errors.map((errObj) => errObj.message);
-        } else {
-            messages = [err.message];
-        }
-        console.log(`\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n messages`);
+            if (err.errors) {
+                messages = err.errors.map((errObj) => errObj.message);
+            } else {
+                messages = [err.message];
+            }
+            console.log(`\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n messages`);
 
-        console.log(messages);
-        req.session.errors = messages;
-        console.log(req.session.errors);
-        if (path){
-        res.redirect(path);
+            console.log(messages);
+            req.session.errors = messages;
+            console.log(req.session.errors);
+            if (path) {
+                res.redirect(path);
+            }
+        } catch (error) {
+            console.log('Error handler has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
         }
+
     },
 
 
@@ -25,13 +31,19 @@ const authController = {
     //        -- userId if true
     //        == redirect to loging page if false
     async validateSession(req) {
-        const userId = req.session.userId || null
-        console.log(req.session)
-        if (userId) {
-            return true
-        } else {
-            return false
+        try {
+            const userId = req.session.userId || null
+            console.log(req.session)
+            if (userId) {
+                return true
+            } else {
+                return false
+            }
+        } catch (error) {
+            console.log('Validate Session has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
         }
+
     },
 
 
@@ -97,34 +109,55 @@ const authController = {
             authController.errorHandler(error, req, res, "/login");
         }
     },
+
     logoutUser(req, res) {
         // clears session
+        try {
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error("Session Deletion Error", err);
+                } else {
+                    res.redirect("/login");
+                }
+            });
+        } catch (error) {
+            console.log('Log out User has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
+        }
 
-        req.session.destroy((err) => {
-            if (err) {
-                console.error("Session Deletion Error", err);
-            } else {
-                res.redirect("/login");
-            }
-        });
     },
+
     showSignUpPage(req, res) {
-        res.render("pages/signupPage", {
-            title: "Sign up for an account",
-            errors: req.session.errors,
-        });
+        try {
+            res.render("pages/signupPage", {
+                title: "Sign up for an account",
+                errors: req.session.errors,
+            });
 
-        // clear errors
-        delete req.session.errors;
+            // clear errors
+            delete req.session.errors;
+        } catch (error) {
+            console.log('Show sign up Page has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
+        }
+
     },
-    showLoginPage(req, res) {
-        res.render("pages/loginPage", {
-            title: "Log into your account",
-            errors: req.session.errors,
-        });
 
-        // clear errors
-        delete req.session.errors;
+    showLoginPage(req, res) {
+        try {
+            res.render("pages/loginPage", {
+                title: "Log into your account",
+                errors: req.session.errors,
+            });
+
+            // clear errors
+            delete req.session.errors;
+
+        } catch (error) {
+            console.log('Show Login Page has an error', error);
+            res.status(500).json({ error: 'Internal Server error' });
+        }
+
     },
 };
 
