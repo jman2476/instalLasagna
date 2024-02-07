@@ -9,6 +9,9 @@ const recipeController = {
   async getUserRecipes(req, res) {
     try {
       const userId = req.session.userId;
+      if(!userId){
+        return res.redirect('/login')
+      }
 
       const userRecipes = await Recipe.findAll({
         where: {
@@ -81,29 +84,42 @@ const recipeController = {
   async startNewRecipe(req, res) {
     try {
       const { os, recipeTitle } = req.body;
-      const userId = req.session.userId || 1;
+      const userId = req.session.userId;
+      const username = req.session.userName;
       const description = "";
 
-      if (recipeTitle === "") return;
-
-      if (validateSession(req)) {
-        const newRecipe = await Recipe.create({
-          title: recipeTitle,
-          os: os,
-          description: description,
-          creatorID: userId,
-        });
-        const recipeId = newRecipe.dataValues.id;
-
-        await Step.create({ sequence: 1, content: "", notes: "", recipeId });
-
-        return res.redirect(`/edit_recipe/${recipeId}`);
+      if(!userId){
+        return res.redirect('/login')
       }
 
-      return res.redirect("/");
+      const newRecipeData = {
+        title: recipeTitle ? recipeTitle : `${username}'s New Recipe`,
+        os: os,
+        description: description,
+        creatorID: userId,
+      }
+
+      if (validateSession(req)) {
+        const newRecipe = await Recipe.create(newRecipeData);
+        const recipeId = newRecipe.dataValues.id;
+
+        console.log(newRecipe);
+
+        return res.render("pages/editRecipePage", {
+          recipeId,
+          ...newRecipeData,
+          errors: req.errors,
+          userId: req.session.userId,
+          userName: req.session.userName,
+        });
+      }
+
+      return res.redirect("/login");
     } catch (error) {
       console.log('Start New Recipe has an error', error);
-      res.status(500).json({ error: 'Internal Server error' });
+      // res.status(500).json({ error: 'Internal Server error' });
+      return res.redirect('/my_recipes')
+
     }
   },
 
@@ -136,6 +152,7 @@ const recipeController = {
         where: {
           id: recipeId,
         },
+        include:Step
       });
 
       // CREATE MORE ROBUST ERROR HANDLING
@@ -157,10 +174,9 @@ const recipeController = {
         },
       });
 
-      if (!stepsData.length || stepsData === null) {
-        res.send("No steps exist for this recipe build");
-        return;
-      }
+      // if (!stepsData.length || stepsData === null) {
+      //   return res.redirect("No steps exist for this recipe build");
+      // }
 
       const sortedSteps = stepsData
         .map((step) => step.dataValues)
@@ -192,38 +208,29 @@ const recipeController = {
   },
   async updateRecipe(req, res) {
    
-    const { id } = req.params;
-    const { steps } = req.body;
+    // const { id } = req.params;
+    const {steps, recipeId} = req.body;
+    const t = await sequelize.transaction();
     console.log("Update");
-
-    console.log(steps);
+    
     try {
-      let formStepIds = steps.filter((step) => step.id).map((step) => step.id);
-
-      for (const formStep of steps) {
-        if (formStep.id) {
-          await Step.update(formStep, { where: { id: formStep.id } });
-        } else {
-          const newStep = await Step.create({ ...formStep, recipeId: id });
-          formStepIds.push(newStep.id);
-        }
+     await Step.destroy({ where: { recipeId } }, { transaction: t });
+      for(const step of steps){
+        await Step.create({ ...step, recipeId }, { transaction: t })
       }
-
-      console.log(`\n\n\n  ------------------ UPDATED`);
-      console.log(formStepIds);
-      await Step.destroy({
+      const recipeData = await Recipe.findOne({
         where: {
-          recipeId: id,
-          id: { [Sequelize.Op.notIn]: formStepIds },
+          id: recipeId,
         },
+        include:Step
       });
+console.log(recipeData)
 
-      const updatedSteps = await Step.findAll({ where: { recipeId: id } });
+      await t.commit()
+      return res.send('success');
 
-      console.log(updatedSteps);
-
-      return res.redirect(`/view_recipe/${id}`);
     } catch (err) {
+      await t.rollback();
       console.log('Update Recipe has an error',err);
       res.status(500).json({ error: 'Internal Server error' });
 

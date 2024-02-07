@@ -10,7 +10,13 @@ Step.init({
     },
     content:{
         type: DataTypes.TEXT,
-        allowNull:false
+        allowNull:false,
+        // validate:{
+        //     notEmpty:{
+        //         args:true,
+        //         msg:'Recipe Steps cannot be blank.'
+        //     }
+        // } -- Add in this validation after foundation is set up
     },
 
     notes: {

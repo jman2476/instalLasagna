@@ -23,18 +23,21 @@ const dashboardController = {
     async showMyRecipes(req, res) {
         try {
             const recipesData = await recipeController.getUserRecipes(req, res);
-            const recipes = recipesData.recipes;
-            res.render('pages/dashboard', {
+
+
+            // const recipes = recipesData.recipes;
+            return res.render('pages/dashboard', {
                 title: 'Showing search result',
                 header: 'Showing search result',
                 userId: req.session.userId,
                 userName: req.session.userName,
-                recipes: recipes,
+                recipes: recipesData ? recipesData.recipes : [],
                 errors: req.errors
             });
         } catch (error) {
             console.log('Show my Recipes has an error', error);
-            res.status(500).json({ error: 'Internal Server error' });
+           return res.status(500).json({ error: 'Internal Server error' });
+            // res.redirect('/my_recipes')
         }
 
     },

@@ -32,7 +32,8 @@ const authController = {
     //        == redirect to loging page if false
     async validateSession(req) {
         try {
-            const userId = req.session.userId || null
+            // const userId = req.session.userId || null
+            const userId = req.session.userId;
             console.log(req.session)
             if (userId) {
                 return true

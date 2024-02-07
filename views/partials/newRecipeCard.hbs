@@ -2,7 +2,7 @@
 
 <div class="create card tile ph3 pv5 ma2 mr1 flex flex-column items-center {{class}}">
 
-<form action="/new_recipe" method="POST" accept-charset="utf-8">
+<form action="/recipe/new" method="POST" accept-charset="utf-8">
 
 <div id="new-recipe-div" class="">
 
@@ -17,6 +17,8 @@
     <input class="w-100" type="text" name="recipeTitle" placeholder="{{#if userId}}New Recipe{{else}}Login{{/if}}" {{#if userId}}id="recipeTitle" {{/if}}>
     <p id="recipe-error"></p>
     </div>
+
+    {{!-- submit action in form el at top --}}
 <button type="submit" class="submit-btn mt4 grow w-100">
       <span class="plus-icon">+</span>
     </button>

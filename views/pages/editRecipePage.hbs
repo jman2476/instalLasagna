@@ -1,5 +1,4 @@
 {{!-- # Recipe editing page --}}
-
 {{> heading tag='h2' title=this.title}}
 <div class="flex justify-between">
     <h4 class=" pb2 mb2 mh4 {{os}}">OS: <span id="os">{{os}}</span></h4>
@@ -12,16 +11,33 @@
 
 <section class="flex flex-auto items-start justify-center">
     <form id='recipe-form'>
+        
 
-        {{#each steps}}
-        {{> stepEdit sequence=this.sequence text=this.content notes=this.notes}}
-        {{/each}}
+        {{#if steps}}
+            {{#each steps}}
+                {{> stepEdit sequence=this.sequence text=this.content notes=this.notes first=0}}
+            {{/each}}
+        {{else}}
+            {{> stepEdit sequence=1 first=1}}
+        {{/if}}
+
     </form>
 
 
 </section>
 
 
-
+<script>
+    const recipeId = '{{recipeId}}';
+</script>
 <script src="/js/editRecipe.js"></script>
 
+{{!-- order from frontend, collect that order and send to overwrite recipe with new array of steps
+    no steps from server
+
+recipe.udpate(obj.steps --> arr from frontend(all stuff to create a step), 2obj(where:id is recipe))
+
+overwrite --> not updating
+
+    put is for update
+ --}}

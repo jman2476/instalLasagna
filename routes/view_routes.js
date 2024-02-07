@@ -19,7 +19,9 @@ router.get('/new_recipe', dashboardController.newRecipe)
 router.get('/view_recipe/:id', recipeController.buildRecipe);
 
 // show edit recipe page
-router.get('/edit_recipe/:editId', recipeController.buildRecipe);
+// router.get('/edit_recipe/:editId', recipeController.buildRecipe);
+router.post('/recipe/new', recipeController.startNewRecipe)
+
 
 // show search page
 router.get('/search', searchController.showSearchPage);

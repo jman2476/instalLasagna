@@ -238,7 +238,12 @@ button {
 .deleted{
     display:none;
 }
-.add-step{
+
+.first-add-step{
+
+}
+
+.add-step.inside{
 position: absolute;
 left:0;
 right:0;
@@ -282,3 +287,4 @@ opacity:0.1;
             flex-direction: column;
         }
       }
+

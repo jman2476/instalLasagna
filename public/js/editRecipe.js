@@ -1,3 +1,5 @@
+console.log(recipeId)
+
 const stepIdManager = {
   stepIdQueue: [],
   unusedStepIdsKey: "unusedStepIds",
@@ -98,25 +100,25 @@ const stepIdManager = {
 
 const DOMHandler = {
     // mthd to return step html
-  addStep(sequence, newStepId) {
+  addStep(sequence) {
 
     step = `
       
-          <div class="step sequence-${sequence} mb5 mt2 pa3 pt4 flex justify-center items-center tc" id="${newStepId}">
+          <div class="step sequence-${sequence} mb5 mt2 pa3 pt4 flex justify-center items-center tc">
       
-            <p class="grow delete-btn" id="delete-step-${newStepId}">Delete Step</p>
+            <p class="grow delete-btn" id="delete-step-${sequence}">Delete Step</p>
       
             <p class="step-sequence grow">Step <span>${sequence}</span>.</p> 
       
-            <textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" id="step-${newStepId}" value=""></textarea>
+            <textarea class="tc step-input-text pa2 input-reset ba bg-transparent " type="text" id="step-sequence" value=""></textarea>
       
       
-            <p class="note edit-note grow" id="edit-note-${newStepId}">Add Note</p>
+            <p class="note edit-note grow" id="edit-note-${sequence}">Add Note</p>
       
       
-            <input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${newStepId}" value="">
+            <input class="note-text white dtc v-mid child bg-black-40 pa1" style="display:none;" id="note-text-${sequence}" value="">
       
-            <p id="sequence-${sequence}" class="grow add-step pointer">V Add Step V</p>
+            <p id="sequence-${sequence}" class="grow add-step inside pointer">V Add Step V</p>
       
       
           </div>
@@ -127,7 +129,9 @@ const DOMHandler = {
   // mthd to update sequence of steps
   updateSequence() {
     let sequenceNumber = 1;
-    $(".step:not(.deleted)").each(function () {
+
+    $(".step").each(function () {
+
       // Update the class of the div
       $(this).attr("class", function (index, c) {
         return c.replace(/sequence-\d+/, "sequence-" + sequenceNumber);
@@ -142,8 +146,15 @@ const DOMHandler = {
         .attr("id", "sequence-" + sequenceNumber);
 
       sequenceNumber++;
+
     });
+    if ($(".step").length === 1) {
+      $(".step .delete-btn").hide();
+    } else {
+      $(".step .delete-btn").show();
+    }
     console.log(`\nupdated sequence\n`);
+
   },
 };
 
@@ -151,55 +162,48 @@ const serverCommunicator = {
     // mthd to send recipe data from user
   sendRecipeData() {
     const baseURL = window.location.origin;
-    const path = window.location.pathname;
-    const segments = path.split("/");
+    // const path = window.location.pathname;
 
-    const recipeId = segments.pop() || segments.pop();
-    const apiUrl = `${baseURL}/api/recipes/${recipeId}/update`;
-
-    
+    const apiUrl = `${baseURL}/api/recipe/update`;
 
     let steps = [];
 
-    $(".step:not(.deleted").each(function () {
+    $(".step").each(function () {
       let step = $(this);
-      let stepId = $(this).attr("id") || "";
+      // let stepId = $(this).attr("id") || "";
 
-      let stepTextarea = step.find("textarea.step-input-text");
+      let content = step.find("textarea.step-input-text").val();
 
-      let content = stepTextarea.val();
-      let sequenceClass = $(this).find("p.add-step").attr("id");
-      console.log(sequenceClass);
-      let sequence = sequenceClass.replace("sequence-", "");
+      // let content = stepTextarea.val();
+      let sequence = step.find("p.add-step").attr("id").replace("sequence-", "");
+
+      // let sequence = sequenceClass;
 
       let notes = step.find("input.note-text").val();
+      console.log(typeof notes);
+      console.log('notes', notes)
 
       let stepObj = {
-        id: stepId,
         sequence,
-        content: content ? content : " ",
+        content,
         notes: notes ? notes : null,
-        recipeId: recipeId,
+        recipeId,
         status: "confirmed",
       };
 
-      if (stepId) {
-        stepObj.id = stepId;
-      }
 
       steps.push(stepObj);
     });
     console.log(steps);
 
-
-
     $.ajax({
       url: apiUrl,
-      type: "POST",
+      type: "PUT",
       contentType: "application/json", // Setting the content type to JSON
       data: JSON.stringify({
         steps: steps,
-      }), // SENDING RECIPE DATA SENDING RECIPE DATA SENDING RECIPE DATA
+        recipeId
+      }), // PUTING RECIPE DATA PUTING RECIPE DATA PUTING RECIPE DATA
       success: function (response) {
         $('#save-status').text('Save Successful!');
 
@@ -267,24 +271,16 @@ $(document).ready(async function () {
   // deletes step
 
   recipeForm.on("click", ".step .delete-btn", function () {
-    let btnId = $(this).attr("id");
-    let stepElement = btnId.replace("delete-step-", "#");
-    let sequenceClass = $(this).siblings("p.add-step").attr("id");
-    $(stepElement).addClass("deleted");
-    $(stepElement).removeClass(sequenceClass);
-    $(stepElement).remove();
+    $(this).parent().remove();
     DOMHandler.updateSequence();
   });
 
   // adds step to dom
   recipeForm.on("click", ".add-step", async function () {
-    let newStepId = await stepIdManager.getStepIdFromQueue();
+    let sequenceId = $(this).attr("id");
+    let sequence = sequenceId.replace("sequence-", "");
 
-    let addStepSequence = $(this).attr("id");
-    let sequence = addStepSequence.replace("sequence-", "");
-    sequence++;
-
-    $(`.${addStepSequence}`).after(DOMHandler.addStep(sequence, newStepId));
+    $(`.${sequenceId}`).after(DOMHandler.addStep(sequence++));
     DOMHandler.updateSequence();
   });
 
@@ -302,7 +298,7 @@ $(document).ready(async function () {
     });
 
   $("#save-btn").on("click", function () {
-    stepIdManager.saveQueueToLocalStorage();
+    // stepIdManager.saveQueueToLocalStorage();
     serverCommunicator.sendRecipeData();
   });
 
