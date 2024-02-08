@@ -12,7 +12,7 @@ const {recipeController} = require('../../controllers');
 
 router.put('/recipe/update', recipeController.updateRecipe);
 
-router.get('/recipes/new_step', recipeController.createNewStep)
+// router.get('/recipes/new_step', recipeController.createNewStep)
 
 router.delete('/recipes/:id/delete', recipeController.deleteRecipe)
 

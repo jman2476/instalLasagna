@@ -162,7 +162,6 @@ const serverCommunicator = {
     // mthd to send recipe data from user
   sendRecipeData() {
     const baseURL = window.location.origin;
-    // const path = window.location.pathname;
 
     const apiUrl = `${baseURL}/api/recipe/update`;
 
@@ -254,7 +253,7 @@ const serverCommunicator = {
 $(document).ready(async function () {
 
     //init
-  await stepIdManager.init();
+  // await stepIdManager.init();
   DOMHandler.updateSequence();
 
   const recipeForm = $("#recipe-form");

@@ -224,7 +224,6 @@ const recipeController = {
         },
         include:Step
       });
-console.log(recipeData)
 
       await t.commit()
       return res.send('success');
@@ -236,34 +235,34 @@ console.log(recipeData)
 
     }
   },
-  async createNewStep(req, res) {
-    try {
-      // need to create a system user
-      const systemUser = await User.findOne({
-        where: {
-          username: 'system'
-        }
-      })
+  // async createNewStep(req, res) {
+  //   try {
+  //     // need to create a system user
+  //     const systemUser = await User.findOne({
+  //       where: {
+  //         username: 'system'
+  //       }
+  //     })
 
-      await recipeController.ensureNullStepRecipeExists();
-      const stepData = {
-        sequence: -1,
-        content: "",
-        notes: "",
-        recipeId: systemUser.id,
-      };
-      console.log("stepdata");
+  //     await recipeController.ensureNullStepRecipeExists();
+  //     const stepData = {
+  //       sequence: -1,
+  //       content: "",
+  //       notes: "",
+  //       recipeId: systemUser.id,
+  //     };
+  //     console.log("stepdata");
 
-      console.log(stepData);
+  //     console.log(stepData);
 
-      const newStep = await Step.create(stepData);
-      res.json({ stepId: newStep.id });
-    } catch (err) {
-      console.log("Create New Step has an error", err);
-      res.status(500).json({ error: 'Internal Server error' });
+  //     const newStep = await Step.create(stepData);
+  //     res.json({ stepId: newStep.id });
+  //   } catch (err) {
+  //     console.log("Create New Step has an error", err);
+  //     res.status(500).json({ error: 'Internal Server error' });
 
-    }
-  },
+  //   }
+  // },
   async deleteRecipe(req, res) {
     try {
       const recipeId = req.params.id;
@@ -334,47 +333,47 @@ console.log(recipeData)
 
     }
   },
-  async ensureNullStepRecipeExists() {
-    try {
-      // need to create a system user
-      const systemUser = await User.findOne({
-        where: {
-          username: 'system'
-        }
-      })
-      systemUser.id;
+  // async ensureNullStepRecipeExists() {
+  //   try {
+  //     // need to create a system user
+  //     const systemUser = await User.findOne({
+  //       where: {
+  //         username: 'system'
+  //       }
+  //     })
+  //     systemUser.id;
 
-      console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
-      console.log(systemUser)
+  //     console.log(`\n\n\n\n\n\n\n\n\nn\n\n\n system user`)
+  //     console.log(systemUser)
 
-      let nullStepRecipe = await Recipe.findOne({
-        where:{
-          title: "Blank Step Holder"
-        }
-      });
+  //     let nullStepRecipe = await Recipe.findOne({
+  //       where:{
+  //         title: "Blank Step Holder"
+  //       }
+  //     });
 
 
-      console.log(nullStepRecipe)
+  //     console.log(nullStepRecipe)
 
-      if (!nullStepRecipe) { // if null step doesnt exist, create one
-        console.log('making Null Step Recipe by System...')
-        nullStepRecipe = await Recipe.create({
-          title: "Blank Step Holder",
-          description: "This recipe holds blank steps to send to recipe builder",
-          os: "",
-          creatorID: systemUser.id,
-          published: false,
-        });
-      }
-      console.log(nullStepRecipe)
-      return nullStepRecipe;
-    } catch (err) {
-      console.log('Could not create Null Step Recipe', err)
-      res.status(500).json({ error: 'Internal Server error' });
+  //     if (!nullStepRecipe) { // if null step doesnt exist, create one
+  //       console.log('making Null Step Recipe by System...')
+  //       nullStepRecipe = await Recipe.create({
+  //         title: "Blank Step Holder",
+  //         description: "This recipe holds blank steps to send to recipe builder",
+  //         os: "",
+  //         creatorID: systemUser.id,
+  //         published: false,
+  //       });
+  //     }
+  //     console.log(nullStepRecipe)
+  //     return nullStepRecipe;
+  //   } catch (err) {
+  //     console.log('Could not create Null Step Recipe', err)
+  //     res.status(500).json({ error: 'Internal Server error' });
 
-    }
+  //   }
 
-  },
+  // },
 };
 
 module.exports = recipeController;
