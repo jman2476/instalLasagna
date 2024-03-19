@@ -5,15 +5,16 @@ const path = require('path')
 
 const { ApolloServer } = require('@apollo/server')
 const { expressMiddleware } = require('@apollo/server/express4')
-const app = express()
-// import the schema for the database
+const { typeDefs, resolvers } = reuire('./schema/')
 
+const app = express()
 const PORT = process.env.PORT || 3434
 
 async function serverStart() {
     // Set up apollo server
     const server = new ApolloServer({
-        // put the schema here
+        typeDefs,
+        resolvers
     }) 
 
     // Open middleware channels
