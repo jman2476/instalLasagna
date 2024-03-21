@@ -17,6 +17,8 @@ async function serverStart() {
         resolvers
     }) 
 
+    await server.start()
+
     // Open middleware channels
     app.use(express.json())
     app.use('/graphql', expressMiddleware(server, {
