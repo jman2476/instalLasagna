@@ -1,4 +1,0 @@
-DB_HOST_URL='localhost'
-DB_USER='root'
-DB_DATABASE_NAME='install_lasagna_db'
-SESSION_SECRET='super_duper_secret'
