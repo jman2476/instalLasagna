@@ -20,8 +20,42 @@ const userSchema = new Schema(
                 message: 'Your email address is invalid.'
             }
         },
-        
+        password: {
+            type: String,
+            required: [true, 'You must enter a passowrd'],
+            minLength: [8, 'Your password must be at least 8 characters long'],
+            //validate with regex that password has uppercase, lowercase, number, special char
+            validate: {
+                validator(val) {
+                    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g.test(val)
+                }
+            }
+        },
+        recipes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Recipe'
+        }],
+        notes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Notes'
+        }]
     }
 )
 
+userSchema.methods.validatePass = async function(formPass) {
+    const validPass = await compare(formPass, this.Password)
+
+    return validPass
+}
+
+userSchema.pre('save', async function(next) {
+    if(this.isNew){
+        this.password = await hash(this.password, 10)
+    }
+
+    next()
+})
+
 const User = model('User', userSchema)
+
+module.exports = User
