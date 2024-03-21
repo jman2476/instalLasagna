@@ -5,7 +5,7 @@ const path = require('path')
 
 const { ApolloServer } = require('@apollo/server')
 const { expressMiddleware } = require('@apollo/server/express4')
-const { typeDefs, resolvers } = reuire('./schema/')
+const { typeDefs, resolvers } = require('./schema/')
 
 const app = express()
 const PORT = process.env.PORT || 3434
